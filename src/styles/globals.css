@@ -7,7 +7,9 @@
   box-sizing: border-box;
   margin: 0;
   font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
 }
+
 h1 {
   font-size: 6.4167rem;
   line-height: 7.8333rem;
