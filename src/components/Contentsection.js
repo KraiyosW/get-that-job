@@ -8,18 +8,18 @@ const Contentsection = () => {
     <div className="w-full h-screen flex flex-row mt-[20px]">
         <div className="w-7/12 h-3/5 bg-[#BF5F82] flex flex-row justify-center items-center ">
           <div className="w-9/12 h-auto flex flex-col">
-            <h1 className="text-7xl mb-5 text-white">Find your next job</h1>
-            <p className="text-3xl my-5 text-white">
+            <h3 className=" text-white">Find your next job</h3>
+            <h5 className=" text-white">
               Our Machine learning algorithm is so good that it's even illegal
               in some countries. Join us to use our barelly legal algorithm that
               is actually a group of interns that work on our basement.
-            </p>
-            <p className="text-3xl my-5 text-white">
+            </h5><br/>
+            <h5 className=" text-white">
               We have a job for you, no matter your background or previous
               experience. Is sending random memes through chat your only skill?
               That's ok, we got you, our Rock Star Meme Curator role is here for
               you.
-            </p>
+            </h5>
           </div>
         </div>
         <div className="w-5/12 h-3/5 flex my-[40] bg-white justify-center items-center">
