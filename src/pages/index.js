@@ -1,3 +1,4 @@
+
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import Contentsection from '../components/Contentsection.js'
@@ -6,6 +7,8 @@ import Headers from '@/components/Headers.js'
 
 const inter = Inter({ subsets: ['latin'] })
 
+
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
@@ -20,6 +23,7 @@ export default function Home() {
       <Navigatebar/>
       <Headers/>
       <Contentsection/>
+
     </>
   );
 }

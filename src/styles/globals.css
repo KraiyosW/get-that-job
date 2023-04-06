@@ -3,7 +3,173 @@
 @tailwind utilities;
 
 * {
-    padding: 0;
-    box-sizing: border-box;
-    margin: 0;
-  }
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+h1 {
+  font-size: 6.4167rem;
+  line-height: 7.8333rem;
+  font-weight: 300;
+}
+
+h1#subtitle1 {
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 3.8333rem;
+  line-height: 4.625rem;
+  font-weight: 300;
+}
+
+h2#subtitle2 {
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 3rem;
+  line-height: 3.6875rem;
+  font-weight: 400;
+}
+
+h4 {
+  font-size: 2.125rem;
+  line-height: 2.5625rem;
+  font-weight: 400;
+}
+
+h5 {
+  font-size: 1.5rem;
+  line-height: 1.8125rem;
+  font-weight: 400;
+}
+
+h6 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+}
+
+p#body1 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+
+p#body2 {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+
+p#caption {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
+}
+
+p#overline {
+  font-size: 0.625rem;
+  line-height: 0.75rem;
+  font-weight: 400;
+}
+
+p {
+  font-size: 0.75rem;
+  line-height: 1.5rem;
+}
+
+button {
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+}
+
+/* h1 {
+  font-size: 97px;
+  line-height: 118px;
+  font-weight: 300;
+}
+
+h1#subtitle1 {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 61px;
+  line-height: 74px;
+  font-weight: 300;
+}
+
+h2#subtitle2 {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 48px;
+  line-height: 59px;
+  font-weight: 400;
+}
+
+h4 {
+  font-size: 34px;
+  line-height: 41px;
+  font-weight: 400;
+}
+
+h5 {
+  font-size: 24px;
+  line-height: 29px;
+  font-weight: 400;
+}
+
+h6 {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 500;
+}
+
+p#body1 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+p#body2 {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+p#caption {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+
+p#overline {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 400;
+}
+
+p {
+  font-size: 12px;
+  line-height: 24px;
+}
+
+button {
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 500;
+} */
