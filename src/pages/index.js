@@ -6,8 +6,6 @@ import Navigatebar from '../components/Navigatebar.js'
 import Headers from '@/components/Headers.js'
 import Footer from '@/components/Footer.js'
 
-const inter = Inter({ subsets: ['latin'] })
-
 
 export default function Home() {
   return (
