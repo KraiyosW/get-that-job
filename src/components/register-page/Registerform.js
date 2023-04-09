@@ -1,6 +1,50 @@
 import React from "react";
-
+import { useState } from "react";
 const Registerform = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errorPassword, setErrorPassword] = useState('');
+  const [errorPasswordConfirm, setErrorPasswordConfirm] = useState('')
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    setErrorMessage('');
+    setErrorPassword('');
+    setErrorPasswordConfirm('')
+    if (!email.match(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
+      setErrorMessage('Invalid email address.');
+      return;
+    }
+
+    if (password.length < 7) {
+      setErrorPassword('Password must be at least 8 characters long.');
+      return;
+    }
+    if (password !== passwordConfirm) {
+      setErrorPasswordConfirm("* Password doesn't match");
+      return;
+    }
+    alert("registation completed !")
+
+    // submit form
+    console.log('Email:', email);
+    console.log('Password', password);
+
+  }
+  function handleEmailChange(event) {
+    setEmail(event.target.value);
+  }
+  function handlePasswordChange(event) {
+    setPassword(event.target.value)
+  }
+  function handlePasswordConfirmChange(event) {
+    setPasswordConfirm(event.target.value)
+  }
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-row flex-wrap max-[767px]:justify-center justify-start">
@@ -88,33 +132,61 @@ const Registerform = () => {
       </div>
 
       <div className="flex flex-col mt-[32px] max-[767px]:items-center items-start">
-        <div className="flex flex-col gap-[20px] mt-[20px] z-10">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-[20px] mt-[20px] z-10">
           <div>
             <p id="overline mb-[4px]">EMAIL</p>
-            <input
+            <input className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
+              name="email"
               placeholder="some.user@email.com"
-              className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
-            ></input>
+              type="text"
+              value={email}
+              onChange={handleEmailChange}
+            />
+            {errorMessage && <p>{errorMessage}</p>}
           </div>
           <div>
             <p id="overline mb-[4px]">PASSWORD</p>
-            <input
+            <input className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
+              name="password"
               placeholder="******"
-              className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
-            ></input>
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            {errorPassword && <p>{errorPassword}</p>}
           </div>
+
+          <input
+            type="checkbox"
+            checked={showPassword}
+            onChange={event => setShowPassword(event.target.checked)}
+          />
+          {/* css maybe use position for push in same div with password input */}
+
           <div>
             <p id="overline mb-[4px]">PASSWORD CONFIRMATION</p>
-            <input
+            <input className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
+              name="password"
               placeholder="******"
-              className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
-            ></input>
+              type={showPasswordConfirm ? "text" : "password"}
+              value={passwordConfirm}
+              onChange={handlePasswordConfirmChange}
+            />
+            {errorPasswordConfirm && <p>{errorPasswordConfirm}</p>}
           </div>
-        </div>
+
+          <input
+            type="checkbox"
+            checked={showPasswordConfirm}
+            onChange={event => setShowPasswordConfirm(event.target.checked)}
+          />
+          {/* css maybe use position for push in same div with passwordConfirm input */}
+
+          <input className="button_pink mt-[16px]" type="submit" name="NEXT" value="NEXT" />
+        </form>
+
         <div>
-          <button className="button_pink mt-[16px]">
-            NEXT<section id="arrow-right"></section>
-          </button>
+
         </div>
       </div>
     </div>
