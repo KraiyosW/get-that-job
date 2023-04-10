@@ -1,3 +1,6 @@
+import Image from "next/image";
+import invisibility from "../../image/invisibility.png";
+import visibility from "../../image/visibility.png";
 import React from "react";
 import { useState } from "react";
 const Registerform = () => {
@@ -9,6 +12,8 @@ const Registerform = () => {
   const [errorPasswordConfirm, setErrorPasswordConfirm] = useState('')
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [passwordIcon, setPasswordIcon] = useState(false);
+  const [showPasswordIcon, setShowPasswordIcon] = useState(false);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -44,6 +49,27 @@ const Registerform = () => {
   function handlePasswordConfirmChange(event) {
     setPasswordConfirm(event.target.value)
   }
+
+  function handleShowPassword(event) {
+    if(showPassword && passwordIcon) {
+      setShowPassword(false);
+      setPasswordIcon(false);
+    } else {
+      setShowPassword(true);
+      setPasswordIcon(true);
+    }
+  };
+
+  function handleShowPasswordConfirm(event) {
+    if (showPasswordConfirm && showPasswordIcon) {
+      setShowPasswordConfirm(false);
+      setShowPasswordIcon(false);
+    } else {
+      setShowPasswordConfirm(true);
+      setShowPasswordIcon(true);
+    }
+  };
+
 
   return (
     <div className="flex flex-col">
@@ -132,10 +158,14 @@ const Registerform = () => {
       </div>
 
       <div className="flex flex-col mt-[32px] max-[767px]:items-center items-start">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-[20px] mt-[20px] z-10">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-[20px] mt-[20px] z-10"
+        >
           <div>
             <p id="overline mb-[4px]">EMAIL</p>
-            <input className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
+            <input
+              className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
               name="email"
               placeholder="some.user@email.com"
               type="text"
@@ -146,48 +176,68 @@ const Registerform = () => {
           </div>
           <div>
             <p id="overline mb-[4px]">PASSWORD</p>
-            <input className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
-              name="password"
-              placeholder="******"
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={handlePasswordChange}
-            />
-            {errorPassword && <p>{errorPassword}</p>}
+            <div className="flex flex-row ">
+              <input
+                className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
+                name="password"
+                placeholder="******"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              {errorPassword && <p>{errorPassword}</p>}
+
+              <button
+                className="absolute ml-[325px] mt-[4px]"
+                onClick={handleShowPassword}
+              >
+              <Image
+                    alt="far fa eye"
+                    src={passwordIcon ? visibility : invisibility}
+                    className="w-[7%]"
+                  />
+              </button>
+            </div>
           </div>
 
-          <input
-            type="checkbox"
-            checked={showPassword}
-            onChange={event => setShowPassword(event.target.checked)}
-          />
           {/* css maybe use position for push in same div with password input */}
 
           <div>
             <p id="overline mb-[4px]">PASSWORD CONFIRMATION</p>
-            <input className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
-              name="password"
-              placeholder="******"
-              type={showPasswordConfirm ? "text" : "password"}
-              value={passwordConfirm}
-              onChange={handlePasswordConfirmChange}
-            />
-            {errorPasswordConfirm && <p>{errorPasswordConfirm}</p>}
+            <div className="flex flex-row ">
+              <input
+                className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
+                name="password"
+                placeholder="******"
+                type={showPasswordConfirm ? "text" : "password"}
+                value={passwordConfirm}
+                onChange={handlePasswordConfirmChange}
+              />
+              {errorPasswordConfirm && <p>{errorPasswordConfirm}</p>}
+
+              <button
+                className="absolute ml-[325px] mt-[4px]"
+                onClick={handleShowPasswordConfirm}
+              >
+                <Image
+                  alt="far fa eye"
+                  src={showPasswordConfirm ? visibility : invisibility}
+                  className="w-[7%]"
+                />
+              </button>
+            </div>
           </div>
 
-          <input
-            type="checkbox"
-            checked={showPasswordConfirm}
-            onChange={event => setShowPasswordConfirm(event.target.checked)}
-          />
           {/* css maybe use position for push in same div with passwordConfirm input */}
-
-          <input className="button_pink mt-[16px]" type="submit" name="NEXT" value="NEXT" />
+          <div className="flex max-[767px]:items-center items-start justify-center">
+            <button className="button_pink mt-[16px]">
+              NEXT<section id="arrow-right"></section>
+            </button>
+          </div>
+          {/* <input className="button_pink mt-[16px]" type="submit" name="NEXT" value="NEXT" /> */}
         </form>
 
-        <div>
-
-        </div>
+        <div></div>
       </div>
     </div>
   );
