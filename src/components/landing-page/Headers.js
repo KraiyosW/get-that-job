@@ -1,6 +1,7 @@
 import React from "react";
 import people from "@/image/people.png";
 import Image from "next/image";
+import Link from "next/link";
 
 const Headers = () => {
   return (
@@ -21,9 +22,11 @@ const Headers = () => {
         With our Machine Learning algorithm you will get that job in no time. We
         promise you! Just give us the money and we will take care of it.
       </h5>
+      <Link href="/register">
       <button className="uppercase mt-[2rem] mb-[2.063rem] w-[16.5rem] h-[3.5rem] rounded-[16px] bg-pink-primary text-white-primary tracking-[0.078rem] " id="btn">
         create an account now
       </button>
+      </Link>
       <Image
         alt="profestional worker"
         src={people}
