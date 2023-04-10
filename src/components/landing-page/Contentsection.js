@@ -1,5 +1,5 @@
 import React from "react";
-import findjob from "../image/icon.svg";
+import findjob from "../../image/icon.svg";
 import Image from "next/image";
 
 const Contentsection = () => {

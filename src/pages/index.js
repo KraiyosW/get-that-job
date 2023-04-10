@@ -1,8 +1,8 @@
 import Head from "next/head";
-import Contentsection from "../components/Contentsection.js";
+import Contentsection from "../components/landing-page/Contentsection.js";
 import Navigatebar from "../components/Navigatebar.js";
-import Headers from "@/components/Headers.js";
-import Footer from "@/components/Footer.js";
+import Headers from "@/components/landing-page/Headers.js";
+import Footer from "@/components/landing-page/Footer.js";
 
 export default function Home() {
   return (
