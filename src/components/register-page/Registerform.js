@@ -1,5 +1,3 @@
-import { createClient } from '@supabase/supabase-js'
-
 import React from "react";
 import { useState } from "react";
 const Registerform = () => {
@@ -33,7 +31,7 @@ const Registerform = () => {
       setErrorPasswordConfirm("* Password doesn't match");
       return;
     }
-    fetch('/api/signup', {
+    fetch('/api/signup-professional', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
       headers: {
