@@ -26,7 +26,7 @@ const RecruiterForm = () => {
     if (!company) {
       setErrorCompany('Please fill a company name')
     }
-    if (!email.match(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
+    if (!email.match(/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
       setErrorMessage('Invalid email address.');
       return;
     }
@@ -84,7 +84,7 @@ const RecruiterForm = () => {
   }
 
   function handleShowPassword(event) {
-    if(showPassword && passwordIcon) {
+    if (showPassword && passwordIcon) {
       setShowPassword(false);
       setPasswordIcon(false);
     } else {
@@ -201,7 +201,6 @@ const RecruiterForm = () => {
                 value={password}
                 onChange={handlePasswordChange}
               />
-              {errorPassword && <p>{errorPassword}</p>}
 
               <button
                 className="absolute ml-[325px] mt-[5px]"
@@ -214,6 +213,7 @@ const RecruiterForm = () => {
                 />
               </button>
             </div>
+            {errorPassword && <p>{errorPassword}</p>}
           </div>
 
           {/* css maybe use position for push in same div with password input */}
@@ -228,7 +228,6 @@ const RecruiterForm = () => {
                 value={passwordConfirm}
                 onChange={handlePasswordConfirmChange}
               />
-              {errorPasswordConfirm && <p>{errorPasswordConfirm}</p>}
 
               <button
                 className="absolute ml-[325px] mt-[5px] brightness-0"
@@ -241,6 +240,7 @@ const RecruiterForm = () => {
                 />
               </button>
             </div>
+            {errorPasswordConfirm && <p>{errorPasswordConfirm}</p>}
           </div>
 
           {/* css maybe use position for push in same div with passwordConfirm input */}

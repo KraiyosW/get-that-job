@@ -71,7 +71,7 @@ const Registerform = () => {
 
 
   function handleShowPassword(event) {
-    if(showPassword && passwordIcon) {
+    if (showPassword && passwordIcon) {
       setShowPassword(false);
       setPasswordIcon(false);
     } else {
@@ -206,19 +206,19 @@ const Registerform = () => {
                 value={password}
                 onChange={handlePasswordChange}
               />
-              {errorPassword && <p>{errorPassword}</p>}
 
               <button
                 className="absolute ml-[325px] mt-[5px]"
                 onClick={handleShowPassword}
               >
-              <Image
-                    alt="far fa eye"
-                    src={passwordIcon ? visibility : invisibility}
-                    className="w-[5%] opacity-25"
-                  />
+                <Image
+                  alt="far fa eye"
+                  src={passwordIcon ? visibility : invisibility}
+                  className="w-[5%] opacity-25"
+                />
               </button>
             </div>
+            {errorPassword && <p>{errorPassword}</p>}
           </div>
 
           {/* css maybe use position for push in same div with password input */}
@@ -234,7 +234,6 @@ const Registerform = () => {
                 value={passwordConfirm}
                 onChange={handlePasswordConfirmChange}
               />
-              {errorPasswordConfirm && <p>{errorPasswordConfirm}</p>}
 
               <button
                 className="absolute ml-[325px] mt-[5px]"
@@ -247,6 +246,7 @@ const Registerform = () => {
                 />
               </button>
             </div>
+            {errorPasswordConfirm && <p>{errorPasswordConfirm}</p>}
           </div>
 
           {/* css maybe use position for push in same div with passwordConfirm input */}
@@ -262,7 +262,7 @@ const Registerform = () => {
       </div>
     </div>
   );
-  
+
 };
 
 export default Registerform;
