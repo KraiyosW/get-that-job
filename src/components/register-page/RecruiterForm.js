@@ -39,6 +39,28 @@ const RecruiterForm = () => {
       setErrorPasswordConfirm("* Password doesn't match");
       return;
     }
+    fetch('/api/signup-recruiter', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        console.log(response);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        alert('Registration completed!');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Registration failed.');
+      });
     alert("registation completed !")
 
     // submit form
