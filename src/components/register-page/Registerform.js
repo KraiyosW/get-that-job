@@ -188,13 +188,13 @@ const Registerform = () => {
               {errorPassword && <p>{errorPassword}</p>}
 
               <button
-                className="absolute ml-[325px] mt-[4px]"
+                className="absolute ml-[325px] mt-[5px]"
                 onClick={handleShowPassword}
               >
               <Image
                     alt="far fa eye"
                     src={passwordIcon ? visibility : invisibility}
-                    className="w-[7%]"
+                    className="w-[5%] opacity-25"
                   />
               </button>
             </div>
@@ -216,13 +216,13 @@ const Registerform = () => {
               {errorPasswordConfirm && <p>{errorPasswordConfirm}</p>}
 
               <button
-                className="absolute ml-[325px] mt-[4px]"
+                className="absolute ml-[325px] mt-[5px]"
                 onClick={handleShowPasswordConfirm}
               >
                 <Image
                   alt="far fa eye"
                   src={showPasswordConfirm ? visibility : invisibility}
-                  className="w-[7%]"
+                  className="w-[5%] opacity-25"
                 />
               </button>
             </div>
