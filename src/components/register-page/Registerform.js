@@ -208,6 +208,7 @@ const Registerform = () => {
               />
 
               <button
+                tabindex="-1"
                 className="absolute ml-[325px] mt-[5px]"
                 onClick={handleShowPassword}
               >
@@ -215,6 +216,7 @@ const Registerform = () => {
                   alt="far fa eye"
                   src={passwordIcon ? visibility : invisibility}
                   className="w-[5%] opacity-25"
+
                 />
               </button>
             </div>
@@ -236,6 +238,7 @@ const Registerform = () => {
               />
 
               <button
+                tabindex="-1"
                 className="absolute ml-[325px] mt-[5px]"
                 onClick={handleShowPasswordConfirm}
               >

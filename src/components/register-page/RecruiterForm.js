@@ -203,6 +203,7 @@ const RecruiterForm = () => {
               />
 
               <button
+                tabindex="-1"
                 className="absolute ml-[325px] mt-[5px]"
                 onClick={handleShowPassword}
               >
@@ -230,6 +231,7 @@ const RecruiterForm = () => {
               />
 
               <button
+                tabindex="-1"
                 className="absolute ml-[325px] mt-[5px] brightness-0"
                 onClick={handleShowPasswordConfirm}
               >
