@@ -4,6 +4,8 @@ import Registerform from "../components/register-page/Registerform.js";
 import RecruiterForm from "../components/register-page/RecruiterForm.js";
 import BackgroundWoman from "../components/BackgroundWoman";
 import React, { useState } from "react";
+
+
 export default function Register() {
   const [activeTab, setActiveTab] = useState("regular");
 
@@ -32,8 +34,8 @@ export default function Register() {
           <button
             className={`border-b-4 border-[#BDBDBD] hover:border-b-[#F48FB1] ${
               activeTab === "regular"
-                ? "border-[#BDBDBD]"
-                : "focus:border-b-[#F48FB1]"
+                ? "border-b-[#F48FB1]"
+                : "border-[#BDBDBD]"
             }`}
             onClick={() => handleClick("regular")}
           >
@@ -42,8 +44,8 @@ export default function Register() {
           <button
             className={`border-b-4 border-[#BDBDBD] hover:border-b-[#F48FB1] ${
               activeTab === "recruiter"
-                ? "border-[#BDBDBD]"
-                : "focus:border-b-[#F48FB1]"
+                ? "border-b-[#F48FB1]"
+                : "border-[#BDBDBD]"
             }`}
             onClick={() => handleClick("recruiter")}
           >
@@ -52,6 +54,8 @@ export default function Register() {
         </div>
         {activeTab === "regular" ? <Registerform /> : <RecruiterForm />}
       </BackgroundWoman>
+
+
     </>
   );
 }
