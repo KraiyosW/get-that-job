@@ -9,13 +9,16 @@ const Registerform = () => {
   const [errorPasswordConfirm, setErrorPasswordConfirm] = useState('')
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  
+
+
 
   function handleSubmit(event) {
     event.preventDefault();
     setErrorMessage('');
     setErrorPassword('');
     setErrorPasswordConfirm('')
-    if (!email.match(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
+    if (!email.match(/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
       setErrorMessage('Invalid email address.');
       return;
     }
@@ -28,13 +31,31 @@ const Registerform = () => {
       setErrorPasswordConfirm("* Password doesn't match");
       return;
     }
-    alert("registation completed !")
-
-    // submit form
-    console.log('Email:', email);
-    console.log('Password', password);
+    fetch('/api/signup-professional', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        console.log(response);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        alert('Registration completed!');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Registration failed.');
+      });
 
   }
+
   function handleEmailChange(event) {
     setEmail(event.target.value);
   }
@@ -44,6 +65,8 @@ const Registerform = () => {
   function handlePasswordConfirmChange(event) {
     setPasswordConfirm(event.target.value)
   }
+
+  
 
   return (
     <div className="flex flex-col">
@@ -191,6 +214,7 @@ const Registerform = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Registerform;
