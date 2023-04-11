@@ -222,7 +222,7 @@ const Registerform = () => {
 
           {/* css maybe use position for push in same div with password input */}
 
-          <div>
+          <div className="w-full">
             <p id="overline mb-[4px]">PASSWORD CONFIRMATION</p>
             <div className="flex flex-row ">
               <input
