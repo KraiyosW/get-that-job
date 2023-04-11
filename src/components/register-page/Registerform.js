@@ -207,18 +207,15 @@ const Registerform = () => {
                 onChange={handlePasswordChange}
               />
 
-              <button
-                tabindex="-1"
-                className="absolute ml-[325px] mt-[5px]"
-                onClick={handleShowPassword}
-              >
-                <Image
-                  alt="far fa eye"
-                  src={passwordIcon ? visibility : invisibility}
-                  className="w-[5%] opacity-25"
 
-                />
-              </button>
+              <Image
+                onClick={handleShowPassword}
+                alt="far fa eye"
+                src={passwordIcon ? visibility : invisibility}
+                className="w-[1.6%] opacity-25 absolute ml-[315px] mt-[3px] cursor-pointer"
+
+              />
+
             </div>
             {errorPassword && <p>{errorPassword}</p>}
           </div>
@@ -237,17 +234,15 @@ const Registerform = () => {
                 onChange={handlePasswordConfirmChange}
               />
 
-              <button
-                tabindex="-1"
-                className="absolute ml-[325px] mt-[5px]"
+
+              <Image
                 onClick={handleShowPasswordConfirm}
-              >
-                <Image
-                  alt="far fa eye"
-                  src={showPasswordConfirm ? visibility : invisibility}
-                  className="w-[5%] opacity-25"
-                />
-              </button>
+                alt="far fa eye"
+                src={showPasswordConfirm ? visibility : invisibility}
+                className="w-[1.6%] opacity-25 absolute ml-[315px] mt-[3px] cursor-pointer"
+
+              />
+
             </div>
             {errorPasswordConfirm && <p>{errorPasswordConfirm}</p>}
           </div>
