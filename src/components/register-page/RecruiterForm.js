@@ -3,6 +3,7 @@ import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import React from "react"
 import { useState } from "react";
+import axios from "axios";
 const RecruiterForm = () => {
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
@@ -39,29 +40,19 @@ const RecruiterForm = () => {
       setErrorPasswordConfirm("* Password doesn't match");
       return;
     }
-    fetch('/api/signup-recruiter', {
-      method: 'POST',
-      body: JSON.stringify({ company, email, password }),
+    axios.post('/api/signup-recruiter', { company , email, password }, {
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then(response => {
         console.log(response);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Success:', data);
         alert('Registration completed!');
       })
       .catch(error => {
         console.error('Error:', error);
         alert('Registration failed.');
       });
-    alert("registation completed !")
 
     // submit form
     console.log('Company Name:', company);
