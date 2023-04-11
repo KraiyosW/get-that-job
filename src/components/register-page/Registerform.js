@@ -3,6 +3,7 @@ import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
 const Registerform = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,22 +35,14 @@ const Registerform = () => {
       setErrorPasswordConfirm("* Password doesn't match");
       return;
     }
-    fetch('/api/signup-professional', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
+
+    axios.post('/api/signup-professional', {email, password }, {
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then(response => {
         console.log(response);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Success:', data);
         alert('Registration completed!');
       })
       .catch(error => {
