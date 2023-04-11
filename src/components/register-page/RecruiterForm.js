@@ -41,7 +41,7 @@ const RecruiterForm = () => {
     }
     fetch('/api/signup-recruiter', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ company, email, password }),
       headers: {
         'Content-Type': 'application/json',
       },

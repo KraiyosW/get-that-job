@@ -7,7 +7,7 @@ import dev5 from "../../image/dev4.png";
 import github from "../../image/github.png";
 import linkin from "../../image/linkin.png";
 function Footer() {
-  const images = [dev1, dev2, dev3, dev4, dev5];
+  const images = [dev1, dev2, dev3, dev4, dev1];
   const devName = ["Toey", "Fah", "Mu", "Yok", "Bright"];
 
   return (
