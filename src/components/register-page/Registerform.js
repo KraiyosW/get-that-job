@@ -193,11 +193,11 @@ const Registerform = () => {
               value={email}
               onChange={handleEmailChange}
             />
-            {errorMessage && <p>{errorMessage}</p>}
+            {errorMessage && <p className="text-rose-500">{errorMessage}</p>}
           </div>
           <div>
             <p id="overline mb-[4px]">PASSWORD</p>
-            <div className="flex flex-row ">
+            <div className="relative ">
               <input
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
                 name="password"
@@ -212,19 +212,19 @@ const Registerform = () => {
                 onClick={handleShowPassword}
                 alt="far fa eye"
                 src={passwordIcon ? visibility : invisibility}
-                className="w-[1.6%] opacity-25 absolute ml-[315px] mt-[3px] cursor-pointer"
+                className="w-[20px] absolute top-[8px] right-[10px] opacity-25 cursor-pointer"
 
               />
 
             </div>
-            {errorPassword && <p>{errorPassword}</p>}
+            {errorPassword && <p className="text-rose-500">{errorPassword}</p>}
           </div>
 
           {/* css maybe use position for push in same div with password input */}
 
           <div>
             <p id="overline mb-[4px]">PASSWORD CONFIRMATION</p>
-            <div className="flex flex-row ">
+            <div className="relative ">
               <input
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
                 name="password"
@@ -239,12 +239,12 @@ const Registerform = () => {
                 onClick={handleShowPasswordConfirm}
                 alt="far fa eye"
                 src={showPasswordConfirm ? visibility : invisibility}
-                className="w-[1.6%] opacity-25 absolute ml-[315px] mt-[3px] cursor-pointer"
+                className="w-[20px] absolute top-[8px] right-[10px] opacity-25 cursor-pointer"
 
               />
 
             </div>
-            {errorPasswordConfirm && <p>{errorPasswordConfirm}</p>}
+            {errorPasswordConfirm && <p className="text-rose-500">{errorPasswordConfirm}</p>}
           </div>
 
           {/* css maybe use position for push in same div with passwordConfirm input */}
