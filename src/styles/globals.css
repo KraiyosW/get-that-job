@@ -64,6 +64,8 @@ p#body1 {
   font-weight: 400;
 }
 
+
+
 p#body2 {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -92,6 +94,7 @@ button#btn {
   line-height: 1.5rem;
   font-weight: 500;
 }
+
 button.button_pink {
   background-color: #F48FB1;
   padding: 8px 16px 8px 16px;

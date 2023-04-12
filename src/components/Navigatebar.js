@@ -10,22 +10,22 @@ const Navigatebar = () => {
   return (
     <div className="w-full flex flex-row flex-wrap justify-between shadow-md relative z-10 max-[514px]:mt-5 max-[514px]:justify-center">
       <Link href="/">
-          <Image
-            alt="signup-icon"
-            src={GTJ}
-            className="max-[514px]:ml-2 max-[767px]:ml-[2.5rem] max-[767px]:mb-[20px] max-[1060px]:ml-[5rem] mt-[0.6rem] min-[1061px]:ml-[10rem]"
-          />
+        <Image
+          alt="signup-icon"
+          src={GTJ}
+          className="max-[514px]:ml-2 max-[767px]:ml-[2.5rem] max-[767px]:mb-[20px] max-[1060px]:ml-[5rem] mt-[0.6rem] min-[1061px]:ml-[10rem]"
+        />
       </Link>
       <div className="nav-button flex flex-row flex-wrap max-[514px]:mr-0 max-[514px]:justify-center max-[767px]:mr-[2.5rem] max-[1060px]:mr-[5rem] min-[1061px]:mr-[10rem]">
         <Link href="/register">
-          <div className="flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[150px] my-[8px] h-[45px] justify-center gap-[7px] mr-2 min-[767px]:mr-[15px]">
+          <div className="flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[150px] my-[8px] h-[45px] justify-center gap-[7px] mr-2 min-[767px]:mr-[15px] hover:text-white hover:bg-pink-primary duration-[0.5s]" >
             <Image alt="signup-icon" src={signup} />
-            <button>SIGN UP</button>
+            <button >SIGN UP</button>
           </div>
         </Link>
-        <div className="flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[120px] my-[8px] h-[45px] justify-center gap-[7px] max-[767px]:mb-[30px]">
+        <div className="flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[120px] my-[8px] h-[45px] justify-center gap-[7px] max-[767px]:mb-[30px] hover:text-white hover:bg-pink-primary duration-[0.5s]">
           <Image alt="login-icon" src={login} />
-          <button>LOGIN</button>
+          <button >LOGIN</button>
         </div>
       </div>
     </div>
