@@ -1,13 +1,12 @@
 import Head from "next/head";
 import Navigatebar from "../components/Navigatebar.js";
-import Registerform from "../components/register-page/Registerform.js";
-import RecruiterForm from "../components/register-page/RecruiterForm.js";
+import { ProfessionalLogin } from "@/components/login-page/ProfessionalLogin.js";
+import { RecruiterLogin } from "@/components/login-page/RecruiterLogin.js"
 import BackgroundMan from "../components/BackgroundMan.js";
 import React, { useState } from "react";
-import BackgroundMan from "@/components/BackgroundMan.js";
 
 
-export default function Register() {
+export default function Login() {
   const [activeTab, setActiveTab] = useState("regular");
 
   const handleClick = (tab) => {
@@ -29,9 +28,9 @@ export default function Register() {
       <BackgroundMan>
         <div className="mb-[32px]">
           <h3 className="mt-[32px] mb-[16px] max-[767px]:text-center text-left" id="heading3">Welcome Back</h3>
-          <h1 className="max-[767px]:text-center text-left" id="subtitle1">Login to you account as...</h1>
+          <h6 className="max-[767px]:text-center text-left font-medium tracking-[.15px] " id="subtitle1">Login to you account as...</h6>
         </div>
-        <div className="flex max-[767px]:justify-center justify-start space-x-4 mb-4">
+        <div className="flex max-[767px]:justify-center justify-start space-x-4 mb-1">
           <button
             className={`border-b-4 border-[#BDBDBD] hover:border-b-[#F48FB1] ${
               activeTab === "regular"
@@ -53,10 +52,8 @@ export default function Register() {
             <p id="body2  mb-[6px]">RECRUITER</p>
           </button>
         </div>
-        {activeTab === "regular" ? <Registerform /> : <RecruiterForm />}
+        {activeTab === "regular" ? <ProfessionalLogin /> : <RecruiterLogin />}
       </BackgroundMan>
-
-
     </>
   );
 }

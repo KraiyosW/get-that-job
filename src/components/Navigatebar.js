@@ -23,10 +23,12 @@ const Navigatebar = () => {
             <button>SIGN UP</button>
           </div>
         </Link>
+        <Link href="/Login">
         <div className="flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[120px] my-[8px] h-[45px] justify-center gap-[7px] max-[767px]:mb-[30px]">
           <Image alt="login-icon" src={login} />
           <button>LOGIN</button>
         </div>
+        </Link>
       </div>
     </div>
   );
