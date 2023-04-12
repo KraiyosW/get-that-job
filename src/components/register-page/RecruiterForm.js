@@ -167,7 +167,7 @@ const RecruiterForm = () => {
               value={company}
               onChange={handleCompanyChange}
             />
-            {errorCompany && <p>{errorCompany}</p>}
+            {errorCompany && <p className="text-rose-500">{errorCompany}</p>}
           </div>
           <div>
             <p id="overline mb-[4px]">EMAIL</p>
