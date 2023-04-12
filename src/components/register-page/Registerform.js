@@ -49,7 +49,6 @@ const Registerform = () => {
         console.error('Error:', error);
         alert('Registration failed.');
       });
-
   }
 
   function handleEmailChange(event) {
