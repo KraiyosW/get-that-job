@@ -1,47 +1,105 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import invisibility from "../../image/invisibility.png";
+import visibility from "../../image/visibility.png";
+import Image from "next/image";
+import { useAuth } from "@/contexts/authentication";
 
-const RecruiterLogin = () =>{
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const onSubmit = (data) => {
-        alert(JSON.stringify(data));
-      };
-      console.log(watch("example")); 
+const RecruiterLogin = () => {
 
-      return(
-        <>
-        <div className="flex flex-col  max-[767px]:items-center items-start">
-         <form className="flex flex-col mt-[10px] z-10" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col  max-[767px]:items-center items-start">  
-                <label> 
-                <p style={{ fontFamily: "Montserrat" }} className="uppercase text-left">email</p>
-                </label>
-                <input 
-                placeholder="some.user@email.com"
-                className=" mb-[1rem] border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]" 
-                {...register("email",{required:true,pattern:/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/})}/>
-                {errors && errors.email && errors.email.type === "required" && <p>Invalid email address.</p>}
-                </div>
-                <div className="flex flex-col  max-[767px]:items-center items-start">
-                <label> 
-                <p style={{ fontFamily: "Montserrat" }} className="uppercase">password</p>
-                </label>
-                <input 
-                placeholder="********"
-                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]" 
-                {...register("password",{required:true,pattern:/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/})}/>
-                {errors && errors.password && errors.password.type === "required" && <p>Password must be at least 8 characters long.</p>}
-             </div>
-             <div className="flex items-start justify-end max-[767px]:items-center ">
-                    <button className="button_pink mt-[1rem]">
-                    NEXT<section id="arrow-right"></section>
-                    </button>
-                </div>
-         </form>
-         </div>
-        </>
-      );
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [passwordIcon, setPasswordIcon] = useState(false);
+  const [errorPassword, setErrorPassword] = useState('');
+
+  const {recruiterLogin} = useAuth();
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    setErrorMessage('');
+    setErrorPassword('');
+    setErrorCompany('')
+
+    if (!email.match(/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
+      setErrorMessage('Invalid email address.');
+      return;
+    }
+    if (password.length < 7) {
+      setErrorPassword('Password must be at least 8 characters long.');
+      return;
+    }
+
+    const data = {email,password}
+    recruiterLogin(data);
+
 }
 
-export {RecruiterLogin};
+function handleEmailChange(event) {
+  setEmail(event.target.value);
+}
+function handlePasswordChange(event) {
+  setPassword(event.target.value)
+}
 
+function handleShowPassword(event) {
+  if (showPassword && passwordIcon) {
+    setShowPassword(false);
+    setPasswordIcon(false);
+  } else {
+    setShowPassword(true);
+    setPasswordIcon(true);
+  }
+};
+
+return(
+    <div className="flex flex-col max-[767px]:items-center items-start">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-[20px] mt-[20px] z-10"
+        >
+          <div>
+            <p id="overline mb-[4px]">EMAIL</p>
+            <input
+              className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
+              name="email"
+              placeholder="some.user@email.com"
+              type="text"
+              value={email}
+              onChange={handleEmailChange}
+            />
+            {errorMessage && <p className="text-rose-500">{errorMessage}</p>}
+          </div>
+          <div>
+            <p id="overline mb-[4px]">PASSWORD</p>
+            <div className="relative ">
+              <input
+                className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
+                name="password"
+                placeholder="******"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <Image
+                onClick={handleShowPassword}
+                alt="far fa eye"
+                src={passwordIcon ? visibility : invisibility}
+                className="w-[20px] absolute top-[8px] right-[10px] opacity-25 cursor-pointer"
+              />
+            </div>
+            {errorPassword && <p className="text-rose-500">{errorPassword}</p>}
+          </div>
+          <div className="flex max-[767px]:items-center items-start justify-end">
+            <button className="button_pink mt-[16px]">
+              NEXT<section id="arrow-right"></section>
+            </button>
+          </div>
+          </form>
+      </div>
+);
+
+
+}
+export { RecruiterLogin };

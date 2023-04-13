@@ -3,7 +3,8 @@ import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import React from "react"
 import { useState } from "react";
-import axios from "axios";
+import { useAuth } from "@/contexts/authentication.js";
+
 const RecruiterForm = () => {
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
@@ -17,6 +18,10 @@ const RecruiterForm = () => {
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [showPasswordIcon, setShowPasswordIcon] = useState(false);
+
+// {/* useContext axion */}
+  const {recruiterRegister} = useAuth();
+// {/* useContext axion */}
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -40,25 +45,17 @@ const RecruiterForm = () => {
       setErrorPasswordConfirm("* Password doesn't match");
       return;
     }
-    axios.post('/api/signup-recruiter', { company , email, password }, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => {
-        console.log(response);
-        alert('Registration completed!');
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Registration failed.');
-      });
+    
 
-    // submit form
+  // {/* useContext axion */}
+    const data = {email,password}
+    recruiterRegister(data);
+// {/* useContext axion */}
+    
     console.log('Company Name:', company);
     console.log('Email:', email);
     console.log('Password', password);
-
+  
 
   }
   function handleEmailChange(event) {
@@ -244,4 +241,4 @@ const RecruiterForm = () => {
   );
 }
 
-export default RecruiterForm
+export default RecruiterForm;
