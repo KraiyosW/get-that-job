@@ -18,13 +18,13 @@ const Navigatebar = () => {
       </Link>
       <div className="nav-button flex flex-row flex-wrap max-[514px]:mr-0 max-[514px]:justify-center max-[767px]:mr-[2.5rem] max-[1060px]:mr-[5rem] min-[1061px]:mr-[10rem]">
         <Link href="/register">
-          <div className="flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[150px] my-[8px] h-[45px] justify-center gap-[7px] mr-2 min-[767px]:mr-[15px] hover:text-white hover:bg-pink-primary duration-[0.5s]" >
-            <Image alt="signup-icon" src={signup} />
+          <div className="group flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[150px] my-[8px] h-[45px] justify-center gap-[7px] mr-2 min-[767px]:mr-[15px] hover:text-white hover:bg-pink-primary duration-[0.5s] active:opacity-[50%]" >
+            <Image alt="signup-icon" src={signup} className="group-hover:brightness-[250%] duration-[0.5s]" />
             <button >SIGN UP</button>
           </div>
         </Link>
-        <div className="flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[120px] my-[8px] h-[45px] justify-center gap-[7px] max-[767px]:mb-[30px] hover:text-white hover:bg-pink-primary duration-[0.5s]">
-          <Image alt="login-icon" src={login} />
+        <div className="group flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[120px] my-[8px] h-[45px] justify-center gap-[7px] max-[767px]:mb-[30px] hover:text-white hover:bg-pink-primary duration-[0.5s] active:opacity-[50%]">
+          <Image alt="login-icon" src={login} className="group-hover:brightness-[250%] duration-[0.5s] cursor-pointer" />
           <button >LOGIN</button>
         </div>
       </div>
