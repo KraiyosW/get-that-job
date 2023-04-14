@@ -3,7 +3,7 @@ import { useState } from "react";
 import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import Image from "next/image";
-import { useAuth } from "@/contexts/authentication";
+import axios from "axios";
 
 const ProfessionalLogin = () => {
 
@@ -14,13 +14,11 @@ const ProfessionalLogin = () => {
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [errorPassword, setErrorPassword] = useState('');
 
-  const {professionalLogin} = useAuth();
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     setErrorMessage('');
     setErrorPassword('');
-    setErrorCompany('')
 
     if (!email.match(/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
       setErrorMessage('Invalid email address.');
@@ -31,9 +29,20 @@ const ProfessionalLogin = () => {
       return;
     }
 
-    const data  = {email,password,}
-    professionalLogin(data);
-
+    try {
+      const { data } = await axios.post('/api/login-professional', { email, password }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      localStorage.setItem('token', data.access_token);
+      alert('Login successful!');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Login failed.');
+    }
+    
+   
 }
 
 function handleEmailChange(event) {

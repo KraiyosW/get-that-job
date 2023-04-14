@@ -3,7 +3,8 @@ import { useState } from "react";
 import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import Image from "next/image";
-import { useAuth } from "@/contexts/authentication";
+import axios from "axios";
+
 
 const RecruiterLogin = () => {
 
@@ -14,13 +15,12 @@ const RecruiterLogin = () => {
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [errorPassword, setErrorPassword] = useState('');
 
-  const {recruiterLogin} = useAuth();
+ 
 
   function handleSubmit(event) {
     event.preventDefault();
     setErrorMessage('');
     setErrorPassword('');
-    setErrorCompany('')
 
     if (!email.match(/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
       setErrorMessage('Invalid email address.');
@@ -31,9 +31,18 @@ const RecruiterLogin = () => {
       return;
     }
 
-    const data = {email,password}
-    recruiterLogin(data);
-
+    try {
+      const { data } =  axios.post('/api/login-recruiter', { email, password }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      localStorage.setItem('token', data.access_token);
+      alert('Login successful!');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Login failed.');
+    }
 }
 
 function handleEmailChange(event) {

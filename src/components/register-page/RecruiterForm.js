@@ -3,7 +3,6 @@ import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import React from "react"
 import { useState } from "react";
-import { useAuth } from "@/contexts/authentication.js";
 
 const RecruiterForm = () => {
   const [email, setEmail] = useState('');
@@ -19,11 +18,9 @@ const RecruiterForm = () => {
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [showPasswordIcon, setShowPasswordIcon] = useState(false);
 
-// {/* useContext axion */}
-  const {recruiterRegister} = useAuth();
-// {/* useContext axion */}
 
-  function handleSubmit(event) {
+
+  async function handleSubmit(event) {
     event.preventDefault();
     setErrorMessage('');
     setErrorPassword('');
@@ -46,11 +43,19 @@ const RecruiterForm = () => {
       return;
     }
     
-
-  // {/* useContext axion */}
-    const data = {email,password}
-    recruiterRegister(data);
-// {/* useContext axion */}
+    try {
+      const response = await axios.post('/api/signup-recruiter', { email, password }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(response);
+      alert('Registration completed!');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Registration failed.');
+    }
+  
     
     console.log('Company Name:', company);
     console.log('Email:', email);

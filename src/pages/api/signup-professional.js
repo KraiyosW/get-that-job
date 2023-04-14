@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       const { user, error } = await supabase.auth.signUp({
         email,
         password,
-        userData: { role: 'professional' } // เพิ่ม metadata ให้กับ user ที่ลงทะเบียน
+        user_type : "professional"// เพิ่ม metadata ให้กับ user ที่ลงทะเบียน
       })
 
       if (error) {
