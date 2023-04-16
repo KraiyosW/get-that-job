@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const AuthContext = React.createContext();
 
-function AuthProvider(props) {   
+ function AuthProvider(props) {   
 
   const [state, setState] = useState({
     loading: true,
@@ -12,9 +12,9 @@ function AuthProvider(props) {
     user: null,
   });
   
-  async function professionalRegister(email, password) {
+  const  professionalRegister = async(data) => {
     try {
-      const response = await axios.post('/api/signup-professional', { email, password }, {
+      const response = await axios.post('/api/signup-professional', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -27,9 +27,9 @@ function AuthProvider(props) {
     }
   }
   
-  async function recruiterRegister(email, password) {
+  const  recruiterRegister = async(data) => {
     try {
-      const response = await axios.post('/api/signup-recruiter', { email, password }, {
+      const response = await axios.post('/api/signup-recruiter', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -42,30 +42,30 @@ function AuthProvider(props) {
     }
   }
   
-  async function professionalLogin(email, password) {
+  const  professionalLogin = async(data) => {
     try {
-      const { data } = await axios.post('/api/login-professional', { email, password }, {
+      const response = await axios.post('api/login-professional', data, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      localStorage.setItem('token', data.access_token);
-      alert('Login successful!');
+      console.log(response);
+      alert('Login completed!');
     } catch (error) {
       console.error('Error:', error);
       alert('Login failed.');
     }
   }
 
-  async function recruiterLogin(email, password) {
+  const  recruiterLogin = async(data) => {
     try {
-      const { data } = await axios.post('/api/login-recruiter', { email, password }, {
+      const response = await axios.post('api/login-recruiter', data, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      localStorage.setItem('token', data.access_token);
-      alert('Login successful!');
+      console.log(response);
+      alert('Login completed!');
     } catch (error) {
       console.error('Error:', error);
       alert('Login failed.');

@@ -3,7 +3,7 @@ import { useState } from "react";
 import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import Image from "next/image";
-import axios from "axios";
+import { useAuth } from "@/contexts/authentication";
 
 const ProfessionalLogin = () => {
 
@@ -13,6 +13,7 @@ const ProfessionalLogin = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [errorPassword, setErrorPassword] = useState('');
+  const {professionalLogin} = useAuth();
 
 
   async function handleSubmit(event) {
@@ -29,18 +30,8 @@ const ProfessionalLogin = () => {
       return;
     }
 
-    try {
-      const { data } = await axios.post('/api/login-professional', { email, password }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      localStorage.setItem('token', data.access_token);
-      alert('Login successful!');
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Login failed.');
-    }
+    const data = {email,password}
+    professionalLogin(data);
     
    
 }

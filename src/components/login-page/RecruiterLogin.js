@@ -3,7 +3,7 @@ import { useState } from "react";
 import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import Image from "next/image";
-import axios from "axios";
+import { useAuth } from "@/contexts/authentication";
 
 
 const RecruiterLogin = () => {
@@ -14,7 +14,7 @@ const RecruiterLogin = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [errorPassword, setErrorPassword] = useState('');
-
+  const {recruiterLogin} = useAuth();
  
 
   function handleSubmit(event) {
@@ -31,18 +31,8 @@ const RecruiterLogin = () => {
       return;
     }
 
-    try {
-      const { data } =  axios.post('/api/login-recruiter', { email, password }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      localStorage.setItem('token', data.access_token);
-      alert('Login successful!');
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Login failed.');
-    }
+    const data = {email,password}
+    recruiterLogin(data);
 }
 
 function handleEmailChange(event) {
