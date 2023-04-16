@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { hash } from 'bcryptjs'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -10,25 +11,47 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { email, password } = req.body
+    const {company_name , email, password, company_website, about_company , logo } = req.body
 
     try {
+      const hashedPassword = await hash(password, 10)
+
       const { user, error } = await supabase.auth.signUp({
         email,
-        password,
-        userData: { role: 'recruiter' } // เพิ่ม metadata ให้กับ user ที่ลงทะเบียน
+        password
       })
 
+      console.log(user)
       if (error) {
         res.status(400).json({ message: error.message })
       } else {
-        res.status(200).json({ user })
+        // Check if email is confirmed
+        if (user && !user.confirmed_at) {
+          return res.status(400).json({ message: 'Email is not confirmed' })
+        }
+
+        let { data, error: insertError } = await supabase.from('recruiters').insert({
+          companyn_name : company_name,
+          email : email,
+          password: hashedPassword,
+          role : 'recruiter',
+          company_website : company_website,
+          about_company : about_company,
+          logo : logo
+        }, { returning: 'minimal' })
+
+        if (insertError) {
+          console.error(insertError.message)
+          res.status(400).json({ message: insertError.message })
+        } else {
+          console.log(data)
+          res.status(200).json({ user: data })
+        }
       }
     } catch (error) {
+      console.log(error)
       res.status(500).json({ message: error.message })
     }
-  } else {
-    res.status(405).json({ message: 'Method not allowed' })
   }
 }
 
