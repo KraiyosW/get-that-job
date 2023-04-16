@@ -18,7 +18,7 @@ const RecruiterForm = () => {
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [showPasswordIcon, setShowPasswordIcon] = useState(false);
-  const {professionalRegister} = useAuth();
+  const {recruiterRegister} = useAuth();
 
 
   async function handleSubmit(event) {
@@ -45,7 +45,7 @@ const RecruiterForm = () => {
     }
     
     const data = {email,password}
-    professionalRegister(data);
+    recruiterRegister(data);
   
     
     console.log('Company Name:', company);

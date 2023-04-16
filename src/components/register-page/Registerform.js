@@ -16,7 +16,7 @@ const Registerform = () => {
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [showPasswordIcon, setShowPasswordIcon] = useState(false);
-  const {recruiterRegister} = useAuth();
+  const {professionalRegister} = useAuth();
 
 
   async function handleSubmit(event) {
@@ -39,7 +39,7 @@ const Registerform = () => {
     }
 
     const data = {email,password}
-    recruiterRegister(data);
+    professionalRegister(data);
     
   }
 
