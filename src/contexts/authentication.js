@@ -73,10 +73,9 @@ function AuthProvider(props) {
 
   const logout = async () => {
     try {
-      await supabase.auth.signOut();
+      await axios.post('/api/logout');
       localStorage.removeItem('token');
       setState({ ...state, user: null });
-      router.push('/login');
     } catch (error) {
       console.error('Error:', error);
     }
