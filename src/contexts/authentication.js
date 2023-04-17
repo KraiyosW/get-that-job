@@ -42,15 +42,17 @@ const AuthContext = React.createContext();
     }
   }
   
-  const  professionalLogin = async(data) => {
+  const professionalLogin = async (data) => {
     try {
-      const response = await axios.post('api/login-professional', data, {
+      const response = await axios.post('/api/login-professional', JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
         },
       });
       console.log(response);
+      router.push('/register')
       alert('Login completed!');
+
     } catch (error) {
       console.error('Error:', error);
       alert('Login failed.');
