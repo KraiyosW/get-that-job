@@ -3,6 +3,7 @@ import Contentsection from "../components/landing-page/Contentsection.js";
 import Navigatebar from "../components/Navigatebar.js";
 import Headers from "@/components/landing-page/Headers.js";
 import Footer from "@/components/landing-page/Footer.js";
+import SideBarRecruiter from "@/components/sidebar-recruiter.js";
 
 export default function Home() {
   return (
