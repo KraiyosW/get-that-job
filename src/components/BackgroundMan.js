@@ -14,4 +14,4 @@ const BackgroundMan = ({ children }) => {
   )
 }
 
-export default BackgroundMan
+export default BackgroundMan;

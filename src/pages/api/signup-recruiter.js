@@ -1,34 +1,57 @@
 import { createClient } from '@supabase/supabase-js'
-import dotenv from 'dotenv' 
+import { hash } from 'bcryptjs'
+import dotenv from 'dotenv'
 
 dotenv.config()
 
 const supabaseUrl = process.env.SUPABASE_URL
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
-      const { company , email, password } = req.body
-  
-      try {
-        const { user, error } = await supabase.auth.signUp({
-          company,
-          email,
-          password
-        })
-  
-        if (error) {
-          res.status(400).json({ message: error.message })
-        } else {
-          res.status(200).json({ user })
+  if (req.method === 'POST') {
+    const {company_name , email, password, company_website, about_company , logo } = req.body
+
+    try {
+      const hashedPassword = await hash(password, 10)
+
+      const { user, error } = await supabase.auth.signUp({
+        email,
+        password
+      })
+
+      console.log(user)
+      if (error) {
+        res.status(400).json({ message: error.message })
+      } else {
+        // Check if email is confirmed
+        if (user && !user.confirmed_at) {
+          return res.status(400).json({ message: 'Email is not confirmed' })
         }
-      } catch (error) {
-        res.status(500).json({ message: error.message })
+
+        let { data, error: insertError } = await supabase.from('recruiters').insert({
+          companyn_name : company_name,
+          email : email,
+          password: hashedPassword,
+          role : 'recruiter',
+          company_website : company_website,
+          about_company : about_company,
+          logo : logo
+        }, { returning: 'minimal' })
+
+        if (insertError) {
+          console.error(insertError.message)
+          res.status(400).json({ message: insertError.message })
+        } else {
+          console.log(data)
+          res.status(200).json({ user: data })
+        }
       }
-    } else {
-      res.status(405).json({ message: 'Method not allowed' })
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ message: error.message })
     }
   }
+}
 
