@@ -21,8 +21,18 @@ export default async function handler(req, res) {
       if (error) {
         res.status(400).json({ message: error.message })
       } else {
-        // เช็ค role ว่าเป็น 'professional' หรือไม่
-        if (user.user_metadata.role !== 'professional') {
+        // Query ข้อมูลจากตารางอื่น
+        const { data: professionals, error: professionalsError } = await supabase
+          .from('professional')
+          .select('*')
+          .eq('user_id', user.id)
+
+        if (professionalsError) {
+          throw new Error(professionalsError.message)
+        }
+
+        // ตรวจสอบว่ามี professional ที่เชื่อมโยงกับ user นี้หรือไม่
+        if (professionals.length === 0) {
           res.status(401).json({ message: 'Unauthorized' })
         } else {
           res.status(200).json({ user })
@@ -30,7 +40,6 @@ export default async function handler(req, res) {
       }
     } catch (error) {
       res.status(500).json({ message: error.message })
-
     }
   } else {
     res.status(405).json({ message: 'Method not allowed' })
