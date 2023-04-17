@@ -4,6 +4,7 @@ import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import Image from "next/image";
 import { useAuth } from "@/contexts/authentication";
+import { useRouter } from "next/router";
 
 
 const RecruiterLogin = () => {
@@ -14,12 +15,15 @@ const RecruiterLogin = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [errorPassword, setErrorPassword] = useState('');
+  const [authMessage, setAuthMessage] = useState('');
   const {recruiterLogin} = useAuth();
+  const router = useRouter();
  
 
-  function handleSubmit(event) {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     setErrorMessage('');
+    setAuthMessage('');
     setErrorPassword('');
 
     if (!email.match(/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
@@ -31,8 +35,17 @@ const RecruiterLogin = () => {
       return;
     }
 
-    const data = {email,password}
-    recruiterLogin(data);
+    /// check status before redirect // 
+    try {
+      const data = { email, password };
+      await recruiterLogin(data);
+      router.push('/register');
+    } catch (error) {
+      console.error('Error:', error);
+      setAuthMessage(error.message = "Invild email or password : please check again");
+    }
+
+    
 }
 
 function handleEmailChange(event) {
@@ -89,6 +102,7 @@ return(
               />
             </div>
             {errorPassword && <p className="text-rose-500">{errorPassword}</p>}
+            {authMessage && <p className="text-rose-500">{authMessage}</p>}
           </div>
           <div className="flex max-[767px]:items-center items-start justify-end">
             <button className="button_pink mt-[16px]">

@@ -36,16 +36,13 @@ const ProfessionalLogin = () => {
 
     try {
       const data = { email, password };
-      const response = await professionalLogin(data);
-      if (response.data === true) { // ตรวจสอบ response ที่ return กลับมา
-        router.push('/register');
-      } else {
-        setAuthMessage('Invalid email or password');
-      }
+      await professionalLogin(data);
+      router.push('/register');
     } catch (error) {
       console.error('Error:', error);
-      setAuthMessage(error.message);
+      setAuthMessage(error.message = "Invild email or password : please check again");
     }
+
   }
 
   

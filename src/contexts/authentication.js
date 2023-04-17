@@ -49,8 +49,10 @@ function AuthProvider(props) {
         },
       });
       console.log(response);
+      return response; // เพิ่ม return ค่า response
     } catch (error) {
       console.error('Error:', error);
+      throw error; // หากเกิด error ให้ throw error
     }
   };
 
@@ -62,10 +64,10 @@ function AuthProvider(props) {
         },
       });
       console.log(response);
-      alert('Login completed!');
+      return response; // เพิ่ม return ค่า response
     } catch (error) {
       console.error('Error:', error);
-      alert('Login failed.');
+      throw error; // หากเกิด error ให้ throw error
     }
   };
 
