@@ -71,10 +71,15 @@ function AuthProvider(props) {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setState({ ...state, user: null });
-    navigate('/login');
+  const logout = async () => {
+    try {
+      await supabase.auth.signOut();
+      localStorage.removeItem('token');
+      setState({ ...state, user: null });
+      router.push('/login');
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const isAuthenticated =

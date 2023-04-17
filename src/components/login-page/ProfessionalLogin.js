@@ -34,18 +34,17 @@ const ProfessionalLogin = () => {
       return;
     }
 
+    /// check status before redirect // 
     try {
       const data = { email, password };
       await professionalLogin(data);
-      router.push('/register');
+      router.push('/Dash-a');
     } catch (error) {
       console.error('Error:', error);
       setAuthMessage(error.message = "Invild email or password : please check again");
     }
 
   }
-
-  
 
 function handleEmailChange(event) {
   setEmail(event.target.value);
