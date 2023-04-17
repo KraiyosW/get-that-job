@@ -5,6 +5,7 @@ import Headers from "@/components/landing-page/Headers.js";
 import Footer from "@/components/landing-page/Footer.js";
 import Script from "next/script.js";
 
+
 export default function Home() {
   return (
     <>
