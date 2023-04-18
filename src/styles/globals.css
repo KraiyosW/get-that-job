@@ -6,7 +6,7 @@
   padding: 0;
   box-sizing: border-box;
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   overflow-x: hidden;
 }
 
@@ -64,8 +64,6 @@ p#body1 {
   font-weight: 400;
 }
 
-
-
 p#body2 {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -96,7 +94,7 @@ button#btn {
 }
 
 button.button_pink {
-  background-color: #F48FB1;
+  background-color: #f48fb1;
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
   color: white;
@@ -105,7 +103,7 @@ button.button_pink {
   text-align: left;
 }
 button.button_pink_tertiary {
-  background-color: #BF5F82;
+  background-color: #bf5f82;
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
   color: white;
@@ -120,6 +118,17 @@ button.button_pink_tertiary {
   height: 14px;
   background-image: url("data:image/svg+xml,%3Csvg width='8' height='14' viewBox='0 0 8 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.17217 6.99999L0.222168 2.04999L1.63617 0.635986L8.00017 6.99999L1.63617 13.364L0.222168 11.95L5.17217 6.99999Z' fill='white'/%3E%3C/svg%3E");
 }
+
+#arrow-left {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.828 12L15.778 16.95L14.364 18.364L8 12L14.364 5.63599L15.778 7.04999L10.828 12Z' fill='white'/%3E%3C/svg%3E");
+}
+
 /* h1 {
   font-size: 97px;
   line-height: 118px;
