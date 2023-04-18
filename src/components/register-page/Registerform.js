@@ -2,6 +2,8 @@ import { useState } from "react";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree"; //test
+import React from "react";
+import ProfSignUpStepOne from "./ProfSignUpStepOne";
 
 const Registerform = () => {
   const [currentStep, setCurrentStep] = useState(1)
@@ -14,10 +16,11 @@ const Registerform = () => {
     setCurrentStep(currentStep - 1);
   };
 
+
   return (
     <div>
       {currentStep === 1 ? (
-        <StepOne />
+        <ProfSignUpStepOne />
       ) : currentStep === 2 ? (
         <StepTwo />
       ) : (
@@ -36,7 +39,7 @@ const Registerform = () => {
             NEXT<section id="arrow-right"></section>
           </button>
         </div>
-      )}
+      </div>
     </div>
   );
 };
