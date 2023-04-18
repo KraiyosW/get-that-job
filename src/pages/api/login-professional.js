@@ -13,10 +13,7 @@ export default async function handler(req, res) {
     const { email, password } = req.body
 
     try {
-      const { user, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      })
+      const { user, error } = await supabase.auth.signInWithPassword({ email, password })
       
       if (error) {
         console.log(error)
@@ -38,6 +35,18 @@ export default async function handler(req, res) {
         if (professional.length === 0) {
           res.status(401).json({ message: 'Unauthorized' })
         } else {
+          // ตรวจสอบ session ของผู้ใช้งาน
+          const session = req.cookies
+          // ถ้า session ไม่มีให้ refresh และส่งค่ากลับมาใน HTTP Response Header
+          if (!session) {
+            const { data: session, error: refreshError } = await supabase.auth.refreshSession()
+            if (refreshError) {
+              console.log(refreshError)
+              throw new Error(refreshError.message)
+            }
+            res.setHeader('Set-Cookie', `sb:token=${session.access_token}; path=/; expires=${session.expires_at}; domain=.supabase.io; HttpOnly; SameSite=Lax`)
+          }
+          console.log(user)
           res.status(200).json({ user })
         }
       }
