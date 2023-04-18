@@ -13,32 +13,36 @@ export default async function handler(req, res) {
     const { email, password } = req.body
 
     try {
-      const { user, error } = await supabase.auth.signIn({
+      const { user, error } = await supabase.auth.signInWithPassword({
         email,
         password
       })
-
+      
       if (error) {
+        console.log(error)
         res.status(400).json({ message: error.message })
       } else {
-        // Query ข้อมูลจากตารางอื่น
-        const { data: professionals, error: professionalsError } = await supabase
+        // ตรวจสอบว่า user นั้นมีสิทธิ์เป็น professional หรือไม่
+        const { data: professional, error: professionalError } = await supabase
           .from('professional')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('email', email)
+          .eq('role', 'professional')
 
-        if (professionalsError) {
-          throw new Error(professionalsError.message)
+        if (professionalError) {
+          console.log(professionalError)
+          throw new Error(professionalError.message)
         }
-
-        // ตรวจสอบว่ามี professional ที่เชื่อมโยงกับ user นี้หรือไม่
-        if (professionals.length === 0) {
+      
+        // ตรวจสอบว่ามี professional ที่เชื่อมโยงกับ email นี้หรือไม่
+        if (professional.length === 0) {
           res.status(401).json({ message: 'Unauthorized' })
         } else {
           res.status(200).json({ user })
         }
       }
     } catch (error) {
+      console.log(error)
       res.status(500).json({ message: error.message })
     }
   } else {
