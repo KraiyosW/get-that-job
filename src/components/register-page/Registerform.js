@@ -4,7 +4,7 @@ import StepTwo from "./StepTwo";
 import StepThree from "./StepThree"; //test
 
 const Registerform = () => {
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(1);
 
   const handleNext = () => {
     setCurrentStep(currentStep + 1);
