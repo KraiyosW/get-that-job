@@ -38,7 +38,7 @@ const ProfessionalLogin = () => {
     try {
       const data = { email, password };
       await professionalLogin(data);
-      router.push('/Dash-a');
+      router.push('/JobPostings');
     } catch (error) {
       console.error('Error:', error);
       setAuthMessage(error.message = "Invild email or password : please check again");

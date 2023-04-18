@@ -7,8 +7,22 @@ import profile from "../image/profile.png"
 import logout from "../image/logout.png"
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/contexts/authentication";
+import { useRouter } from "next/router";
 
 const SideBarProfessional = () => {
+
+    const { logoutAuth , isAuthenticated} = useAuth();
+    const router = useRouter();
+        
+        const handleLogout = async () => {
+            try {
+            await logoutAuth();
+            router.push('/');
+            } catch (error) {
+            console.error('Error:', error);
+            }
+        };
     return (
         <div className=" gap-[10px]  py-[32px] bg-white-tertiary flex flex-col  w-[240px] h-[100vh]">
             <Link href="/">
@@ -35,7 +49,7 @@ const SideBarProfessional = () => {
                 <p id="body1">Profile</p>
             </div>
 
-            <div className="flex gap-4 py-[12px] pl-[16px] cursor-pointer">
+            <div onClick={handleLogout} className="flex gap-4 py-[12px] pl-[16px] cursor-pointer">
                 <Image src={logout} className="w-[20px]" />
                 <p id="body1">Log out</p>
             </div>

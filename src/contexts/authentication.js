@@ -80,7 +80,7 @@ function AuthProvider(props) {
       return response;
     } catch (error) {
       console.error('Error:', error);
-      return null;
+      throw error;
     }
   };
 
@@ -121,8 +121,18 @@ function AuthProvider(props) {
     }
   };
 
-  const isAuthenticated =
-    typeof window !== 'undefined' && Boolean(localStorage.getItem('token'));
+  const logoutAuth = async () => {
+    try {
+      await axios.post('/api/logout');
+      sessionStorage.removeItem('token');
+      setState({ ...state, user: null });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const token = typeof window !== 'undefined' ? window.sessionStorage.getItem('token') : '';
+  const isAuthenticated = token !== "";
 
   return (
     <AuthContext.Provider
@@ -132,7 +142,7 @@ function AuthProvider(props) {
         recruiterRegister,
         professionalLogin,
         recruiterLogin,
-        logout,
+        logoutAuth,
         isAuthenticated,
       }}
     >
