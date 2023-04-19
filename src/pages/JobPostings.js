@@ -21,7 +21,8 @@ function JobPostings() {
   
 
   if (!isAuthenticated) {
-    return null;
+    return (<>
+    {typeof window !== 'undefined' && window.location.replace('/Login')}</>)
   }
 
 

@@ -23,6 +23,10 @@ const SideBarProfessional = () => {
             console.error('Error:', error);
             }
         };
+        if (!isAuthenticated){
+            return (<>
+                {typeof window !== 'undefined' && window.location.replace('/Login')}</>)
+        }
     return (
         <div className=" gap-[10px]  py-[32px] bg-white-tertiary flex flex-col  w-[240px] h-[100vh]">
             <Link href="/">
