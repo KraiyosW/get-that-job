@@ -117,7 +117,7 @@ function AuthProvider(props) {
       return response;
     } catch (error) {
       console.error('Error:', error);
-      return null;
+      throw error;
     }
   };
 

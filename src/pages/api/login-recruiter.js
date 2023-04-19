@@ -24,7 +24,7 @@ export default async function handler(req, res) {
           .from('recruiters')
           .select('*')
           .eq('email', email)
-          .eq('role', 'recruiters')
+          .eq('role', 'recruiter')
 
         if (recruitersError) {
           console.log(recruitersError)

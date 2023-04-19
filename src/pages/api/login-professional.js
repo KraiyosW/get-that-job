@@ -46,7 +46,6 @@ export default async function handler(req, res) {
             }
             res.setHeader('Set-Cookie', `sb:token=${session.access_token}; path=/; expires=${session.expires_at}; domain=.supabase.io; HttpOnly; SameSite=Lax`)
           }
-          console.log(user)
           res.status(200).json({ user })
         }
       }
