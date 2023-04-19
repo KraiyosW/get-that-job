@@ -1,18 +1,17 @@
 import React from "react";
-import SideBarRecruiter from "@/components/sidebar-professional";
 import { useState } from "react";
 import Image from "next/image";
-import TypeJob from "../image/type-job.png";
-import TimeWorking from "../image/time-working.png";
-import Salary from "../image/salary.png";
-import JobDate from "../image/job-date.png";
-import TTcandidate from "../image/total-candidate.png";
-import candidate from "../image/candidate.png";
-import show from "../image/show.png";
-import close from "../image/close.png";
-import pencil from "../image/pencil.png";
+import TypeJob from "../../image/type-job.png";
+import TimeWorking from "../../image/time-working.png";
+import Salary from "../../image/salary.png";
+import JobDate from "../../image/job-date.png";
+import TTcandidate from "../../image/total-candidate.png";
+import candidate from "../../image/candidate.png";
+import show from "../../image/show.png";
+import close from "../../image/close.png";
+import pencil from "../../image/pencil.png";
 
-function jobPostings() {
+function JobPostings() {
   const [selectedOption, setSelectedOption] = useState("all");
 
   const handleOptionChange = (event) => {
@@ -20,7 +19,6 @@ function jobPostings() {
   };
   return (
     <>
-      <SideBarRecruiter />
       <main className="bg-white-secondary h-screen">
         <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
           <h4 className="max-[700px]:text-center mb-[24px]" id="heading4">
@@ -253,4 +251,4 @@ function jobPostings() {
   );
 }
 
-export default jobPostings;
+export default JobPostings;
