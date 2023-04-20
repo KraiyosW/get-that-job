@@ -36,7 +36,7 @@ export default async function handler(req, res) {
           res.status(401).json({ message: 'Unauthorized' })
         } else {
           // ตรวจสอบ session ของผู้ใช้งาน
-          const session = req.cookies
+          const session = req.cookies['sb:token']
           // ถ้า session ไม่มีให้ refresh และส่งค่ากลับมาใน HTTP Response Header
           if (!session) {
             const { data: session, error: refreshError } = await supabase.auth.refreshSession()

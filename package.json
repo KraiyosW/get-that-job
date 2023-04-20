@@ -25,6 +25,7 @@
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
     "next": "^13.2.4",
+    "nookies": "^2.5.2",
     "pg": "^8.10.0",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^8.3.0",
