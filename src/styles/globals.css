@@ -98,7 +98,7 @@ button.button_pink {
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
   color: white;
-  width: 100px;
+  width: 116px;
   position: relative;
   text-align: left;
 }
@@ -107,6 +107,20 @@ button.button_pink_tertiary {
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
   color: white;
+button.button_previous {
+  width: 131px;
+}
+
+button.button_white {
+  border: 1px solid;
+  border-color: #f48fb1;
+  padding: 7px 16px 7px 16px;
+  border-radius: 16px;
+  color: #616161;
+  width: 118px;
+  position: relative;
+  text-align: left;
+  font-weight: 500;
 }
 
 #arrow-right {
