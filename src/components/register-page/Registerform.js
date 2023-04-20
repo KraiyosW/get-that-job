@@ -1,45 +1,42 @@
 import { useState } from "react";
-import StepOne from "./StepOne";
-import StepTwo from "./StepTwo";
-import StepThree from "./StepThree"; //test
-import React from "react";
-import ProfSignUpStepOne from "./ProfSignUpStepOne";
+import StepOne from "./ProfStepOne";
+import StepTwo from "./ProfStepTwo";
+import StepThree from "./ProfFinalStep"; //test
 
 const Registerform = () => {
-  const [currentStep, setCurrentStep] = useState(1)
+  const [step, setStep] = useState(1);
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const handleNext = () => {
-    setCurrentStep(currentStep + 1);
+  const handleNextStep = (data) => {
+    setUserData({ ...userData, ...data });
+    setStep(step + 1);
   };
 
-  const handlePrev = () => {
-    setCurrentStep(currentStep - 1);
+  const handlePreviousStep = () => {
+    setStep(step - 1);
   };
 
+  const handleFinishRegistration = () => {
+    // Send user data to server to complete registration process
+  };
 
   return (
     <div>
-      {currentStep === 1 ? (
-        <ProfSignUpStepOne />
-      ) : currentStep === 2 ? (
-        <StepTwo />
-      ) : (
-        <StepThree />
+      {step === 1 && <StepOne onNext={handleNextStep} />}
+      {step === 2 && (
+        <StepTwo onNext={handleNextStep} onPrevious={handlePreviousStep} />
       )}
-      {currentStep !== 1 && (
-        <div className="flex max-[767px]:items-center items-start justify-center">
-          <button className="button_pink mt-[16px]" onClick={handlePrev}>
-            PREVIOUS<section id="arrow-right"></section>
-          </button>
-        </div>
+      {step === 3 && (
+        <StepThree
+          userData={userData}
+          onPrevious={handlePreviousStep}
+          onFinishRegistration={handleFinishRegistration}
+        />
       )}
-      {currentStep !== 3 && (
-        <div className="flex max-[767px]:items-center items-start justify-center">
-          <button className="button_pink mt-[16px]" onClick={handleNext}>
-            NEXT<section id="arrow-right"></section>
-          </button>
-        </div>
-      </div>
     </div>
   );
 };

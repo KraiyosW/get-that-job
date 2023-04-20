@@ -6,7 +6,7 @@
   padding: 0;
   box-sizing: border-box;
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   overflow-x: hidden;
 }
 
@@ -64,8 +64,6 @@ p#body1 {
   font-weight: 400;
 }
 
-
-
 p#body2 {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -96,13 +94,28 @@ button#btn {
 }
 
 button.button_pink {
-  background-color: #F48FB1;
+  background-color: #f48fb1;
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
   color: white;
-  width: 100px;
+  width: 116px;
   position: relative;
   text-align: left;
+}
+button.button_previous {
+  width: 131px;
+}
+
+button.button_white {
+  border: 1px solid;
+  border-color: #f48fb1;
+  padding: 7px 16px 7px 16px;
+  border-radius: 16px;
+  color: #616161;
+  width: 118px;
+  position: relative;
+  text-align: left;
+  font-weight: 500;
 }
 
 #arrow-right {
