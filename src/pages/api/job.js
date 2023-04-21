@@ -1,11 +1,22 @@
-export default function Job(req, res) { //mock 
-    let job
+export default function GetAllJob(req, res) {
+    const { method } = req
     try {
-        job = pool.query("select * from Job")
-    } catch {
-        return res.json({
-            message: "There is some error occured on the database"
-        })
+        switch (method) {
+            case 'GET':
+                const { data, error } = await supabase.rpc('find_job_posting') {
+                    p_json_data {
+                        //
+                    }
+        }
     }
-    res.status(200).json({ data: job })
-}
+    }
+   }
+    // let job
+    // try {
+    //     job = pool.query("select * from Job")
+    // } catch {
+    //     return res.json({
+    //         message: "There is some error occured on the database"
+    //     })
+    // }
+    // res.status(200).json({ data: job })
