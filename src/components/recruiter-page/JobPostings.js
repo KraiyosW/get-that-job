@@ -9,21 +9,8 @@ import candidate from "../../image/candidate.png";
 import show from "../../image/show.png";
 import close from "../../image/close.png";
 import pencil from "../../image/pencil.png";
-import {useAuth} from "@/contexts/authentication.js"
 
 function JobPostings() {
-  const [selectedOption, setSelectedOption] = useState("all");
-  const {isAuthenticated} = useAuth();
-
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
-
-  if(!isAuthenticated){
-    return null ; 
-  }
-
   return (
     <>
       <div className="flex flex-col">

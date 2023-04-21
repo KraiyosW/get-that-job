@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from "next/head";
-import SideBarRecruiter from "@/components/sidebar-recruiter";
+import SideBarRecruiter from "@/components/SidebarRecruiter";
 import Candidates from '@/components/recruiter-page/Candidates';
 import { useState } from "react";
 

@@ -87,7 +87,7 @@ const SideBarRecruiter = () => {
           </Link>
       </div>
       <div className="box-2 pl-[16px] max-[700px]:text-center max-[700px]:hidden">
-        <p>© 202X - Get That Job</p>
+        <p>Â© 202X - Get That Job</p>
       </div>
       </div>
     </div>
