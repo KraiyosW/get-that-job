@@ -102,6 +102,21 @@ button.button_pink {
   position: relative;
   text-align: left;
 }
+button.button_previous {
+  width: 131px;
+}
+
+button.button_white {
+  border: 1px solid;
+  border-color: #f48fb1;
+  padding: 7px 16px 7px 16px;
+  border-radius: 16px;
+  color: #616161;
+  width: 118px;
+  position: relative;
+  text-align: left;
+  font-weight: 500;
+}
 
 button.button_pink_tertiary {
   background-color: #bf5f82;
