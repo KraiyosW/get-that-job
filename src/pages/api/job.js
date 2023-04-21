@@ -1,16 +1,16 @@
-export default function GetAllJob(req, res) {
-    const { method } = req
-    try {
-        switch (method) {
-            case 'GET':
-                const { data, error } = await supabase.rpc('find_job_posting') {
-                    p_json_data {
-                        //
-                    }
-        }
-    }
-    }
-   }
+// export default function GetAllJob(req, res) {
+//     const { method } = req
+//     try {
+//         switch (method) {
+//             case 'GET':
+//                 const { data, error } = await supabase.rpc('find_job_posting') {
+//                     p_json_data {
+//                         //
+//                     }
+//         }
+//     }
+//     }
+//    }
     // let job
     // try {
     //     job = pool.query("select * from Job")
