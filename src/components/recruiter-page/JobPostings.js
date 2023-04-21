@@ -1,14 +1,14 @@
 import React from "react";
 import Image from "next/image";
-import TypeJob from "../image/type-job.png";
-import TimeWorking from "../image/time-working.png";
-import Salary from "../image/salary.png";
-import JobDate from "../image/job-date.png";
-import TTcandidate from "../image/total-candidate.png";
-import candidate from "../image/candidate.png";
-import show from "../image/show.png";
-import close from "../image/close.png";
-import pencil from "../image/pencil.png";
+import TypeJob from "../../image/type-job.png";
+import TimeWorking from "../../image/time-working.png";
+import Salary from "../../image/salary.png";
+import JobDate from "../../image/job-date.png";
+import TTcandidate from "../../image/total-candidate.png";
+import candidate from "../../image/candidate.png";
+import show from "../../image/show.png";
+import close from "../../image/close.png";
+import pencil from "../../image/pencil.png";
 
 function JobPostings() {
   return (
