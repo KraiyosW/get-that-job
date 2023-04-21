@@ -33,7 +33,7 @@ function Footer() {
       <div className="flex flex-wrap border-b-[1px] border-[red] justify-center">
         {images.map((image, index) => (
           <div key={index} className="flex flex-col items-center p-[3rem]">
-            <Image src={image} alt={`team-member-${index}`} className="mb-10 w-[180px]" />
+            <Image src={image} alt={`team-member-${index}`} className="mb-10 w-[180px] duration-[0.5s] hover:translate-y-[-5px]" />
             <h5 id="heading5">{devName[index]}</h5>
             <h6 className="my-[15px] text-pink-tertiary tracking-[2px] text-center">{devFullName[index]}</h6>
             <div className="flex gap-10">
