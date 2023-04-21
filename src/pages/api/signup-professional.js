@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
       const { user, error } = await supabase.auth.signUp({
         email,
-        password
+        password,
       })
 
       console.log(user)

@@ -39,7 +39,7 @@ const RecruiterLogin = () => {
     try {
       const data = { email, password };
       await recruiterLogin(data);
-      router.push('/register');
+      router.push('/jobPostings');
     } catch (error) {
       console.error('Error:', error);
       setAuthMessage(error.message = "Invild email or password : please check again");

@@ -1,16 +1,31 @@
 import Head from "next/head";
-import SideBarRecruiter from "@/components/sidebar-professional";
+import SideBarRecruiter from "@/components/SidebarRecruiter.js";
 import JobPostings from "@/components/recruiter-page/JobPostings.js";
-import React from 'react'
+import React from 'react';
+import { useAuth } from "@/contexts/authentication.js";
 
-function jobPostings() {
+function JobPostingsPage() {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Head >
+          <meta httpEquiv="refresh" content="0; url=/Login"/>
+        </Head>        
+      </>
+    );
+  }
+    
   return (
     <>
-    <Head/>
-    <SideBarRecruiter />
-    <JobPostings/>
+      <Head>
+        <title>Job Postings</title>
+      </Head>
+      <SideBarRecruiter />
+      <JobPostings/>
     </>
   )
 }
 
-export default jobPostings
+export default JobPostingsPage;
