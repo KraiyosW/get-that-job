@@ -102,11 +102,14 @@ button.button_pink {
   position: relative;
   text-align: left;
 }
+
 button.button_pink_tertiary {
   background-color: #bf5f82;
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
   color: white;
+}
+
 button.button_previous {
   width: 131px;
 }

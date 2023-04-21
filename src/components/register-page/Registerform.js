@@ -6,9 +6,16 @@ import StepThree from "./ProfFinalStep"; //test
 const Registerform = () => {
   const [step, setStep] = useState(1);
   const [userData, setUserData] = useState({
-    name: "",
     email: "",
     password: "",
+    name: "",
+    phone: "",
+    birthDate: "",
+    linkedin: "",
+    jobTitle: "",
+    experience: "",
+    education: "",
+    cv: "",
   });
 
   const handleNextStep = (data) => {
@@ -20,8 +27,20 @@ const Registerform = () => {
     setStep(step - 1);
   };
 
-  const handleFinishRegistration = () => {
-    // Send user data to server to complete registration process
+  const handleFinishRegistration = async (data) => {
+    setUserData({ ...userData, ...data });
+    try {
+      const response = await axios.post("/api/signup-professional", userData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response);
+      alert("Information completed!");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Information failed.");
+    }
   };
 
   return (

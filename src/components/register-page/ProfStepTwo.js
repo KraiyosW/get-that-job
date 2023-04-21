@@ -84,7 +84,7 @@ const StepTwo = (props) => {
       router.push("/login");
     } else if (buttonClicked === "nextButton") {
       if (isValid) {
-        props.onNext();
+        props.onNext({ name, phone, birthDate, linkedin });
       } else {
         // do nothing
       }

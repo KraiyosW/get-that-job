@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const StepThree = (props) => {
+  const router = useRouter();
   //user information
-  const [title, setTitle] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
   const [experience, setExperience] = useState(null);
   const [education, setEducation] = useState("");
+  const [cv, setCv] = useState("");
   //validation
-  const [errorTitle, setErrorTitle] = useState("");
+  const [errorJob, setErrorJob] = useState("");
   const [errorExp, setErrorExp] = useState("");
   const [errorEducation, setErrorEducation] = useState("");
 
@@ -21,14 +24,14 @@ const StepThree = (props) => {
     event.preventDefault();
     let isValid = true;
 
-    if (title.trim() === "") {
-      setErrorTitle("Please enter your job title.");
+    if (jobTitle.trim() === "") {
+      setErrorJob("Please enter your job title.");
       isValid = false;
-    } else if (title.length < 5 || title.length > 50) {
-      setErrorTitle("Please enter a job title between 5 and 50 characters.");
+    } else if (jobTitle.length < 5 || jobTitle.length > 50) {
+      setErrorJob("Please enter a job title between 5 and 50 characters.");
       isValid = false;
     } else {
-      setErrorTitle("");
+      setErrorJob("");
     }
 
     if (!experience || experience < 0) {
@@ -45,7 +48,6 @@ const StepThree = (props) => {
 
     if (education.trim() === "") {
       setErrorEducation("Please enter your educational background");
-      setErrorEducation("");
       isValid = false;
     } else if (education.length < 300 || education.length > 2000) {
       setErrorEducation(
@@ -62,15 +64,16 @@ const StepThree = (props) => {
       router.push("/login");
     } else if (buttonClicked === "finishButton") {
       if (isValid) {
-        props.onNext();
+        props.onFinishRegistration({ jobTitle, experience, education, cv });
+        router.push("/login");
       } else {
         // do nothing
       }
     }
   };
 
-  function handleTitleChange(event) {
-    setTitle(event.target.value);
+  function handleJobTitleChange(event) {
+    setJobTitle(event.target.value);
   }
   function handleExpChange(event) {
     setExperience(event.target.value);
@@ -181,9 +184,9 @@ const StepThree = (props) => {
               name="job-title"
               placeholder="Mechanical administrator..."
               type="text"
-              onChange={handleTitleChange}
+              onChange={handleJobTitleChange}
             />
-            {errorTitle && <p className="text-rose-500">{errorTitle}</p>}
+            {errorJob && <p className="text-rose-500">{errorJob}</p>}
           </div>
           <div>
             <p id="overline mb-[4px]">PROFESSIONAL EXPERIENCE</p>
