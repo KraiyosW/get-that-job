@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-export const recruiterPost = () => {
+export const useRecruiterPost = () => {
   const [post, setPost] = useState(null);
   const [isError, setIsError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
-
+  
   const createPost = async (data) => {
     setIsError(false);
     setIsLoading(true);

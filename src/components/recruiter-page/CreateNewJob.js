@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import createJobPosting from "../../hooks/recruiterPost";
+import  { useRecruiterPost } from "@/hooks/recruiterPost.js";
 
 function CreateNewJob() {
+  const { createPost, isLoading, isError } = useRecruiterPost();
+  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedJobType, setSelectedJobType] = useState("");
   const [formData, setFormData] = useState({
     job_title: "",
     job_category: "",
@@ -12,16 +15,29 @@ function CreateNewJob() {
     requirement: "",
     optional_requirement: "",
   });
+  
   const handleChange = (event) => {
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
+      job_category: selectedOption, // กำหนดค่า job_category ให้เป็นค่า selectedOption
+      job_type : selectedJobType
     });
   };
+
+  const handleSelectOption = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const handleSelectJobType = (event) => {
+    setSelectedJobType(event.target.value);
+  };
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await createJobPosting(formData);
+      const response = await createPost(formData);
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -51,40 +67,17 @@ function CreateNewJob() {
               JOB CATEGORY
             </p>
             <select
-              className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
-              id="category"
-              name="job_category"
-              value={formData.job_category}
-              onChange={handleChange}
-            >
-              <option value="" disabled selected>
-                Select or create a category
-              </option>
-              <option value="information-technology">
-                Information Technology
-              </option>
-              <option value="healthcare">Healthcare</option>
-              <option value="hospitality-and-tourism">
-                Hospitality and Tourism
-              </option>
-              <option value="finance-and-banking">Finance and Banking</option>
-              <option value="education">Education</option>
-              <option value="engineering">Engineering</option>
-              <option value="sales-and-marketing">Sales and Marketing</option>
-              <option value="accounting-and-auditing">
-                Accounting and Auditing
-              </option>
-              <option value="logistics-and-supply-chain-management">
-                Logistics and Supply Chain Management
-              </option>
-              <option value="manufacturing">Manufacturing</option>
-              <option value="construction">Construction</option>
-              <option value="legal-services">Legal Services</option>
-              <option value="real-estate">Real Estate</option>
-              <option value="creative-industries">
-                Creative Industries (such as advertising, media, and design)
-              </option>
-              <option value="other">Other</option>
+                className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
+                id="category"
+                name="job_category"
+                value={formData.job_category}
+                onChange={handleChange}
+              >
+                <option value="" disabled>Select or create a category</option>
+                <option value="Software-Developer" selected={selectedOption === "Software-Developer"}>Software Developer</option>
+                <option value="Sales" selected={selectedOption === "Sales"}>Sales</option>
+                <option value="Graphic-Designer" selected={selectedOption === "Graphic-Designer"}>Graphic Designer</option>
+                <option value="Digital-Marketing" selected={selectedOption === "Digital-Marketing"}>Digital Marketing</option>
             </select>
             <p className="mt-[8px] mb-[4px]" id="overline">
               TYPE
@@ -95,12 +88,13 @@ function CreateNewJob() {
               name="job_type"
               value={formData.job_type}
               onChange={handleChange}
+              defaultValue=""
             >
               <option value="" disabled selected>
                 Select a type
               </option>
-              <option value="a">Full Time</option>
-              <option value="b">Past Time</option>
+              <option value="Full-Time" selected={selectedJobType === "Full-Time"}>Full Time</option>
+              <option value="Past-Time" selected={selectedJobType === "Past-Time"}>Past Time</option>
             </select>
             <p className="mt-[8px] mb-[4px]" id="overline">
               SALARY RANGE
