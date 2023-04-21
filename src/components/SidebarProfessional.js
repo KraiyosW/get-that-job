@@ -1,12 +1,16 @@
 import React from "react";
 import GTJ from "../image/gtj.svg";
-import search from "../image/search.png"
-import application from "../image/apllication.png"
-import following from "../image/following.png"
-import profile from "../image/profile.png"
-import logout from "../image/logout.png"
+import search from "../image/search.png";
+import apllication from "../image/apllication.png";
+import following from "../image/following.png";
+import profile from "../image/profile.png";
+import logout from "../image/logout.png";
+import Line from "../image/vertical-line.png";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/contexts/authentication";
+import { useRouter } from "next/router";
+
 
 const SideBarProfessional = () => {
     return (
@@ -58,6 +62,5 @@ const SideBarProfessional = () => {
             </div>
         </div>
     );
-};
-
-export default SideBarProfessional;
+}
+export default SideBarRecruiter;
