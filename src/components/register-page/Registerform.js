@@ -1,19 +1,25 @@
 import { useState } from "react";
 import StepOne from "./ProfStepOne";
 import StepTwo from "./ProfStepTwo";
-import StepThree from "./ProfStepThree"; //test
+import StepThree from "./ProfStepThree";
+import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/authentication";
 
 const Registerform = () => {
+  const { professionalRegister } = useAuth();
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [userData, setUserData] = useState({
-    name: "",
-    phone: "",
-    birthDate: "",
-    linkedin: "",
-    jobTitle: "",
-    experience: "",
-    education: "",
-    cv: "",
+    email: null,
+    password: null,
+    name: null,
+    phone_number: null,
+    date_of_birth: null,
+    linkedin_url: null,
+    job_title: null,
+    experience: null,
+    education: null,
+    cv: null,
   });
 
   const handleNextStep = (data) => {
@@ -25,32 +31,31 @@ const Registerform = () => {
     setStep(step - 1);
   };
 
-  const handleFinishRegistration = async (data) => {
+  const handleSkip = () => {
     setUserData({ ...userData, ...data });
-    try {
-      const response = await axios.post("/api/signup-professional", userData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response);
-      alert("Information completed!");
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Information failed.");
-    }
+    router.push("/login");
+    professionalRegister(userData);
+  };
+
+  const handleFinishRegistration = (data) => {
+    setUserData({ ...userData, ...data });
   };
 
   return (
     <div>
       {step === 1 && <StepOne onNext={handleNextStep} />}
       {step === 2 && (
-        <StepTwo onNext={handleNextStep} onPrevious={handlePreviousStep} />
+        <StepTwo
+          onNext={handleNextStep}
+          onSkip={handleSkip}
+          onPrevious={handlePreviousStep}
+        />
       )}
       {step === 3 && (
         <StepThree
           userData={userData}
           onPrevious={handlePreviousStep}
+          onSkip={handleSkip}
           onFinishRegistration={handleFinishRegistration}
         />
       )}

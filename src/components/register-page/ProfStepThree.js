@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/authentication";
 
 const StepThree = (props) => {
+  const userData = props.userData;
+  const { professionalRegister } = useAuth();
   const router = useRouter();
   //user information
   const [jobTitle, setJobTitle] = useState("");
@@ -61,11 +64,21 @@ const StepThree = (props) => {
     if (buttonClicked === "previousButton") {
       props.onPrevious();
     } else if (buttonClicked === "skipButton") {
-      router.push("/login");
+      props.onSkip();
     } else if (buttonClicked === "finishButton") {
       if (isValid) {
-        props.onFinishRegistration({ jobTitle, experience, education, cv });
         router.push("/login");
+        props.onFinishRegistration({
+          job_title: jobTitle,
+          experience: experience,
+          education: education,
+        });
+        const profData = {
+          job_title: jobTitle,
+          experience: experience,
+          education: education,
+        };
+        professionalRegister({ ...userData, ...profData });
       } else {
         // do nothing
       }
@@ -222,6 +235,15 @@ const StepThree = (props) => {
             )}
           </div>
           {/* //Button */}
+          <div>
+            <p id="overline mb-[4px]">UPLOAD/UPDATE YOUR CV</p>
+            <div className="flex">
+              <button className="button_pink">Choose a file</button>{" "}
+              <p id="overline mb-[4px]">No file chosen</p>
+            </div>
+            <p id="overline">Only PDF, Max size 5MB</p>
+          </div>
+
           <div className="flex justify-start">
             <div className="flex max-[767px]:items-center items-start justify-center">
               <button

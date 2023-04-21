@@ -2,7 +2,6 @@ import Image from "next/image";
 import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import { useState } from "react";
-import { useAuth } from "@/contexts/authentication";
 
 const StepOne = (props) => {
   const [email, setEmail] = useState("");
@@ -15,8 +14,6 @@ const StepOne = (props) => {
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [showPasswordIcon, setShowPasswordIcon] = useState(false);
-
-  const { professionalRegister } = useAuth();
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -47,9 +44,12 @@ const StepOne = (props) => {
     }
 
     if (isValid) {
-      const data = { email, password };
-      professionalRegister(data);
-      props.onNext();
+      props.onNext({
+        email: email,
+        password: password,
+      });
+    } else {
+      //do nothing
     }
   }
 
