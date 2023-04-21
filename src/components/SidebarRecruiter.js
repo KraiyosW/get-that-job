@@ -8,8 +8,29 @@ import edit from "../image/edit.png";
 import Line from "../image/vertical-line.png";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/contexts/authentication";
+import { useRouter } from "next/router";
 
 const SideBarRecruiter = () => {
+
+  const {isAuthenticated ,logoutAuth} = useAuth();
+  const router = useRouter();
+
+  if(!isAuthenticated){
+    return null;
+  }
+
+
+  const handleLogout = async () => {
+    try {
+      await logoutAuth();
+      router.push('/')
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+ 
   return (
     <div className="m-0 p-0 w-[240px] bg-white-tertiary fixed h-screen overflow-auto max-[700px]:w-screen max-[700px]:h-auto max-[700px]:relative" id="sidebar">
     <Link href="/" className="max-[700px]:flex max-[700px]:justify-center">
@@ -58,7 +79,7 @@ const SideBarRecruiter = () => {
         </div>
           </Link>
 
-          <Link href="/" className="max-[700px]:flex max-[700px]:justify-center">
+          <Link onClick={handleLogout} href="/" className="max-[700px]:flex max-[700px]:justify-center">
         <div className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px]" id="sidebar-menu">
             <Image src={logout} alt="Log out" className="max-[700px]:hidden" />
             <p className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Log out</p>

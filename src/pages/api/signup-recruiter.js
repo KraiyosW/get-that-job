@@ -18,7 +18,10 @@ export default async function handler(req, res) {
 
       const { user, error } = await supabase.auth.signUp({
         email,
-        password
+        password,
+        app_metadata: {
+          role: 'recruiter'
+        }
       })
 
       console.log(user)
@@ -31,7 +34,7 @@ export default async function handler(req, res) {
         }
 
         let { data, error: insertError } = await supabase.from('recruiters').insert({
-          companyn_name : company_name,
+          company_name : company_name,
           email : email,
           password: hashedPassword,
           role : 'recruiter',

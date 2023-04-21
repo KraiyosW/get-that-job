@@ -4,12 +4,16 @@ import JobPostings from "@/components/recruiter-page/JobPostings.js";
 import React from "react";
 import { useState } from "react";
 
-function jobPostings() {
-  const [selectedOption, setSelectedOption] = useState("all");
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Head >
+          <meta httpEquiv="refresh" content="0; url=/Login"/>
+        </Head>        
+      </>
+    );
+  }
+    
   return (
     <>
       <Head />
@@ -71,7 +75,7 @@ function jobPostings() {
         </div>
       </main>
     </>
-  );
+  )
 }
 
-export default jobPostings;
+export default JobPostingsPage;
