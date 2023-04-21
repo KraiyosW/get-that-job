@@ -18,7 +18,10 @@ export default async function handler(req, res) {
 
       const { user, error } = await supabase.auth.signUp({
         email,
-        password
+        password,
+        app_metadata: {
+          role: 'recruiter'
+        }
       })
 
       console.log(user)

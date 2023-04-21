@@ -1,30 +1,27 @@
+import React from 'react'
 import Head from "next/head";
-import SideBarRecruiter from "@/components/sidebar-professional";
-import JobPostings from "@/components/recruiter-page/JobPostings.js";
-import React from "react";
+import SideBarRecruiter from "@/components/sidebar-recruiter";
+import Candidates from '@/components/recruiter-page/Candidates';
 import { useState } from "react";
 
-  if (!isAuthenticated) {
-    return (
-      <>
-        <Head >
-          <meta httpEquiv="refresh" content="0; url=/Login"/>
-        </Head>        
-      </>
-    );
-  }
-    
+function candidates() {
+    const [selectedOption, setSelectedOption] = useState("all");
+
+    const handleOptionChange = (event) => {
+      setSelectedOption(event.target.value);
+    };
   return (
     <>
-      <Head />
+     <Head />
       <SideBarRecruiter />
       <main className="bg-white-secondary h-screen">
         <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
-          <h4 className="max-[700px]:text-center mb-[24px]" id="heading4">
-            Job Postings
+        <h4 className="max-[700px]:text-center mb-[24px]" id="heading4">
+        Show Job Posting
           </h4>
+          {/* {ใส่ jobPostings by id ตรงนี้} */}
           <p className="max-[700px]:text-center mb-[6px]" id="overline">
-            Filter your Job Postings
+          Filter your Candidates
           </p>
           <form className="flex flex-row flex-wrap gap-[12px]">
             <div>
@@ -44,24 +41,36 @@ import { useState } from "react";
               <label>
                 <input
                   type="radio"
-                  value="candidates"
-                  checked={selectedOption === "candidates"}
+                  value="waiting"
+                  checked={selectedOption === "waiting"}
                   onChange={handleOptionChange}
                   className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
                 />
-                With candidates on track
+                Waiting
               </label>
             </div>
             <div>
               <label>
                 <input
                   type="radio"
-                  value="closed"
-                  checked={selectedOption === "closed"}
+                  value="progress"
+                  checked={selectedOption === "progress"}
                   onChange={handleOptionChange}
                   className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
                 />
-                Closed
+                In progress
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  value="finished"
+                  checked={selectedOption === "finished"}
+                  onChange={handleOptionChange}
+                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
+                />
+                Finished
               </label>
             </div>
           </form>
@@ -69,13 +78,13 @@ import { useState } from "react";
             className="max-[700px]:text-center mt-[20px] mb-[8px]"
             id="heading6"
           >
-            4 jobs postings found
+            5 candidates found
           </h6>
-          <JobPostings />
+        <Candidates/>
         </div>
       </main>
     </>
-  )
+    );
 }
 
-export default JobPostingsPage;
+export default candidates
