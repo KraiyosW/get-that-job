@@ -5,7 +5,7 @@ const StepThree = (props) => {
   const router = useRouter();
   //user information
   const [jobTitle, setJobTitle] = useState("");
-  const [experience, setExperience] = useState(null);
+  const [experience, setExperience] = useState("");
   const [education, setEducation] = useState("");
   const [cv, setCv] = useState("");
   //validation

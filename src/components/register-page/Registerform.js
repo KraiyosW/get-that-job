@@ -6,8 +6,6 @@ import StepThree from "./ProfFinalStep"; //test
 const Registerform = () => {
   const [step, setStep] = useState(1);
   const [userData, setUserData] = useState({
-    email: "",
-    password: "",
     name: "",
     phone: "",
     birthDate: "",

@@ -1,15 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-<<<<<<< HEAD
 import { createClient } from "@supabase/supabase-js";
 
 // const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 // const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // const supabase = createClient(supabaseUrl, supabaseAnonKey);
-=======
->>>>>>> 931da557fcae88ac454b4bc48fd355aa0e17b1b3
 
 const AuthContext = React.createContext();
 
@@ -52,7 +49,6 @@ function AuthProvider(props) {
 
   const professionalLogin = async (data) => {
     try {
-<<<<<<< HEAD
       // Check if the user has an existing session
       const { data: session, error } = await supabase.auth.getSession();
 
@@ -69,8 +65,6 @@ function AuthProvider(props) {
         document.cookie = `sb:token=${session.access_token}; path=/; expires=${session.expires_at}; domain=.supabase.io; HttpOnly; SameSite=Lax`;
       }
 
-=======
->>>>>>> 931da557fcae88ac454b4bc48fd355aa0e17b1b3
       const response = await axios.post(
         "/api/login-professional",
         JSON.stringify(data),
@@ -78,15 +72,10 @@ function AuthProvider(props) {
           headers: {
             "Content-Type": "application/json",
           },
-<<<<<<< HEAD
           credentials: "include", // เพิ่ม options นี้
         }
       );
 
-=======
-        }
-      );
->>>>>>> 931da557fcae88ac454b4bc48fd355aa0e17b1b3
       console.log(response);
 
       if (response.data && response.data.user) {
@@ -97,17 +86,12 @@ function AuthProvider(props) {
       return response;
     } catch (error) {
       console.error("Error:", error);
-<<<<<<< HEAD
       throw error;
-=======
-      throw error; // หากเกิด error ให้ throw error
->>>>>>> 931da557fcae88ac454b4bc48fd355aa0e17b1b3
     }
   };
 
   const recruiterLogin = async (data) => {
     try {
-<<<<<<< HEAD
       // Check if the user has an existing session
       const { data: session, error } = await supabase.auth.getSession();
 
@@ -126,24 +110,15 @@ function AuthProvider(props) {
 
       const response = await axios.post(
         "/api/login-recruiter",
-=======
-      const response = await axios.post(
-        "api/login-recruiter",
->>>>>>> 931da557fcae88ac454b4bc48fd355aa0e17b1b3
         JSON.stringify(data),
         {
           headers: {
             "Content-Type": "application/json",
           },
-<<<<<<< HEAD
           credentials: "include", // เพิ่ม options นี้
         }
       );
 
-=======
-        }
-      );
->>>>>>> 931da557fcae88ac454b4bc48fd355aa0e17b1b3
       console.log(response);
 
       if (response.data && response.data.user) {
@@ -154,36 +129,23 @@ function AuthProvider(props) {
       return response;
     } catch (error) {
       console.error("Error:", error);
-<<<<<<< HEAD
       return null;
-=======
-      throw error; // หากเกิด error ให้ throw error
->>>>>>> 931da557fcae88ac454b4bc48fd355aa0e17b1b3
     }
   };
 
   const logoutAuth = async () => {
     try {
       await axios.post("/api/logout");
-<<<<<<< HEAD
       sessionStorage.removeItem("token");
-=======
-      localStorage.removeItem("token");
->>>>>>> 931da557fcae88ac454b4bc48fd355aa0e17b1b3
       setState({ ...state, user: null });
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-<<<<<<< HEAD
   const token =
     typeof window !== "undefined" ? window.sessionStorage.getItem("token") : "";
   const isAuthenticated = token !== "";
-=======
-  const isAuthenticated =
-    typeof window !== "undefined" && Boolean(localStorage.getItem("token"));
->>>>>>> 931da557fcae88ac454b4bc48fd355aa0e17b1b3
 
   return (
     <AuthContext.Provider
