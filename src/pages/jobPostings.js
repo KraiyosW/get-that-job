@@ -1,3 +1,9 @@
+import Head from "next/head";
+import SideBarRecruiter from "@/components/SidebarRecruiter.js";
+import JobPostings from "@/components/recruiter-page/JobPostings.js";
+import React from "react";
+import { useState } from "react";
+
 function jobPostings() {
   const [selectedOption, setSelectedOption] = useState("all");
 
