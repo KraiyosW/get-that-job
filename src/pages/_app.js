@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import { AuthProvider } from "@/contexts/authentication";
 import "@/pages/api/jwtintercepter.js"
 
+
 export default function App({ Component, pageProps }) {
   return (
     <>
