@@ -2,13 +2,13 @@ import React from 'react'
 // import axios from 'axios'
 // import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import babyswim from '../image/babyswim.png'
-import following from '../image/following.png'
-import categorypic from '../image/categorypic.png'
-import calendar from '../image/calendar.png'
-import dollar from '../image/dollar.png'
-import SideBarProfessional from '../components/SidebarProfessional'
-const JobPage = () => {
+import babyswim from '../../image/babyswim.png'
+import following from '../../image/following.png'
+import categorypic from '../../image/categorypic.png'
+import calendar from '../../image/calendar.png'
+import dollar from '../../image/dollar.png'
+
+const Findthatjob = () => {
     // const [data, setData] = useState([]);
     // const [followStatus, setFollowStatus] = useState({});
     // const [applicationStatus, setApplicationStatus] = useState({});
@@ -44,7 +44,7 @@ const JobPage = () => {
 
     return (
         <div className='flex'>
-            <SideBarProfessional />
+
             <main className='flex flex-col flex-wrap w-full items-center' >
                 <h6 className='mb-4'>12 jobs for you</h6>
                 <div className='grid grid-cols-3 gap-[15px]'>
@@ -139,4 +139,4 @@ const JobPage = () => {
     )
 }
 
-export default JobPage
+export default Findthatjob
