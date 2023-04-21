@@ -37,7 +37,8 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
     "react-router-dom": "^6.10.0",
-    "supabase": "^1.50.4"
+    "supabase": "^1.50.4",
+    "text-encoding": "^0.7.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

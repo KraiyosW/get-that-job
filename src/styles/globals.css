@@ -155,6 +155,27 @@ button.button_white {
   font-weight: 500;
 }
 
+button.button_pink_file {
+  background-color: #F48FB1;
+  padding: 8px 16px 8px 16px;
+  border-radius: 8px;
+  color: white;
+  width: 160px;
+  position: relative;
+  text-align: right;
+}
+
+button.button_white {
+  background-color: white;
+  border: #F48FB1 solid 1px;
+  padding: 8px 16px 8px 16px;
+  border-radius: 16px;
+  color: black;
+  width: auto;
+  position: relative;
+  text-align: center;
+}
+
 #arrow-right {
   position: absolute;
   top: 50%;
@@ -164,6 +185,16 @@ button.button_white {
   height: 14px;
   background-image: url("data:image/svg+xml,%3Csvg width='8' height='14' viewBox='0 0 8 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.17217 6.99999L0.222168 2.04999L1.63617 0.635986L8.00017 6.99999L1.63617 13.364L0.222168 11.95L5.17217 6.99999Z' fill='white'/%3E%3C/svg%3E");
 }
+
+
+#arrow-top {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  width: 17px;
+  height: 18px;
+  background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2216%22%20height%3D%2217%22%20viewBox%3D%220%200%2016%2017%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.5%2014.8333H15.5V16.5H0.5V14.8333ZM8.83333%203.85667V13.1667H7.16667V3.85667L2.1075%208.91667L0.929167%207.73834L8%200.666672L15.0708%207.7375L13.8925%208.91584L8.83333%203.85834V3.85667Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
 
 
 #arrow-left {
@@ -188,6 +219,7 @@ input#input-range{
 input#input-range:focus {
   background-image:none;
   text-indent:0px
+
 }
 
 /* h1 {

@@ -2,7 +2,7 @@ import Head from "next/head";
 import Navigatebar from "../components/Navigatebar.js";
 import Registerform from "../components/register-page/Registerform.js";
 import RecruiterForm from "../components/register-page/RecruiterForm.js";
-import BackgroundWoman from "../components/BackgroundWoman";
+import BackgroundWoman from "../components/BackgroundWoman.js";
 import React, { useState } from "react";
 import Script from "next/script.js";
 
