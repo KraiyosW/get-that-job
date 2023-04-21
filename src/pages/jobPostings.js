@@ -1,7 +1,6 @@
 import Head from "next/head";
-import SideBarRecruiter from "@/components/sidebar-professional";
+import SideBarRecruiter from "@/components/SidebarRecruiter.js";
 import JobPostings from "@/components/recruiter-page/JobPostings.js";
-<<<<<<< HEAD
 import React from "react";
 import { useState } from "react";
 
@@ -76,18 +75,3 @@ function jobPostings() {
 }
 
 export default jobPostings;
-=======
-import React from 'react'
-
-function jobPostings() {
-  return (
-    <>
-    <Head/>
-    <SideBarRecruiter />
-    <JobPostings/>
-    </>
-  )
-}
-
-export default jobPostings
->>>>>>> 5d34edb33f54773767dc94a2c3317c0f26f8eb72
