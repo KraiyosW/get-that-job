@@ -128,9 +128,8 @@ function AuthProvider(props) {
 
       return response;
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       throw error;
-
     }
   };
 
@@ -139,7 +138,8 @@ function AuthProvider(props) {
       await axios.post("/api/logout");
       sessionStorage.removeItem("token");
       setState({ ...state, user: null });
-      document.cookie = 'sb:token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=None; Secure';
+      document.cookie =
+        "sb:token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=None; Secure";
     } catch (error) {
       console.error("Error:", error);
     }
