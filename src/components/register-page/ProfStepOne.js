@@ -18,10 +18,6 @@ const StepOne = (props) => {
 
   const { professionalRegister } = useAuth();
 
-  const handleNext = () => {
-    props.onNext();
-  };
-
   async function handleSubmit(event) {
     event.preventDefault();
     let isValid = true;
@@ -242,7 +238,7 @@ const StepOne = (props) => {
 
             {/* css maybe use position for push in same div with passwordConfirm input */}
             <div className="flex max-[767px]:items-center items-start justify-center">
-              <button className="button_pink mt-[16px]" onClick={handleNext}>
+              <button className="button_pink mt-[16px]">
                 NEXT<section id="arrow-right"></section>
               </button>
             </div>

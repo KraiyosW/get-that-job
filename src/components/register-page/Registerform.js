@@ -1,7 +1,7 @@
 import { useState } from "react";
 import StepOne from "./ProfStepOne";
 import StepTwo from "./ProfStepTwo";
-import StepThree from "./ProfFinalStep"; //test
+import StepThree from "./ProfStepThree"; //test
 
 const Registerform = () => {
   const [step, setStep] = useState(1);
