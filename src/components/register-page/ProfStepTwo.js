@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 
 const StepTwo = (props) => {
-  const router = useRouter();
   //user information
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -81,10 +79,15 @@ const StepTwo = (props) => {
     }
 
     if (buttonClicked === "skipButton") {
-      router.push("/login");
+      props.onSkip();
     } else if (buttonClicked === "nextButton") {
       if (isValid) {
-        props.onNext({ name, phone, birthDate, linkedin });
+        props.onNext({
+          name: name,
+          phone_number: phone,
+          date_of_birth: birthDate,
+          linkedin_url: linkedin,
+        });
       } else {
         // do nothing
       }
