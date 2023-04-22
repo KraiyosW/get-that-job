@@ -16,8 +16,18 @@ export default async function handler(req, res) {
       case 'POST':
         const { job_title, job_category, job_type, salary_min_range, salary_max_range, job_description, requirement, optional_requirement } = req.body;
 
-        // Check if user has logged in
-        const { user, session } = supabase.auth.getSession(req);
+        // Check if access token exists in headers
+        const token = req.headers.authorization;
+        if (!token) {
+          res.status(401).send({ message: 'Unauthorized. Please provide an access token.' });
+          return;
+        }
+
+        // Verify access token
+        const { data: user, error } = await supabase.auth.api.getUser(token);
+        if (error) {
+          throw new Error(error.message);
+        }
 
         // If user has not logged in, return error response
         if (!user) {
@@ -30,14 +40,14 @@ export default async function handler(req, res) {
           throw new Error('Missing required input');
         }
 
-        const { data: recruiter, error } = await supabase
+        const { data: recruiter, error: recruiterError } = await supabase
           .from('recruiters')
           .select('id, role')
           .eq('email', user.email)
           .single();
 
-        if (error) {
-          throw new Error(error.message);
+        if (recruiterError) {
+          throw new Error(recruiterError.message);
         }
 
         if (!recruiter || recruiter.role !== 'recruiter') {
