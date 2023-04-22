@@ -20,11 +20,11 @@ export const useRecruiterPost = () => {
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
-      alert('Create Job Post failed');
+      alert(`Failed to create job post: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
-  };
+};
 
   return { createPost, post, isLoading, isError };
 };

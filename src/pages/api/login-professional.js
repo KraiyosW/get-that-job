@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         console.log(error)
         res.status(400).json({ message: error.message })
       } else {
-        // ตรวจสอบว่า user นั้นมีสิทธิ์เป็น professional หรือไม่
+        // ตรวจสอบว่า user นั้นมีสิทธิ์เป็น recruiter หรือไม่
         const { data: professional, error: professionalError } = await supabase
           .from('professional')
           .select('*')
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
           res.status(401).json({ message: 'Unauthorized' })
         } else {
           // ตรวจสอบ session ของผู้ใช้งาน
-          const session = req.cookies
+          const session = req.cookies['sb:token']
           // ถ้า session ไม่มีให้ refresh และส่งค่ากลับมาใน HTTP Response Header
           if (!session) {
             const { data: session, error: refreshError } = await supabase.auth.refreshSession()
@@ -46,6 +46,7 @@ export default async function handler(req, res) {
             }
             res.setHeader('Set-Cookie', `sb:token=${session.access_token}; path=/; expires=${session.expires_at}; domain=.supabase.io; HttpOnly; SameSite=Lax`)
           }
+          res.setHeader('Authorization', `Bearer ${session.access_token}`)
           res.status(200).json({ user })
         }
       }

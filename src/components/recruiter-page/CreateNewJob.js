@@ -70,14 +70,14 @@ function CreateNewJob() {
                 className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
                 id="category"
                 name="job_category"
-                value={formData.job_category}
-                onChange={handleChange}
+                value={selectedOption}
+                onChange={(event)=>{handleSelectOption(event)}}
               >
                 <option value="" disabled>Select or create a category</option>
-                <option value="Software-Developer" selected={selectedOption === "Software-Developer"}>Software Developer</option>
-                <option value="Sales" selected={selectedOption === "Sales"}>Sales</option>
-                <option value="Graphic-Designer" selected={selectedOption === "Graphic-Designer"}>Graphic Designer</option>
-                <option value="Digital-Marketing" selected={selectedOption === "Digital-Marketing"}>Digital Marketing</option>
+                <option value="Software-Developer" >Software Developer</option>
+                <option value="Sales" >Sales</option>
+                <option value="Graphic-Designer" >Graphic Designer</option>
+                <option value="Digital-Marketing" >Digital Marketing</option>
             </select>
             <p className="mt-[8px] mb-[4px]" id="overline">
               TYPE
@@ -86,15 +86,15 @@ function CreateNewJob() {
               className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
               id="type"
               name="job_type"
-              value={formData.job_type}
-              onChange={handleChange}
-              defaultValue=""
+              value={selectedJobType}
+              onChange={(event)=>{handleSelectJobType(event)}}
+              
             >
               <option value="" disabled selected>
                 Select a type
               </option>
-              <option value="Full-Time" selected={selectedJobType === "Full-Time"}>Full Time</option>
-              <option value="Past-Time" selected={selectedJobType === "Past-Time"}>Past Time</option>
+              <option value="Full-Time" >Full Time</option>
+              <option value="Past-Time" >Past Time</option>
             </select>
             <p className="mt-[8px] mb-[4px]" id="overline">
               SALARY RANGE
