@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/authentication";
+import Image from "next/image";
+import upload from "@/image/upload.png";
 
 const StepThree = (props) => {
   const userData = props.userData;
   const { professionalRegister } = useAuth();
   const router = useRouter();
+
+  const inputFile = useRef(null);
+  const fileNameField = useRef(null);
+
   //user information
   const [jobTitle, setJobTitle] = useState("");
   const [experience, setExperience] = useState("");
@@ -15,6 +21,7 @@ const StepThree = (props) => {
   const [errorJob, setErrorJob] = useState("");
   const [errorExp, setErrorExp] = useState("");
   const [errorEducation, setErrorEducation] = useState("");
+  const [errorCv, setErrorCv] = useState("");
 
   //checking button
   const [buttonClicked, setButtonClicked] = useState(null);
@@ -40,7 +47,7 @@ const StepThree = (props) => {
     if (!experience || experience < 0) {
       setErrorExp("Please enter your professional experience.");
       isValid = false;
-    } else if (education.length < 300 || education.length > 2000) {
+    } else if (experience.length < 300 || experience.length > 2000) {
       setErrorExp(
         "Professional experience must be between 300 and 2000 characters."
       );
@@ -93,6 +100,11 @@ const StepThree = (props) => {
   }
   function handleEducationChange(event) {
     setEducation(event.target.value);
+  }
+
+  function handleFileUpload(event) {
+    const uploadedFileName = event.target.files[0].name;
+    fileNameField.current.textContent = uploadedFileName;
   }
 
   return (
@@ -183,7 +195,7 @@ const StepThree = (props) => {
 
       <div className="flex flex-col mt-[32px] max-[767px]:items-center items-start">
         <p id="overline">
-          YOU CAN COMPLETE THIS INFORMAITON LATER BUT WE <br></br>RECCOMED YOU
+          YOU CAN COMPLETE THIS INFORMATION LATER BUT WE <br></br>RECCOMEND YOU
           TO DO IT NOW
         </p>
         <form
@@ -234,20 +246,42 @@ const StepThree = (props) => {
               <p className="text-rose-500">{errorEducation}</p>
             )}
           </div>
-          {/* //Button */}
           <div>
             <p id="overline mb-[4px]">UPLOAD/UPDATE YOUR CV</p>
-            <div className="flex">
-              <button className="button_pink">Choose a file</button>{" "}
-              <p id="overline mb-[4px]">No file chosen</p>
+            <div className="input-container flex relative justify-between">
+              <input
+                className=""
+                id="upload"
+                name="avatar"
+                type="file"
+                multiple
+                accept=".pdf"
+                onChange={handleFileUpload}
+              />
+              <label htmlFor="upload" className="relative">
+                <span>Choose a file</span>
+                <Image
+                  src={upload}
+                  alt="Upload icon"
+                  className="w-[20px] h-[20px] absolute bottom-[9px] left-[6px]"
+                />
+              </label>
+              <p
+                id="file-name"
+                ref={fileNameField}
+                className="text-[14px] text-[#616161] absolute top-[7px] left-[150px]"
+              >
+                No file chosen
+              </p>
             </div>
-            <p id="overline">Only PDF, Max size 5MB</p>
+            <p className="mt-[4px] text-[#8E8E8E]">Only PDF. Max size 5MB</p>
+            {errorCv && <p className="text-rose-500">{errorCv}</p>}
           </div>
-
+          {/* //Button */}
           <div className="flex justify-start">
             <div className="flex max-[767px]:items-center items-start justify-center">
               <button
-                className="button_pink button_previous mt-[16px]"
+                className="button_pink_previous mt-[16px]"
                 onClick={handleButtonClick}
                 id="previousButton"
               >
@@ -275,8 +309,6 @@ const StepThree = (props) => {
           </div>
           {/* <input className="button_pink mt-[16px]" type="submit" name="NEXT" value="NEXT" /> */}
         </form>
-
-        <div></div>
       </div>
     </div>
   );
