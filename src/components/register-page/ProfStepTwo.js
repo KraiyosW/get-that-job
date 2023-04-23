@@ -1,4 +1,8 @@
 import { useState } from "react";
+import Image from "next/image";
+import calendar from "@/image/calendar.png";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const StepTwo = (props) => {
   //user information
@@ -235,12 +239,21 @@ const StepTwo = (props) => {
             <p id="overline mb-[4px]">BIRTH DATE</p>
             <div className="relative ">
               <input
-                className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
+                className="calendar relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
                 name="birthdate"
-                type="date"
+                type="text"
                 placeholder="Pick a date"
+                onClick={(event) => (event.target.type = "date")}
+                onBlur={(event) => (event.target.type = "text")}
                 onChange={handleDateChange}
               />
+              <div class="open-button absolute right-[10px] top-[9px] calendar-picker-indicator">
+                <Image
+                  src={calendar}
+                  alt="Calendar icon"
+                  className="w-[20px] h-[20px]"
+                />
+              </div>
             </div>
             {errorBirthDate && (
               <p className="text-rose-500">{errorBirthDate}</p>
@@ -267,7 +280,7 @@ const StepTwo = (props) => {
                 onClick={handleButtonClick}
                 id="skipButton"
               >
-                SKIP THIS!<section id="arrow-left"></section>
+                SKIP THIS!
               </button>
             </div>
             <div className="flex max-[767px]:items-center items-start justify-center">
@@ -282,8 +295,6 @@ const StepTwo = (props) => {
           </div>
           {/* <input className="button_pink mt-[16px]" type="submit" name="NEXT" value="NEXT" /> */}
         </form>
-
-        <div></div>
       </div>
     </div>
   );
