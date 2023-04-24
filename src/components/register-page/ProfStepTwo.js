@@ -1,8 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import calendar from "@/image/calendar.png";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 const StepTwo = (props) => {
   //user information
@@ -25,6 +23,7 @@ const StepTwo = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     let isValid = true;
+
     if (name.trim() === "") {
       setErrorName("Please enter your name.");
       isValid = false;
