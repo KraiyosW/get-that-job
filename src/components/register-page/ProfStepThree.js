@@ -3,6 +3,12 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/authentication";
 import Image from "next/image";
 import upload from "@/image/upload.png";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const StepThree = (props) => {
   const userData = props.userData;
@@ -16,12 +22,13 @@ const StepThree = (props) => {
   const [jobTitle, setJobTitle] = useState("");
   const [experience, setExperience] = useState("");
   const [education, setEducation] = useState("");
-  const [cv, setCv] = useState("");
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   //validation
   const [errorJob, setErrorJob] = useState("");
   const [errorExp, setErrorExp] = useState("");
   const [errorEducation, setErrorEducation] = useState("");
-  const [errorCv, setErrorCv] = useState("");
+  const [errorCv, setErrorCv] = useState(null);
 
   //checking button
   const [buttonClicked, setButtonClicked] = useState(null);
@@ -30,9 +37,10 @@ const StepThree = (props) => {
     setButtonClicked(buttonId);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     let isValid = true;
+    setLoading(true);
 
     if (jobTitle.trim() === "") {
       setErrorJob("Please enter your job title.");
@@ -57,7 +65,7 @@ const StepThree = (props) => {
     }
 
     if (education.trim() === "") {
-      setErrorEducation("Please enter your educational background");
+      setErrorEducation("Please enter your educational background.");
       isValid = false;
     } else if (education.length < 300 || education.length > 2000) {
       setErrorEducation(
@@ -68,24 +76,50 @@ const StepThree = (props) => {
       setErrorEducation("");
     }
 
+    if (file === null) {
+      setErrorCv("Please select your CV file.");
+      isValid = false;
+    } else if (file.size > 5 * 1024 * 1024) {
+      setErrorCv("File size should be less than or equal to 5MB.");
+      isValid = false;
+    } else {
+      setErrorCv("");
+    }
+
     if (buttonClicked === "previousButton") {
       props.onPrevious();
     } else if (buttonClicked === "skipButton") {
       props.onSkip();
     } else if (buttonClicked === "finishButton") {
       if (isValid) {
-        router.push("/login");
-        props.onFinishRegistration({
-          job_title: jobTitle,
-          experience: experience,
-          education: education,
-        });
-        const profData = {
-          job_title: jobTitle,
-          experience: experience,
-          education: education,
-        };
-        professionalRegister({ ...userData, ...profData });
+        try {
+          // Upload file to Supabase Storage
+          const fileExt = file.name.split(".").pop();
+          const fileName = `${Math.random()}.${fileExt}`;
+          const filePath = `${fileName}`;
+          const bucket = `professional_cv/${userData.name}`;
+          const profData = {
+            job_title: jobTitle,
+            experience: experience,
+            education: education,
+            cv: filePath,
+          };
+
+          professionalRegister({ ...userData, ...profData });
+
+          const { error: uploadError } = await supabase.storage
+            .from(bucket)
+            .upload(filePath, file);
+          if (uploadError) {
+            throw uploadError;
+          }
+          // Redirect to login
+          router.push("/login");
+        } catch (error) {
+          alert(error.message);
+        } finally {
+          setLoading(false);
+        }
       } else {
         // do nothing
       }
@@ -103,6 +137,7 @@ const StepThree = (props) => {
   }
 
   function handleFileUpload(event) {
+    setFile(event.target.files[0]);
     const uploadedFileName = event.target.files[0].name;
     fileNameField.current.textContent = uploadedFileName;
   }
@@ -250,13 +285,12 @@ const StepThree = (props) => {
             <p id="overline mb-[4px]">UPLOAD/UPDATE YOUR CV</p>
             <div className="input-container flex relative justify-between">
               <input
-                className=""
                 id="upload"
-                name="avatar"
+                name="files"
                 type="file"
                 multiple
                 accept=".pdf"
-                onChange={handleFileUpload}
+                onChange={(e) => handleFileUpload(e)}
               />
               <label htmlFor="upload" className="relative">
                 <span>Choose a file</span>
@@ -303,7 +337,8 @@ const StepThree = (props) => {
                 onClick={handleButtonClick}
                 id="finishButton"
               >
-                FINISH<section id="arrow-right"></section>
+                {loading ? "Loading..." : "FINISH"}
+                {!loading && <section id="arrow-right"></section>}
               </button>
             </div>
           </div>
