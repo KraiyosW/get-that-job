@@ -1,32 +1,29 @@
 import React, { useState } from "react";
-import createJobPosting from "../../hooks/recruiterPost";
+//import createJobPosting from "../../hooks/recruiterPost";
 
 function CreateNewJob() {
-  const [formData, setFormData] = useState({
-    job_title: "",
-    job_category: "",
-    job_type: "",
-    salary_min_range: "",
-    salary_max_range: "",
-    job_description: "",
-    requirement: "",
-    optional_requirement: "",
-  });
-  const handleChange = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  };
+  const [job_title, setJob_title] = useState('');
+  const [job_category, setJob_category] = useState('');
+  const [job_type, setJob_type] = useState('');
+  const [salary_min_range, setSalary_min_range] = useState('');
+  const [salary_max_range, setSalary_max_range] = useState('');
+  const [job_description, setJob_description] = useState(''); 
+  const [requirement, setRequirement] = useState('');
+  const [optional_requirement, setOptional_requirement] = useState('');
+
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await createJobPosting(formData);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    event.preventDefault()
+
+    const response = await fetch('/api/submitFormJobPostings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ job_title, job_category, job_type, salary_min_range, salary_max_range, job_description, requirement, optional_requirement })
+    })
+    
+    const { message } = await response.json()
+    
+    console.log(message)
+  }
   return (
     <>
       <main className="bg-white-secondary h-screen">
@@ -44,8 +41,8 @@ function CreateNewJob() {
               name="job_title"
               placeholder="Software engineer"
               type="text"
-              value={formData.job_title}
-              onChange={handleChange}
+              value={job_title}
+              onChange={(event) => setJob_title(event.target.value)}
             />
             <p className="mt-[8px] mb-[4px]" id="overline">
               JOB CATEGORY
@@ -54,37 +51,20 @@ function CreateNewJob() {
               className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
               id="category"
               name="job_category"
-              value={formData.job_category}
-              onChange={handleChange}
+              value={job_category}
+              onChange={(event) => setJob_category(event.target.value)}
             >
               <option value="" disabled selected>
                 Select or create a category
               </option>
-              <option value="information-technology">
-                Information Technology
+              <option value="software-developer">
+              Software Developer
               </option>
-              <option value="healthcare">Healthcare</option>
-              <option value="hospitality-and-tourism">
-                Hospitality and Tourism
+              <option value="sales">Sales</option>
+              <option value="graphic-designer">
+              Graphic Designer
               </option>
-              <option value="finance-and-banking">Finance and Banking</option>
-              <option value="education">Education</option>
-              <option value="engineering">Engineering</option>
-              <option value="sales-and-marketing">Sales and Marketing</option>
-              <option value="accounting-and-auditing">
-                Accounting and Auditing
-              </option>
-              <option value="logistics-and-supply-chain-management">
-                Logistics and Supply Chain Management
-              </option>
-              <option value="manufacturing">Manufacturing</option>
-              <option value="construction">Construction</option>
-              <option value="legal-services">Legal Services</option>
-              <option value="real-estate">Real Estate</option>
-              <option value="creative-industries">
-                Creative Industries (such as advertising, media, and design)
-              </option>
-              <option value="other">Other</option>
+              <option value="digital-marketing">Digital Marketing</option>
             </select>
             <p className="mt-[8px] mb-[4px]" id="overline">
               TYPE
@@ -93,8 +73,8 @@ function CreateNewJob() {
               className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
               id="type"
               name="job_type"
-              value={formData.job_type}
-              onChange={handleChange}
+              value={job_type}
+              onChange={(event) => setJob_type(event.target.value)}
             >
               <option value="" disabled selected>
                 Select a type
@@ -112,8 +92,8 @@ function CreateNewJob() {
                 placeholder="min"
                 type="text"
                 id="input-range"
-                value={formData.salary_min_range}
-                onChange={handleChange}
+                value={salary_min_range}
+                onChange={(event) => setSalary_min_range(event.target.value)}
               />
               <svg
                 width="11"
@@ -138,8 +118,8 @@ function CreateNewJob() {
                 placeholder="max"
                 type="text"
                 id="input-range"
-                value={formData.salary_max_range}
-                onChange={handleChange}
+                value={salary_max_range}
+                onChange={(event) => setSalary_max_range(event.target.value)}
               />
             </div>
             <h5 className="mt-[32px] mb-[8px]" id="heading5">
@@ -153,8 +133,8 @@ function CreateNewJob() {
                 className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[76px]"
                 name="job_description"
                 placeholder="Describe the main functions and characteristics of your job position"
-                value={formData.job_description}
-                onChange={handleChange}
+                value={job_description}
+                onChange={(event) => setJob_description(event.target.value)}
               ></textarea>
               <p className="mt-[8px] mb-[4px]" id="overline">
                 MANDATORY REQUIREMENTS
@@ -163,8 +143,8 @@ function CreateNewJob() {
                 className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[76px]"
                 name="requirement"
                 placeholder="List each mandatory requirement in a new line"
-                value={formData.requirement}
-                onChange={handleChange}
+                value={requirement}
+                onChange={(event) => setRequirement(event.target.value)}
               ></textarea>
               <p className="mt-[8px] mb-[4px]" id="overline">
                 OPTIONAL REQUIREMENTS
@@ -173,8 +153,8 @@ function CreateNewJob() {
                 className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[76px]"
                 name="optional_requirement"
                 placeholder="List each optional requirement in a new line"
-                value={formData.optional_requirement}
-                onChange={handleChange}
+                value={optional_requirement}
+                onChange={(event) => setOptional_requirement(event.target.value)}
               ></textarea>
             </div>
             <br />
