@@ -38,13 +38,13 @@ const RecruiterLogin = () => {
     /// check status before redirect // 
     try {
       const data = { email, password };
-      await recruiterLogin(data);
+      const authToken = JSON.parse(localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token'));
+      await recruiterLogin(data, authToken);
       router.push('/jobPostings');
     } catch (error) {
       console.error('Error:', error);
-      setAuthMessage(error.message = "Invild email or password : please check again");
+      setAuthMessage("Invalid email or password: please check again");
     }
-
     
 }
 

@@ -15,12 +15,12 @@ supabase.auth.onAuthStateChange((event, session) => {
   if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
     // delete cookies on sign out
     const expires = new Date(0).toUTCString()
-    document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; `
-    document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; `
+    document.cookie = `my-access-token=; path=/token; expires=${expires}; SameSite=Lax; `
+    document.cookie = `my-refresh-token=; path=/token; expires=${expires}; SameSite=Lax; `
   } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
     const maxAge = 100 * 365 * 24 * 60 * 60 // 100 years, never expires
-    document.cookie = `my-access-token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; `
-    document.cookie = `my-refresh-token=${session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; `
+    document.cookie = `my-access-token=${session.access_token}; path=/token; max-age=${maxAge}; SameSite=Lax; `
+    document.cookie = `my-refresh-token=${session.refresh_token}; path=/token; max-age=${maxAge}; SameSite=Lax; `
   }
 })
 
@@ -86,7 +86,7 @@ function AuthProvider(props) {
         // ตรวจสอบว่า token มีค่าหรือไม่ ถ้ามีให้เพิ่มใน header
         ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
       };
-  
+      
       const response = await axios.post(
         "/api/login-professional",
         JSON.stringify(data),
@@ -96,7 +96,7 @@ function AuthProvider(props) {
         }
       );
   
-      console.log('headers:', response.headers);
+      console.log('headers:', headers);
       console.log('token:', token);
   
       if (response.headers && response.headers['set-cookie']) {
@@ -120,19 +120,27 @@ function AuthProvider(props) {
     }
   }
 
-  const recruiterLogin = async (data) => {
+  const recruiterLogin = async (data, authToken) => {
     try {
-      let token = sessionStorage.getItem('sb:token') || localStorage.getItem('sb:token');
+      let token =
+        authToken?.access_token ||
+        sessionStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
+        localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
+        '';
+  
       if (!token) {
-        const { data: session, error: refreshError } = await supabase.auth.refreshSession();
+        const { data: session, error: refreshError } =
+          await supabase.auth.refreshSession({ refreshToken: authToken?.refresh_token });
   
         if (refreshError) {
           console.log(refreshError.message);
           return null;
         }
   
-        sessionStorage.setItem('sb:token', session.access_token);
-        localStorage.setItem('sb:token', session.access_token);
+        sessionStorage.setItem('sb-zsvpcibqzkxoqqpektgc-auth-token', session.access_token);
+        localStorage.setItem('sb-zsvpcibqzkxoqqpektgc-auth-token', session.access_token);
+        console.log(session);
+  
         token = session.access_token;
       }
   
@@ -140,30 +148,29 @@ function AuthProvider(props) {
   
       const headers = {
         "Content-Type": "application/json",
-        // ตรวจสอบว่า token มีค่าหรือไม่ ถ้ามีให้เพิ่มใน header
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        "Authorization": `Bearer ${token}`,
       };
   
-      const response = await axios.post(
-        "/api/login-recruiter",
-        JSON.stringify(data),
-        {
-          headers,
-          credentials: "include"
-        }
-      );
+      const response = await axios.post('/api/login-recruiter', JSON.stringify(data), {
+        headers,
+        withCredentials: true,
+      });
   
-      console.log('headers:', response.headers);
+      console.log('headers:', headers);
       console.log('token:', token);
-  
+      console.log(response);
+      
+      // If response headers contain set-cookie, set the token in session and local storage
       if (response.headers && response.headers['set-cookie']) {
         const token = response.headers['set-cookie']
-          .split('; ')
-          .find(cookie => cookie.startsWith('sb:token='))
-          .split('=')[1];
+          .split(' ')
+          .find((cookie) => cookie.startsWith('Bearer '))
+          .split(' ')[1];
         console.log('token:', token);
-        sessionStorage.setItem('sb:token', token);
-        localStorage.setItem('sb:token', token);
+        sessionStorage.setItem('sb-zsvpcibqzkxoqqpektgc-auth-token', token);
+        localStorage.setItem('sb-zsvpcibqzkxoqqpektgc-auth-token', token);
+  
+        headers['Authorization'] = `Bearer ${token}`; // Add this line to set header
       }
   
       if (response.data && response.data.user) {
@@ -175,12 +182,14 @@ function AuthProvider(props) {
       console.error('Error:', error);
       throw error;
     }
-  }
+  };
+  
 
 
   const logoutAuth = async () => {
     try {
       await axios.post("/api/logout");
+      localStorage.removeItem("token");
       sessionStorage.removeItem("token");
       setState({ ...state, user: null });
       document.cookie = 'sb:token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite:true; Secure';

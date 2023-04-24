@@ -17,18 +17,18 @@ export default async function handler(req, res) {
         const { job_title, job_category, job_type, salary_min_range, salary_max_range, job_description, requirement, optional_requirement } = req.body;
 
         // Check if access token exists in headers
-        const token = req.headers.authorization;
+        const {token} = req.body;
         if (!token) {
           res.status(401).send({ message: 'Unauthorized. Please provide an access token.' });
           return;
         }
 
-        // Verify access token
-        const { data: user, error } = await supabase.auth.api.getUser(token);
+        const { data: user, error } = await supabase.auth.api.getUser(token.replace('Bearer ', ''));
+
         if (error) {
           throw new Error(error.message);
         }
-
+        
         // If user has not logged in, return error response
         if (!user) {
           res.status(401).send({ message: 'Unauthorized. Please login before creating a job posting.' });

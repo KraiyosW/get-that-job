@@ -2,7 +2,6 @@ import { createClient } from '@supabase/supabase-js'
 import dotenv from 'dotenv'
 import { parseCookies, setCookie } from 'nookies'
 
-
 dotenv.config()
 
 const supabaseUrl = process.env.SUPABASE_URL
@@ -48,7 +47,7 @@ export default async function handler(req, res) {
           setCookie({ res }, 'sb:token', session.access_token, {
             maxAge: session.expires_in,
             path: '/',
-            domain: process.env.NEXTAUTH_URL,
+            domain: process.env.SUPABASE_URL,
             sameSite: 'lax'
           })
           res.setHeader('Authorization', `Bearer ${session.access_token}`)

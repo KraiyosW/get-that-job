@@ -37,7 +37,8 @@ function CreateNewJob() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await createPost(formData);
+      const authToken = JSON.parse(localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token'));
+      const response = await createPost(formData,authToken);
       console.log(response);
     } catch (error) {
       console.error(error);
