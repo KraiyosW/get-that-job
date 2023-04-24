@@ -14,7 +14,7 @@ export const useRecruiterPost = () => {
   const [isError, setIsError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const createPost = async (data ,authToken) => {
+  const createPost = async ( data ,authToken) => {
     setIsError(false);
     setIsLoading(true);
     try {
@@ -23,7 +23,7 @@ export const useRecruiterPost = () => {
       sessionStorage.getItem("sb-zsvpcibqzkxoqqpektgc-auth-token") ||
       localStorage.getItem("sb-zsvpcibqzkxoqqpektgc-auth-token") ||
       "";
-
+  
       console.log('token',token);
       if (!token) {
         const { data: session, error: refreshError } =
@@ -39,19 +39,22 @@ export const useRecruiterPost = () => {
         console.log(session);
       }
       
-
+  
       const headers = {
         "Content-Type": "application/json",
         // ตรวจสอบว่า token มีค่าหรือไม่ ถ้ามีให้เพิ่มใน header
         ...(token ? { 'authorization': `Bearer ${token}` } : {}),
       };
+  
+     
 
-      const response = await axios.post('/api/createPost-recruiter', JSON.stringify(data), {
-        headers, 
-        credentials: "include"
+      const response = await axios.post("/api/createPost-recruiter/", JSON.stringify(data), {
+        headers: {
+          'Authorization': `Bearer ${authToken.access_token}`
         },
-      );
-      console.log(response);
+        credentials: "include"
+      });
+      console.log(response.data);
       alert('Create Job Post successfully');
       setPost(response.data);
     

@@ -124,8 +124,8 @@ function AuthProvider(props) {
     try {
       let token =
         authToken?.access_token ||
-        sessionStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
-        localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
+        sessionStorage.getItem('sb:token') ||
+        localStorage.getItem('sb:token') ||
         '';
   
       if (!token) {
@@ -137,14 +137,15 @@ function AuthProvider(props) {
           return null;
         }
   
-        sessionStorage.setItem('sb-zsvpcibqzkxoqqpektgc-auth-token', session.access_token);
-        localStorage.setItem('sb-zsvpcibqzkxoqqpektgc-auth-token', session.access_token);
+        sessionStorage.setItem('sb:token', session.access_token);
+        localStorage.setItem('sb:token', session.access_token);
         console.log(session);
   
         token = session.access_token;
       }
   
       console.log('token:', token);
+  
   
       const headers = {
         "Content-Type": "application/json",
@@ -159,7 +160,7 @@ function AuthProvider(props) {
       console.log('headers:', headers);
       console.log('token:', token);
       console.log(response);
-      
+  
       // If response headers contain set-cookie, set the token in session and local storage
       if (response.headers && response.headers['set-cookie']) {
         const token = response.headers['set-cookie']
@@ -167,8 +168,8 @@ function AuthProvider(props) {
           .find((cookie) => cookie.startsWith('Bearer '))
           .split(' ')[1];
         console.log('token:', token);
-        sessionStorage.setItem('sb-zsvpcibqzkxoqqpektgc-auth-token', token);
-        localStorage.setItem('sb-zsvpcibqzkxoqqpektgc-auth-token', token);
+        sessionStorage.setItem('sb:token', token);
+        localStorage.setItem('sb:token', token);
   
         headers['Authorization'] = `Bearer ${token}`; // Add this line to set header
       }

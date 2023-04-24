@@ -17,13 +17,13 @@ export default async function handler(req, res) {
         const { job_title, job_category, job_type, salary_min_range, salary_max_range, job_description, requirement, optional_requirement } = req.body;
 
         // Check if access token exists in headers
-        const {token} = req.body;
-        if (!token) {
+        const authToken = req.headers.authorization?.split(' ')[1];
+        if (!authToken) {
           res.status(401).send({ message: 'Unauthorized. Please provide an access token.' });
           return;
         }
 
-        const { data: user, error } = await supabase.auth.api.getUser(token.replace('Bearer ', ''));
+        const { data: user, error } = await supabase.auth.api.getUser(authToken);
 
         if (error) {
           throw new Error(error.message);
