@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { createClient } from "@supabase/supabase-js";
-import { v4 as uuidv4 } from "uuid";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -31,18 +30,6 @@ function AuthProvider(props) {
     error: null,
     user: true,
   });
-
-  const professionalCvUpload = async (e) => {
-    let file = e.target.files[0];
-    try {
-      const response = await supabase.storage
-        .from("professional_cv")
-        .upload(user.id + "/" + uuidv4, file);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const professionalRegister = async (data) => {
     try {

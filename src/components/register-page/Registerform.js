@@ -5,7 +5,7 @@ import StepThree from "./ProfStepThree";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/authentication";
 
-const Registerform = () => {
+const RegisterForm = () => {
   const { professionalRegister } = useAuth();
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -63,4 +63,4 @@ const Registerform = () => {
   );
 };
 
-export default Registerform;
+export default RegisterForm;
