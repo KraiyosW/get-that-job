@@ -61,46 +61,17 @@ function AuthProvider(props) {
     }
   };
 
-  const professionalLogin = async (data, authToken) => {
+  const professionalLogin = async (data) => {
     try {
-      let token =
-        authToken?.access_token ||
-
-        sessionStorage.getItem('sb:token') ||
-        localStorage.getItem('sb:token') ||
-        '';
-    
-      if (!token) {
-        const { data: session, error: refreshError } =
-          await supabase.auth.refreshSession({
-            refreshToken: authToken?.refresh_token,
-          });
-
-        if (refreshError) {
-          console.log(refreshError.message);
-          return null;
-        }
-
-        sessionStorage.setItem("sb:token", session.access_token);
-        localStorage.setItem("sb:token", session.access_token);
-
-        token = session.access_token;
-      }
-
       const headers = {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       };
-
-      const response = await axios.post(
-        "/api/login-professional",
-        JSON.stringify(data),
-        {
-          headers,
-          withCredentials: true,
-        }
-      );
-
+      const response = await axios.post('/api/login-professional', JSON.stringify(data), {
+        headers,
+        withCredentials: true,
+      });
+      localStorage.setItem('sb:token',response.data.token);
+      console.log(response);
       return response;
     } catch (error) {
       console.error("Error:", error);
@@ -108,43 +79,17 @@ function AuthProvider(props) {
     }
   };
 
-  const recruiterLogin = async (data, authToken) => {
+  const recruiterLogin = async (data) => {
     try {
-      let token =
-        authToken?.access_token ||
-
-        sessionStorage.getItem('sb:token') ||
-        localStorage.getItem('sb:token') ||
-        '';
-  
-      if (!token) {
-        const { data: session, error: refreshError } = await supabase.auth.refreshSession({
-          refreshToken: authToken?.refresh_token,
-        });
-  
-        if (refreshError) {
-          console.log(refreshError.message);
-          return null;
-        }
-
-  
-        sessionStorage.setItem('sb:token', session.access_token);
-        localStorage.setItem('sb:token', session.access_token);
-  
-        token = session.access_token;
-      }
-  
       const headers = {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       };
-
-  
       const response = await axios.post('/api/login-recruiter', JSON.stringify(data), {
         headers,
         withCredentials: true,
       });
-  
+      localStorage.setItem('sb:token',response.data.token);
+      console.log(response);
       return response;
     } catch (error) {
       console.error("Error:", error);
