@@ -1,17 +1,34 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/authentication";
+import Image from "next/image";
+import upload from "@/image/upload.png";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const StepThree = (props) => {
+  const userData = props.userData;
+  const { professionalRegister } = useAuth();
   const router = useRouter();
+
+  const inputFile = useRef(null);
+  const fileNameField = useRef(null);
+
   //user information
   const [jobTitle, setJobTitle] = useState("");
   const [experience, setExperience] = useState("");
   const [education, setEducation] = useState("");
-  const [cv, setCv] = useState("");
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   //validation
   const [errorJob, setErrorJob] = useState("");
   const [errorExp, setErrorExp] = useState("");
   const [errorEducation, setErrorEducation] = useState("");
+  const [errorCv, setErrorCv] = useState(null);
 
   //checking button
   const [buttonClicked, setButtonClicked] = useState(null);
@@ -20,9 +37,10 @@ const StepThree = (props) => {
     setButtonClicked(buttonId);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     let isValid = true;
+    setLoading(true);
 
     if (jobTitle.trim() === "") {
       setErrorJob("Please enter your job title.");
@@ -37,7 +55,7 @@ const StepThree = (props) => {
     if (!experience || experience < 0) {
       setErrorExp("Please enter your professional experience.");
       isValid = false;
-    } else if (education.length < 300 || education.length > 2000) {
+    } else if (experience.length < 300 || experience.length > 2000) {
       setErrorExp(
         "Professional experience must be between 300 and 2000 characters."
       );
@@ -47,7 +65,7 @@ const StepThree = (props) => {
     }
 
     if (education.trim() === "") {
-      setErrorEducation("Please enter your educational background");
+      setErrorEducation("Please enter your educational background.");
       isValid = false;
     } else if (education.length < 300 || education.length > 2000) {
       setErrorEducation(
@@ -58,14 +76,50 @@ const StepThree = (props) => {
       setErrorEducation("");
     }
 
+    if (file === null) {
+      setErrorCv("Please select your CV file.");
+      isValid = false;
+    } else if (file.size > 5 * 1024 * 1024) {
+      setErrorCv("File size should be less than or equal to 5MB.");
+      isValid = false;
+    } else {
+      setErrorCv("");
+    }
+
     if (buttonClicked === "previousButton") {
       props.onPrevious();
     } else if (buttonClicked === "skipButton") {
-      router.push("/login");
+      props.onSkip();
     } else if (buttonClicked === "finishButton") {
       if (isValid) {
-        props.onFinishRegistration({ jobTitle, experience, education, cv });
-        router.push("/login");
+        try {
+          // Upload file to Supabase Storage
+          const fileExt = file.name.split(".").pop();
+          const fileName = `${Math.random()}.${fileExt}`;
+          const filePath = `${fileName}`;
+          const bucket = `professional_cv/${userData.name}`;
+          const profData = {
+            job_title: jobTitle,
+            experience: experience,
+            education: education,
+            cv: filePath,
+          };
+
+          professionalRegister({ ...userData, ...profData });
+
+          const { error: uploadError } = await supabase.storage
+            .from(bucket)
+            .upload(filePath, file);
+          if (uploadError) {
+            throw uploadError;
+          }
+          // Redirect to login
+          router.push("/login");
+        } catch (error) {
+          alert(error.message);
+        } finally {
+          setLoading(false);
+        }
       } else {
         // do nothing
       }
@@ -80,6 +134,12 @@ const StepThree = (props) => {
   }
   function handleEducationChange(event) {
     setEducation(event.target.value);
+  }
+
+  function handleFileUpload(event) {
+    setFile(event.target.files[0]);
+    const uploadedFileName = event.target.files[0].name;
+    fileNameField.current.textContent = uploadedFileName;
   }
 
   return (
@@ -170,7 +230,7 @@ const StepThree = (props) => {
 
       <div className="flex flex-col mt-[32px] max-[767px]:items-center items-start">
         <p id="overline">
-          YOU CAN COMPLETE THIS INFORMAITON LATER BUT WE <br></br>RECCOMED YOU
+          YOU CAN COMPLETE THIS INFORMATION LATER BUT WE <br></br>RECCOMEND YOU
           TO DO IT NOW
         </p>
         <form
@@ -221,11 +281,41 @@ const StepThree = (props) => {
               <p className="text-rose-500">{errorEducation}</p>
             )}
           </div>
+          <div>
+            <p id="overline mb-[4px]">UPLOAD/UPDATE YOUR CV</p>
+            <div className="input-container flex relative justify-between">
+              <input
+                id="upload"
+                name="files"
+                type="file"
+                multiple
+                accept=".pdf"
+                onChange={(e) => handleFileUpload(e)}
+              />
+              <label htmlFor="upload" className="relative">
+                <span>Choose a file</span>
+                <Image
+                  src={upload}
+                  alt="Upload icon"
+                  className="w-[20px] h-[20px] absolute bottom-[9px] left-[6px]"
+                />
+              </label>
+              <p
+                id="file-name"
+                ref={fileNameField}
+                className="text-[14px] text-[#616161] absolute top-[7px] left-[150px]"
+              >
+                No file chosen
+              </p>
+            </div>
+            <p className="mt-[4px] text-[#8E8E8E]">Only PDF. Max size 5MB</p>
+            {errorCv && <p className="text-rose-500">{errorCv}</p>}
+          </div>
           {/* //Button */}
           <div className="flex justify-start">
             <div className="flex max-[767px]:items-center items-start justify-center">
               <button
-                className="button_pink button_previous mt-[16px]"
+                className="button_pink_previous mt-[16px]"
                 onClick={handleButtonClick}
                 id="previousButton"
               >
@@ -247,14 +337,13 @@ const StepThree = (props) => {
                 onClick={handleButtonClick}
                 id="finishButton"
               >
-                FINISH<section id="arrow-right"></section>
+                {loading ? "Loading..." : "FINISH"}
+                {!loading && <section id="arrow-right"></section>}
               </button>
             </div>
           </div>
           {/* <input className="button_pink mt-[16px]" type="submit" name="NEXT" value="NEXT" /> */}
         </form>
-
-        <div></div>
       </div>
     </div>
   );
