@@ -18,24 +18,24 @@ export default async function handler(req, res) {
       case 'POST':
         const { job_title, job_category, job_type, salary_min_range, salary_max_range, job_description, requirement, optional_requirement } = req.body;
 
-        // Check if access token exists in headers
-        const authToken = req.headers.authorization?.split(' ')[1]?.trim();
-        if (!authToken) {
-          res.status(401).send({ message: 'Unauthorized. Please provide an access token.' });
+        // Check if user has logged in
+        const { user } = req.session || {};
+
+        // If user has not logged in, return error response
+        if (!user) {
+          res.status(401).send({ message: 'Unauthorized' });
           return;
         }
 
-        // Verify access token and get user email
-        const decodedToken = jwt.verify(authToken, supabaseSecret);
-        const userEmail = decodedToken?.user_email;
-        if (!userEmail) {
-          res.status(401).send({ message: 'Invalid access token' });
-          return;
+        // Validate input
+        if (!job_title || !job_category || !job_type || !salary_min_range || !salary_max_range || !job_description || !requirement) {
+          throw new Error('Missing required input');
         }
 
-        // Call the RPC function insert_job_posting
-        const { data: jobId, error: rpcError } = await supabase.rpc('insert_job_posting', {
+        const { data, error } = await supabase.rpc('insert_job_posting', {
+          // Send data as object with correct keys
           p_data: {
+            email: user.email,
             job_title: job_title,
             job_category: job_category,
             job_type: job_type,
@@ -45,15 +45,14 @@ export default async function handler(req, res) {
             requirement: requirement,
             optional_requirement: optional_requirement,
             post_status: true
-          },
-          p_email: userEmail
+          }
         });
 
-        if (rpcError) {
-          throw new Error(rpcError.message);
+        if (error) {
+          throw new Error(error.message);
         }
 
-        res.send(jobId);
+        res.send(data);
         break;
 
       default:
