@@ -67,8 +67,8 @@ function AuthProvider(props) {
     try {
       let token =
         authToken?.access_token ||
-        sessionStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
-        localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
+        sessionStorage.getItem('sb:token') ||
+        localStorage.getItem('sb:token') ||
         '';
     
       if (!token) {
@@ -107,42 +107,42 @@ function AuthProvider(props) {
     try {
       let token =
         authToken?.access_token ||
-        sessionStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
-        localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
+        sessionStorage.getItem('sb:token') ||
+        localStorage.getItem('sb:token') ||
         '';
-    
+  
       if (!token) {
-        const { data: session, error: refreshError } =
-          await supabase.auth.refreshSession({ refreshToken: authToken?.refresh_token });
-    
+        const { data: session, error: refreshError } = await supabase.auth.refreshSession({
+          refreshToken: authToken?.refresh_token,
+        });
+  
         if (refreshError) {
           console.log(refreshError.message);
           return null;
         }
-    
+  
         sessionStorage.setItem('sb:token', session.access_token);
         localStorage.setItem('sb:token', session.access_token);
-    
+  
         token = session.access_token;
       }
-    
+  
       const headers = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       };
-    
+  
       const response = await axios.post('/api/login-recruiter', JSON.stringify(data), {
         headers,
         withCredentials: true,
       });
-    
+  
       return response;
     } catch (error) {
       console.error('Error:', error);
       throw error;
     }
   };
-  
 
 
   const logoutAuth = async () => {
