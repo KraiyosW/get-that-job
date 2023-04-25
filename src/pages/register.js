@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Navigatebar from "../components/Navigatebar.js";
 import RegisterForm from "../components/register-page/RegisterForm.js";
-import RecruiterForm from "../components/register-page/RecruiterForm.js";
+import RecruiterFormUi from "../components/register-page/RecruiterFormUi.js";
 import BackgroundWoman from "../components/BackgroundWoman.js";
 import React, { useState } from "react";
 import Script from "next/script.js";
@@ -60,7 +60,7 @@ export default function Register() {
             <p id="body2  mb-[6px]">RECRUITER</p>
           </button>
         </div>
-        {activeTab === "regular" ? <RegisterForm /> : <RecruiterForm />}
+        {activeTab === "regular" ? <RegisterForm /> : <RecruiterFormUi />}
       </BackgroundWoman>
     </>
   );

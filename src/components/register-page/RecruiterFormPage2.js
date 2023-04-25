@@ -1,105 +1,160 @@
-import React from 'react'
+import React from "react";
 import Image from "next/image";
 import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuth } from "@/contexts/authentication";
+import { createClient } from "@supabase/supabase-js";
 
+const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+const RecruiterFormPage2 = (props) => {
+  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorCompany, setErrorCompany] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [passwordIcon, setPasswordIcon] = useState(false);
+  const [showPasswordIcon, setShowPasswordIcon] = useState(false);
+  const { recruiterRegister } = useAuth();
+  const [fileChosen, setFileChosen] = useState(false);
+  const [avatars, setAvatars] = useState({});
+  const supabase = createClient(supabaseURL, supabaseAnonKey);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
-const RecruiterFormPage2 = () => {
-    const [email, setEmail] = useState('');
-    const [company, setCompany] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordConfirm, setPasswordConfirm] = useState('')
-    const [errorMessage, setErrorMessage] = useState('');
-    const [errorCompany, setErrorCompany] = useState('')
-    const [errorPassword, setErrorPassword] = useState('');
-    const [errorPasswordConfirm, setErrorPasswordConfirm] = useState('')
-    const [showPassword, setShowPassword] = useState(false);
-    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-    const [passwordIcon, setPasswordIcon] = useState(false);
-    const [showPasswordIcon, setShowPasswordIcon] = useState(false);
-    const {recruiterRegister} = useAuth();
-    const [fileChosen, setFileChosen] = useState(false);
-    
+  function handleFileInputChange(event) {
+    const file = event.target.files[0];
+    setSelectedFile(file);
 
-  
-  
-    async function handleSubmit(event) {
-      event.preventDefault();
-      setErrorMessage('');
-      setErrorPassword('');
-      setErrorPasswordConfirm('')
-      setErrorCompany('')
-      if (!company) {
-        setErrorCompany('Please fill a company name')
-      }
-      if (!email.match(/[a-zA-Z0-9._]/)) {
-        setErrorMessage('Between 100 and 2000 characters');
-        return;
-      }
-  
-      if (password.length < 7) {
-        setErrorPassword('Password must be at least 8 characters long.');
-        return;
-      }
-      if (password !== passwordConfirm) {
-        setErrorPasswordConfirm("* Password doesn't match");
-        return;
-      }
-      
-      const data = {email,password}
-      recruiterRegister(data);
-    
-      
-      console.log('Company Name:', company);
-      console.log('Email:', email);
-      console.log('Password', password);
-    
-  
-    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
 
-    
-
-
-    function handleEmailChange(event) {
-      setEmail(event.target.value);
-    }
-    function handleCompanyChange(event) {
-      setCompany(event.target.value)
-    }
-    function handlePasswordChange(event) {
-      setPassword(event.target.value)
-    }
-    function handlePasswordConfirmChange(event) {
-      setPasswordConfirm(event.target.value)
-    }
-  
-    function handleShowPassword(event) {
-      if (showPassword && passwordIcon) {
-        setShowPassword(false);
-        setPasswordIcon(false);
-      } else {
-        setShowPassword(true);
-        setPasswordIcon(true);
-      }
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
     };
-  
-    function handleShowPasswordConfirm(event) {
-      if (showPasswordConfirm && showPasswordIcon) {
-        setShowPasswordConfirm(false);
-        setShowPasswordIcon(false);
-      } else {
-        setShowPasswordConfirm(true);
-        setShowPasswordIcon(true);
-      }
-    };
+  }
 
-    function handleFileChoose() {
-      setFileChosen(true);
+  const handleUpdateProfile = async (event) => {
+    event.preventDefault();
+
+    const fileInput = document.getElementById("fileInput");
+    const file = fileInput.files[0];
+    let isValid = true;
+    console.log("file", file);
+    if (!file) {
+      alert("Please select a file to upload.");
+      return;
     }
-    
+
+    const { data, error } =
+      (await supabase.storage
+        .from("profiles/recruiter")
+        .upload(`user-${Date.now()}`, file)) && isValid;
+    props.onFinishRegistration({ companyWebsite, aboutCompany, logo });
+    router.push("/login");
+
+    if (error) {
+      alert("Error uploading file: ", error.message);
+    } else {
+      alert("File uploaded successfully!");
+    }
+  };
+
+  // console.log('file', file)
+  // const handleFileChange = (event) => {
+  //   const uniqueId = Date.now();
+  //   setAvatars({
+  //     ...avatars,
+  //     [uniqueId]: event.target.files[0],
+  //   });
+  // };
+  // const handleRemoveImage = (event, avatarKey) => {
+  //   event.preventDefault();
+  //   delete avatars[avatarKey];
+  //   setAvatars({ ...avatars });
+  // };
+
+  const router = useRouter();
+  //user information
+  const [companyWebsite, setCompanyWebsite] = useState("");
+  const [aboutCompany, setAboutCompany] = useState("");
+  const [logo, setLogo] = useState("");
+
+  const [buttonClicked, setButtonClicked] = useState(null);
+  const handleButtonClick = (event) => {
+    const buttonId = event.target.id;
+    setButtonClicked(buttonId);
+  };
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    let isValid = true;
+    setErrorCompany("");
+    setErrorMessage("");
+    if (buttonClicked === "skipButton") {
+      router.push("/login");
+    }
+    if (!companyWebsite.match(/^[a-zA-Z0-9._:/]+\.[a-zA-Z0-9]+\.[A-Za-z/]+$/)) {
+      setErrorCompany("Please fill a company website");
+      isValid = false;
+    }
+    if (!aboutCompany.match(/[a-zA-Z0-9._/]/)) {
+      setErrorMessage("Between 100 and 2000 characters");
+      return;
+    }
+    if (buttonClicked === "finishButton") {
+      if (isValid) {
+        props.onFinishRegistration({ companyWebsite, aboutCompany, logo });
+        router.push("/login");
+      } else {
+        // do nothing
+      }
+    }
+
+    // const data = {email,password}
+    // recruiterRegister(data);
+
+    console.log("Company Name:", company);
+    console.log("Email:", email);
+    console.log("Password", password);
+  }
+
+  function handleCompanyWebsiteChange(event) {
+    setCompanyWebsite(event.target.value);
+  }
+  function handleAboutCompanyChange(event) {
+    setAboutCompany(event.target.value);
+  }
+
+  function handleShowPassword(event) {
+    if (showPassword && passwordIcon) {
+      setShowPassword(false);
+      setPasswordIcon(false);
+    } else {
+      setShowPassword(true);
+      setPasswordIcon(true);
+    }
+  }
+
+  function handleShowPasswordConfirm(event) {
+    if (showPasswordConfirm && showPasswordIcon) {
+      setShowPasswordConfirm(false);
+      setShowPasswordIcon(false);
+    } else {
+      setShowPasswordConfirm(true);
+      setShowPasswordIcon(true);
+    }
+  }
+
+  function handleFileChoose() {
+    setFileChosen(true);
+  }
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-row flex-wrap max-[767px]:justify-center justify-start">
@@ -174,8 +229,8 @@ const RecruiterFormPage2 = () => {
               name="company"
               placeholder="https://www.mycompany.sa"
               type="text"
-              value={company}
-              onChange={handleCompanyChange}
+              value={companyWebsite}
+              onChange={handleCompanyWebsiteChange}
             />
             {errorCompany && <p className="text-rose-500">{errorCompany}</p>}
           </div>
@@ -184,6 +239,9 @@ const RecruiterFormPage2 = () => {
             <textarea
               className="sticky top-0 border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[600px] h-[76px]"
               placeholder="My Company SA has the vision to change thw way how..."
+              type="text"
+              value={aboutCompany}
+              onChange={handleAboutCompanyChange}
             ></textarea>
 
             {errorMessage && <p className="text-[#8E8E8E]">{errorMessage}</p>}
@@ -192,22 +250,49 @@ const RecruiterFormPage2 = () => {
               <p className="w-[380px] h-auto leading-tight uppercase mb-[3px] mt-[5px]">
                 Upload the company logo
               </p>
-              <div className="flex items-center">
-                <button className="button_pink_file" onClick={handleFileChoose}>
-                  <section id="arrow-top"></section>Choose a file
-                </button>
-                {!fileChosen && <p className="ml-2">No file chosen</p>}
+              <div className="flex items-center relative">
+                <label htmlFor="file-input" class="custom-file-upload">
+                  <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/*"
+                    onChange={handleFileInputChange}
+                  />
+                  <div className="icon-file">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2.5 15.8333H17.5V17.5H2.5V15.8333ZM10.8333 4.85663V14.1666H9.16667V4.85663L4.1075 9.91663L2.92917 8.73829L10 1.66663L17.0708 8.73746L15.8925 9.91579L10.8333 4.85829V4.85663Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </div>
+                </label>
               </div>
               <p className="text-[#8E8E8E] text-sm mt-1">
                 Only PDF. Max size 5MB
               </p>
             </div>
-
           </div>
 
           <div className="flex max-[767px]:items-center items-start justify-center gap-[20px]">
-            <button className="button_white mt-[16px]">SKIP THIS!</button>
-            <button className="button_pink mt-[16px]">
+            <button
+              className="button_white mt-[16px]"
+              onClick={handleButtonClick}
+              id="skipButton"
+            >
+              SKIP THIS!
+            </button>
+            <button
+              className="button_pink mt-[16px]"
+              onClick={handleUpdateProfile}
+              id="finishButton"
+            >
               Finish<section id="arrow-right"></section>
             </button>
           </div>
@@ -216,6 +301,6 @@ const RecruiterFormPage2 = () => {
       </div>
     </div>
   );
-}
+};
 
-export default RecruiterFormPage2
+export default RecruiterFormPage2;
