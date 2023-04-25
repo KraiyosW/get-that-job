@@ -39,7 +39,7 @@ const RecruiterLogin = () => {
     try {
       const data = { email, password };
       const authToken = JSON.parse(localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token'));
-      await recruiterLogin(data, authToken);
+      await recruiterLogin(data,authToken);
       router.push('/jobPostings');
     } catch (error) {
       console.error('Error:', error);

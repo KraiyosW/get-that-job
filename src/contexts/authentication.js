@@ -63,121 +63,79 @@ function AuthProvider(props) {
     }
   };
 
-  const professionalLogin = async (data) => {
+  const professionalLogin = async (data,authToken) => {
     try {
-      let token = sessionStorage.getItem('sb:token') || localStorage.getItem('sb:token');
+      let token =
+        authToken?.access_token ||
+        sessionStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
+        localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
+        '';
+    
       if (!token) {
-        const { data: session, error: refreshError } = await supabase.auth.refreshSession();
-  
+        const { data: session, error: refreshError } =
+          await supabase.auth.refreshSession({ refreshToken: authToken?.refresh_token });
+    
         if (refreshError) {
           console.log(refreshError.message);
           return null;
         }
-  
+    
         sessionStorage.setItem('sb:token', session.access_token);
         localStorage.setItem('sb:token', session.access_token);
+    
         token = session.access_token;
       }
-  
-      console.log('token:', token);
-  
+    
       const headers = {
-        "Content-Type": "application/json",
-        // ตรวจสอบว่า token มีค่าหรือไม่ ถ้ามีให้เพิ่มใน header
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       };
-      
-      const response = await axios.post(
-        "/api/login-professional",
-        JSON.stringify(data),
-        {
-          headers,
-          credentials: "include"
-        }
-      );
-  
-      console.log('headers:', headers);
-      console.log('token:', token);
-  
-      if (response.headers && response.headers['set-cookie']) {
-        const token = response.headers['set-cookie']
-          .split('; ')
-          .find(cookie => cookie.startsWith('sb:token='))
-          .split('=')[1];
-        console.log('token:', token);
-        sessionStorage.setItem('sb:token', token);
-        localStorage.setItem('sb:token', token);
-      }
-  
-      if (response.data && response.data.user) {
-        console.log(response.data.user);
-      }
-  
+    
+      const response = await axios.post('/api/login-professional', JSON.stringify(data), {
+        headers,
+        withCredentials: true,
+      });
+    
       return response;
     } catch (error) {
       console.error('Error:', error);
       throw error;
     }
-  }
+  };
 
   const recruiterLogin = async (data, authToken) => {
     try {
       let token =
         authToken?.access_token ||
-        sessionStorage.getItem('sb:token') ||
-        localStorage.getItem('sb:token') ||
+        sessionStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
+        localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
         '';
-  
+    
       if (!token) {
         const { data: session, error: refreshError } =
           await supabase.auth.refreshSession({ refreshToken: authToken?.refresh_token });
-  
+    
         if (refreshError) {
           console.log(refreshError.message);
           return null;
         }
-  
+    
         sessionStorage.setItem('sb:token', session.access_token);
         localStorage.setItem('sb:token', session.access_token);
-        console.log(session);
-  
+    
         token = session.access_token;
       }
-  
-      console.log('token:', token);
-  
-  
+    
       const headers = {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       };
-  
+    
       const response = await axios.post('/api/login-recruiter', JSON.stringify(data), {
         headers,
         withCredentials: true,
       });
-  
-      console.log('headers:', headers);
-      console.log('token:', token);
-      console.log(response);
-  
-      // If response headers contain set-cookie, set the token in session and local storage
-      if (response.headers && response.headers['set-cookie']) {
-        const token = response.headers['set-cookie']
-          .split(' ')
-          .find((cookie) => cookie.startsWith('Bearer '))
-          .split(' ')[1];
-        console.log('token:', token);
-        sessionStorage.setItem('sb:token', token);
-        localStorage.setItem('sb:token', token);
-  
-        headers['Authorization'] = `Bearer ${token}`; // Add this line to set header
-      }
-  
-      if (response.data && response.data.user) {
-        console.log(response.data.user);
-      }
-  
+    
       return response;
     } catch (error) {
       console.error('Error:', error);

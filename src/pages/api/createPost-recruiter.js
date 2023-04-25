@@ -1,10 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+const supabaseSecret = process.env.SUPABASE_JWT_SECRET
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -23,50 +25,43 @@ export default async function handler(req, res) {
           return;
         }
 
-        const { data: user, error } = await supabase.auth.api.getUser(authToken);
-
-        if (error) {
-          throw new Error(error.message);
-        }
-        
-        // If user has not logged in, return error response
-        if (!user) {
-          res.status(401).send({ message: 'Unauthorized. Please login before creating a job posting.' });
+        const decoded = jwt.verify(authToken, supabaseSecret, { ignoreExpiration: false });
+        if (!decoded || !decoded.user || !decoded.user.email) {
+          res.status(401).send({ message: 'Invalid access token' });
           return;
         }
 
-        // Validate input
-        if (!job_title || !job_category || !job_type || !salary_min_range || !salary_max_range || !job_description || !requirement) {
-          throw new Error('Missing required input');
-        }
+        const user = decoded.user;
 
-        const { data: recruiter, error: recruiterError } = await supabase
+        console.log(user);
+
+        const { data: recruiters, error: recruitersError } = await supabase
           .from('recruiters')
           .select('id, role')
           .eq('email', user.email)
           .single();
 
-        if (recruiterError) {
-          throw new Error(recruiterError.message);
+        if (recruitersError) {
+          throw new Error(recruitersError.message);
         }
 
-        if (!recruiter || recruiter.role !== 'recruiter') {
-          res.status(401).send({ message: `Recruiter email ${user.email} not found or invalid role` });
+        if (!recruiters || recruiters.role !== 'recruiter') {
+          res.status(401).send({ message: `Recruiter email ${email} not found or invalid role` });
           return;
         }
 
         const { data, error: insertError } = await supabase
           .from('jobs_postings')
           .insert({
-            recruiter: recruiter.id,
-            job_title,
-            job_category,
-            job_type,
-            salary_min_range,
-            salary_max_range,
-            job_description,
-            requirement,
-            optional_requirement,
+            recruiter_id: recruiters.id,
+            job_title : job_title,
+            job_category : job_category,
+            job_type : job_type,
+            salary_min_range : salary_min_range,
+            salary_max_range : salary_max_range,
+            job_description : job_description,
+            requirement : requirement,
+            optional_requirement : optional_requirement,
             post_status: true, // Set default post status to true
           })
           .single();

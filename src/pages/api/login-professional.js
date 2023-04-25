@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
 import dotenv from 'dotenv'
-import { parseCookies, setCookie } from 'nookies'
 
 dotenv.config()
 
@@ -11,14 +10,12 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default async function handler(req, res) {
   const { email, password } = req.body
-
   try {
-    const { user, error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) {
       console.log(error)
       res.status(400).json({ message: error.message })
     } else {
-      // Check if user is a recruiter
       const { data: professional, error: professionalError } = await supabase
         .from('professional')
         .select('*')
@@ -30,32 +27,13 @@ export default async function handler(req, res) {
         throw new Error(professionalError.message)
       }
 
+      console.log(data)
       // Check if there are any professional associated with this email
       if (professional.length === 0) {
         res.status(401).json({ message: 'Unauthorized' })
       } else {
-        const cookies = parseCookies({ req })
-
-        // If no session, refresh it and send it back in HTTP response header
-        if (!cookies['sb:token']) {
-          const { data: session, error: sessionError } = await supabase.auth.getSession()
-          if (sessionError) {
-            console.log(sessionError)
-            throw new Error(sessionError.message)
-          }
-
-          setCookie({ res }, 'sb:token', session.access_token, {
-            maxAge: session.expires_in,
-            path: '/',
-            domain: process.env.SUPABASE_URL,
-            sameSite: 'lax'
-          })
-          res.setHeader('Authorization', `Bearer ${session.access_token}`)
-        } else {
-          res.setHeader('Authorization', `Bearer ${cookies['sb:token']}`)
-        }
-
-        res.status(200).json({ user })
+        res.setHeader('Authorization', `Bearer ${data.session.access_token}`)
+        res.status(200).json({ user: data.user })
       }
     }
   } catch (error) {
