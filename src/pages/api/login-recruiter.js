@@ -9,9 +9,9 @@ const supabaseAnonKey = process.env.SUPABASE_ANON_KEY
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default async function handler(req, res) {
-  const { email, password } = req.body
+  const { email, password } = req.body 
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error  } = await supabase.auth.signInWithPassword({ email, password })
     if (error) {
       console.log(error)
       res.status(400).json({ message: error.message })
@@ -32,8 +32,7 @@ export default async function handler(req, res) {
       if (recruiters.length === 0) {
         res.status(401).json({ message: 'Unauthorized' })
       } else {
-        res.setHeader('Authorization', `Bearer ${data.session.access_token}`)
-        res.status(200).json({ user: data.user })
+        res.status(200).json({ user: data , token : data.session.access_token })
       }
     }
   } catch (error) {
