@@ -7,6 +7,10 @@ dotenv.config()
 const supabaseUrl = process.env.SUPABASE_URL
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY
 
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('SUPABASE_URL and SUPABASE_ANON_KEY are required.')
+}
+
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default async function handler(req, res) {
@@ -19,9 +23,6 @@ export default async function handler(req, res) {
       const { user, error } = await supabase.auth.signUp({
         email,
         password,
-        app_metadata: {
-          role: 'recruiter'
-        }
       })
 
       console.log(user)

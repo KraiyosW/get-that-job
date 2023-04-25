@@ -24,6 +24,7 @@ export default function Login() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
           <Script src="https://cdn.tailwindcss.com"/>
+          <Script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></Script>
         </Head>
       <Navigatebar />
       <BackgroundMan>
