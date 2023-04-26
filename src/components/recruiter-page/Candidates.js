@@ -5,8 +5,15 @@ import phone from "../../image/phone.png"
 import JobDate from "../../image/job-date.png";
 import waiting from "../../image/waiting.png";
 import download from "../../image/download.png";
+import { useState } from "react";
 
 function Candidates() {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
       <>
         <div className="flex flex-col">
@@ -92,9 +99,48 @@ function Candidates() {
                     />
                     EDIT
                   </button> */}
+                                  <button
+                onClick={toggleExpanded}
+                className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px] mt-[30px]"
+              >
+                <span className="ml-1">
+                  {isExpanded ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 inline"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 15l7-7 7 7"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 inline"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  )}
+                </span>
+              </button>
                 </div>
               </div>
               <div>
+              <div className={`mt-1 mb-2 ${isExpanded ? "" : "hidden"}`}>
                 <p className="text-pink-tertiary mt-[10px] mb-[8px]" id="body1">
                   About the job position
                 </p>
@@ -112,7 +158,6 @@ function Candidates() {
                   Aliquam mattis quis quam ut faucibus. Duis finibus nulla nec
                   enim eleifend dapibus.
                 </p>
-              </div>
               <div>
                 <p className="text-pink-tertiary mt-[16px] mb-[8px]" id="body1">
                   About the job position
@@ -160,6 +205,8 @@ function Candidates() {
                       />
               Download cv
                   </button>
+                  </div>
+                  </div>
                   </div>
             </div>
           </div>

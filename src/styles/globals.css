@@ -269,7 +269,28 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border: none;
   background: transparent;
 }
-
+input#fileInput::-webkit-file-upload-button{
+  visibility: hidden;
+}
+input#fileInput::before {
+  content: 'Choose a file';
+  display: inline-block;
+  border-radius: 8px;
+  padding: 8px;
+  outline: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+  margin-right: -102px;
+  background: #F48FB1;
+  color: white;
+  padding-left: 40px;
+  padding-right: 12px;
+}
+.icon-file {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
 /* h1 {
   font-size: 97px;
   line-height: 118px;
