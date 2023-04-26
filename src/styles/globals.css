@@ -269,6 +269,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border: none;
   background: transparent;
 }
+
 input#fileInput::-webkit-file-upload-button{
   visibility: hidden;
 }
@@ -291,6 +292,7 @@ input#fileInput::before {
   top: 10px;
   left: 10px;
 }
+
 /* h1 {
   font-size: 97px;
   line-height: 118px;
@@ -373,3 +375,6 @@ button {
   line-height: 24px;
   font-weight: 500;
 } */
+
+
+}
