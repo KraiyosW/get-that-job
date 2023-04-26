@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const RecruiterPostContext = React.createContext({
@@ -27,7 +28,7 @@ export const useRecruiterPost = () => {
       let token =
         authToken?.access_token ||
         sessionStorage.getItem('sb:token') ||
-        localStorage.getItem('sb-token') ||
+        localStorage.getItem('sb:token') ||
         '';
 
       console.log('token', token);
