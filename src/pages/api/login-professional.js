@@ -11,7 +11,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 export default async function handler(req, res) {
   const { email, password } = req.body 
   try {
-    const { data, error  } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) {
       console.log(error)
       res.status(400).json({ message: error.message })
@@ -32,7 +32,9 @@ export default async function handler(req, res) {
       if (professional.length === 0) {
         res.status(401).json({ message: 'Unauthorized' })
       } else {
-        res.status(200).json({ user: data , token : data.session.access_token })
+        const token = data.session.access_token
+        res.status(200).json({ user: data , token })
+        res.setHeader('Authorization', `Bearer ${token}`)
       }
     }
   } catch (error) {

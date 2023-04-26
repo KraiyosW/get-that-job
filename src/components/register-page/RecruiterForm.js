@@ -1,70 +1,70 @@
 import Image from "next/image";
 import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
-import React from "react"
+import React from "react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/authentication";
+import RecruiterFormPage2 from "../register-page/RecruiterFormPage2";
 
-const RecruiterForm = () => {
-  const [email, setEmail] = useState('');
-  const [company, setCompany] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('')
-  const [errorMessage, setErrorMessage] = useState('');
-  const [errorCompany, setErrorCompany] = useState('')
-  const [errorPassword, setErrorPassword] = useState('');
-  const [errorPasswordConfirm, setErrorPasswordConfirm] = useState('')
+const RecruiterForm = (props) => {
+  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorCompany, setErrorCompany] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [errorPasswordConfirm, setErrorPasswordConfirm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [showPasswordIcon, setShowPasswordIcon] = useState(false);
-  const {recruiterRegister} = useAuth();
-
+  const { recruiterRegister } = useAuth();
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setErrorMessage('');
-    setErrorPassword('');
-    setErrorPasswordConfirm('')
-    setErrorCompany('')
+    let isValid = true;
+    setErrorMessage("");
+    setErrorPassword("");
+    setErrorPasswordConfirm("");
+    setErrorCompany("");
     if (!company) {
-      setErrorCompany('Please fill a company name')
+      setErrorCompany("Please fill a company name");
     }
     if (!email.match(/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
-      setErrorMessage('Invalid email address.');
+      setErrorMessage("Invalid email address.");
       return;
     }
 
     if (password.length < 7) {
-      setErrorPassword('Password must be at least 8 characters long.');
+      setErrorPassword("Password must be at least 8 characters long.");
       return;
     }
     if (password !== passwordConfirm) {
       setErrorPasswordConfirm("* Password doesn't match");
       return;
     }
-    
-    const data = {email,password}
-    recruiterRegister(data);
-  
-    
-    console.log('Company Name:', company);
-    console.log('Email:', email);
-    console.log('Password', password);
-  
+    if (isValid) {
+      const data = { email, password, company_name: company };
+      recruiterRegister(data);
+      props.onNext();
+    }
 
+    console.log("Company Name:", company);
+    console.log("Email:", email);
+    console.log("Password", password);
   }
   function handleEmailChange(event) {
     setEmail(event.target.value);
   }
   function handleCompanyChange(event) {
-    setCompany(event.target.value)
+    setCompany(event.target.value);
   }
   function handlePasswordChange(event) {
-    setPassword(event.target.value)
+    setPassword(event.target.value);
   }
   function handlePasswordConfirmChange(event) {
-    setPasswordConfirm(event.target.value)
+    setPasswordConfirm(event.target.value);
   }
 
   function handleShowPassword(event) {
@@ -75,7 +75,7 @@ const RecruiterForm = () => {
       setShowPassword(true);
       setPasswordIcon(true);
     }
-  };
+  }
 
   function handleShowPasswordConfirm(event) {
     if (showPasswordConfirm && showPasswordIcon) {
@@ -85,7 +85,7 @@ const RecruiterForm = () => {
       setShowPasswordConfirm(true);
       setShowPasswordIcon(true);
     }
-  };
+  }
 
   return (
     <div className="flex flex-col">
@@ -186,14 +186,12 @@ const RecruiterForm = () => {
                 onChange={handlePasswordChange}
               />
 
-
               <Image
                 onClick={handleShowPassword}
                 alt="far fa eye"
                 src={showPassword ? visibility : invisibility}
                 className="w-[20px] absolute top-[8px] right-[10px] opacity-25 cursor-pointer"
               />
-
             </div>
             {errorPassword && <p className="text-rose-500">{errorPassword}</p>}
           </div>
@@ -211,16 +209,16 @@ const RecruiterForm = () => {
                 onChange={handlePasswordConfirmChange}
               />
 
-
               <Image
                 onClick={handleShowPasswordConfirm}
                 alt="far fa eye"
                 src={showPasswordConfirm ? visibility : invisibility}
                 className="w-[20px] absolute top-[8px] right-[10px] opacity-25 cursor-pointer"
               />
-
             </div>
-            {errorPasswordConfirm && <p className="text-rose-500">{errorPasswordConfirm}</p>}
+            {errorPasswordConfirm && (
+              <p className="text-rose-500">{errorPasswordConfirm}</p>
+            )}
           </div>
 
           {/* css maybe use position for push in same div with passwordConfirm input */}
@@ -233,8 +231,9 @@ const RecruiterForm = () => {
           {/* <input className="button_pink mt-[16px]" type="submit" name="NEXT" value="NEXT" /> */}
         </form>
       </div>
+
     </div>
   );
-}
+};
 
 export default RecruiterForm;

@@ -1,12 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
-import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken';
-
-dotenv.config();
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-const supabaseSecret = process.env.JWT_SECRET;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -14,26 +9,25 @@ export default async function handler(req, res) {
   const { method } = req;
 
   try {
+    
     switch (method) {
       case 'POST':
-        const { job_title, job_category, job_type, salary_min_range, salary_max_range, job_description, requirement, optional_requirement } = req.body;
+        const {
+          job_title,
+          job_category,
+          job_type,
+          salary_min_range,
+          salary_max_range,
+          job_description,
+          requirement,
+          optional_requirement,
+          p_email
+        } = req.body;
 
-        // Check if user has logged in
-        const { user } = req.session || {};
+        // Call the RPC function insert_job_posting
+        await supabase.rpc('refresh_schema');
 
-        // If user has not logged in, return error response
-        if (!user) {
-          res.status(401).send({ message: 'Unauthorized' });
-          return;
-        }
-
-        // Validate input
-        if (!job_title || !job_category || !job_type || !salary_min_range || !salary_max_range || !job_description || !requirement) {
-          throw new Error('Missing required input');
-        }
-
-        const { data, error } = await supabase.rpc('insert_job_posting', {
-          // Send data as object with correct keys
+        const { data: jobId, error: rpcError } = await supabase.rpc('insert_job_posting', {
           p_data: {
             email: user.email,
             job_title: job_title,
@@ -44,8 +38,10 @@ export default async function handler(req, res) {
             job_description: job_description,
             requirement: requirement,
             optional_requirement: optional_requirement,
-            post_status: true
-          }
+            post_status: true,
+          },
+          p_email: p_email,
+
         });
 
         if (error) {
