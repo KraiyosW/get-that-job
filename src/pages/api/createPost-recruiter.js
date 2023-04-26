@@ -29,6 +29,7 @@ export default async function handler(req, res) {
 
         const { data: jobId, error: rpcError } = await supabase.rpc('insert_job_posting', {
           p_data: {
+            email: user.email,
             job_title: job_title,
             job_category: job_category,
             job_type: job_type,
@@ -40,13 +41,14 @@ export default async function handler(req, res) {
             post_status: true,
           },
           p_email: p_email,
+
         });
 
-        if (rpcError) {
-          throw new Error(rpcError.message);
+        if (error) {
+          throw new Error(error.message);
         }
 
-        res.send(jobId);
+        res.send(data);
         break;
 
       default:
