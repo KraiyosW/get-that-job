@@ -19,6 +19,7 @@ function CreateNewJob() {
   const [errorJob_type, setErrorJob_type] = useState("");
   const [errorJob_descrition, setErrorJob_descrition] = useState("");
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorJob_title("");

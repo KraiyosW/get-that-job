@@ -28,8 +28,10 @@ function AuthProvider(props) {
   const [state, setState] = useState({
     loading: true,
     error: null,
-    user: true,
+    user: null,
+    email : null
   });
+  
 
   const professionalRegister = async (data) => {
     try {
@@ -71,6 +73,7 @@ function AuthProvider(props) {
         withCredentials: true,
       });
       localStorage.setItem('sb:token',response.data.token);
+      setState({...setState, user : response.data.user.user , email : response.data.user.user.email })
       console.log(response);
       return response;
     } catch (error) {
@@ -90,6 +93,7 @@ function AuthProvider(props) {
       });
       localStorage.setItem('sb:token',response.data.token);
       console.log(response);
+      setState({...setState, user : response.data.user.user , email : response.data.user.user.email })
       return response;
     } catch (error) {
       console.error("Error:", error);
@@ -100,8 +104,8 @@ function AuthProvider(props) {
   const logoutAuth = async () => {
     try {
       await axios.post("/api/logout");
-      localStorage.removeItem("token");
-      sessionStorage.removeItem("token");
+      localStorage.removeItem("sb:token");
+      sessionStorage.removeItem("sb:token");
       setState({ ...state, user: null });
       document.cookie =
         "sb:token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite:true; Secure";
