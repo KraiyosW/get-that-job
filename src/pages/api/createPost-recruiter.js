@@ -21,10 +21,12 @@ export default async function handler(req, res) {
           job_description,
           requirement,
           optional_requirement,
-          userEmail
+          p_email
         } = req.body;
 
         // Call the RPC function insert_job_posting
+        await supabase.rpc('refresh_schema');
+
         const { data: jobId, error: rpcError } = await supabase.rpc('insert_job_posting', {
           p_data: {
             job_title: job_title,
@@ -37,7 +39,7 @@ export default async function handler(req, res) {
             optional_requirement: optional_requirement,
             post_status: true,
           },
-          p_email: userEmail,
+          p_email: p_email,
         });
 
         if (rpcError) {
