@@ -91,7 +91,7 @@ function AuthProvider(props) {
         headers,
         withCredentials: true,
       });
-      localStorage.setItem('sb:token',response.data.token);
+      localStorage.setItem('sb:token', response.data.token);
       console.log(response);
       setState({...setState, user : response.data.user.user , email : response.data.user.user.email })
       return response;
