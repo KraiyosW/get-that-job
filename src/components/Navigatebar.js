@@ -23,7 +23,7 @@ const Navigatebar = () => {
             <button >SIGN UP</button>
           </div>
         </Link>
-        <Link href="/Login">
+        <Link href="/login">
           <div className="group flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[150px] my-[8px] h-[45px] justify-center gap-[7px] mr-2 min-[767px]:mr-[15px] hover:text-white hover:bg-pink-primary duration-[0.5s] active:opacity-[50%]">
             <Image alt="login-icon" src={login} className="group-hover:brightness-[250%] duration-[0.5s]" />
             <button>LOGIN</button>
