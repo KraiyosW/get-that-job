@@ -1,16 +1,20 @@
 import { useState } from "react";
-import RecruiterForm from "../register-page/RecruiterForm"
-import RecruiterFormPage2 from "../register-page/RecruiterFormPage2"
+import RecruiterForm from "../register-page/RecruiterForm";
+import RecruiterFormPage2 from "../register-page/RecruiterFormPage2";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/authentication";
 
-
 const RecruiterFormUi = () => {
+  const { recruiterRegister } = useAuth();
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [userData, setUserData] = useState({
-    companyWebsite: "",
-    aboutCompany: "",
-    logo: "",
+    email: null,
+    password: null,
+    company_name: null,
+    // company_website: null,
+    // about_company: null,
+    // logo: null,
   });
 
   const handleNextStep = (data) => {
@@ -18,30 +22,25 @@ const RecruiterFormUi = () => {
     setStep(step + 1);
   };
 
-
-  const handleFinishRegistration = async (data) => {
+  const handleSkip = () => {
     setUserData({ ...userData, ...data });
-    try {
-      const response = await axios.post("/api/signup-recruiter", userData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response);
-      alert("Information completed!");
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Information failed.");
-    }
+    router.push("/login");
+    recruiterRegister(userData);
+  };
+
+  const handleFinishRegistration = (data) => {
+    setUserData({ ...userData, ...data });
   };
 
   return (
     <div>
       {step === 1 && <RecruiterForm onNext={handleNextStep} />}
       {step === 2 && (
-        <RecruiterFormPage2  onFinishRegistration={handleFinishRegistration}/>
+        <RecruiterFormPage2 
+        userData={userData}
+        onSkip={handleSkip}
+        onFinishRegistration={handleFinishRegistration} />
       )}
-
     </div>
   );
 };

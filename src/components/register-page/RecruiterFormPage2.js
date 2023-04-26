@@ -20,12 +20,13 @@ const RecruiterFormPage2 = (props) => {
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [passwordIcon, setPasswordIcon] = useState(false);
   const [showPasswordIcon, setShowPasswordIcon] = useState(false);
-  const { recruiterRegister } = useAuth();
-  const [fileChosen, setFileChosen] = useState(false);
-  const [avatars, setAvatars] = useState({});
   const supabase = createClient(supabaseURL, supabaseAnonKey);
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const userData = props.userData;
+  const { recruiterRegister } = useAuth();
+  const router = useRouter();
 
   function handleFileInputChange(event) {
     const file = event.target.files[0];
@@ -65,21 +66,6 @@ const RecruiterFormPage2 = (props) => {
     }
   };
 
-  // console.log('file', file)
-  // const handleFileChange = (event) => {
-  //   const uniqueId = Date.now();
-  //   setAvatars({
-  //     ...avatars,
-  //     [uniqueId]: event.target.files[0],
-  //   });
-  // };
-  // const handleRemoveImage = (event, avatarKey) => {
-  //   event.preventDefault();
-  //   delete avatars[avatarKey];
-  //   setAvatars({ ...avatars });
-  // };
-
-  const router = useRouter();
   //user information
   const [companyWebsite, setCompanyWebsite] = useState("");
   const [aboutCompany, setAboutCompany] = useState("");
@@ -94,6 +80,7 @@ const RecruiterFormPage2 = (props) => {
   async function handleSubmit(event) {
     event.preventDefault();
     let isValid = true;
+    setLoading(true);
     setErrorCompany("");
     setErrorMessage("");
     if (buttonClicked === "skipButton") {
@@ -109,15 +96,33 @@ const RecruiterFormPage2 = (props) => {
     }
     if (buttonClicked === "finishButton") {
       if (isValid) {
-        props.onFinishRegistration({ companyWebsite, aboutCompany, logo });
-        router.push("/login");
-      } else {
-        // do nothing
+        try {
+          const fileExt = file.name.split(".").pop();
+          const fileName = `${Math.random()}.${fileExt}`;
+          const filePath = `${fileName}`;
+          const profData = {
+            company_website: companyWebsite,
+            about_company: aboutCompany,
+            logo: filePath,
+          };
+
+          recruiterRegister({ ...userData, ...profData });
+
+          const { error: uploadError } = await supabase.storage
+            .from("profiles/recruiter")
+            .upload(`user-${Date.now()}`, file);
+          if (uploadError) {
+            throw uploadError;
+          }
+
+          router.push("/login");
+        } catch (error) {
+          alert(error.message);
+        } finally {
+          setLoading(false);
+        }
       }
     }
-
-    // const data = {email,password}
-    // recruiterRegister(data);
 
     console.log("Company Name:", company);
     console.log("Email:", email);
@@ -129,30 +134,6 @@ const RecruiterFormPage2 = (props) => {
   }
   function handleAboutCompanyChange(event) {
     setAboutCompany(event.target.value);
-  }
-
-  function handleShowPassword(event) {
-    if (showPassword && passwordIcon) {
-      setShowPassword(false);
-      setPasswordIcon(false);
-    } else {
-      setShowPassword(true);
-      setPasswordIcon(true);
-    }
-  }
-
-  function handleShowPasswordConfirm(event) {
-    if (showPasswordConfirm && showPasswordIcon) {
-      setShowPasswordConfirm(false);
-      setShowPasswordIcon(false);
-    } else {
-      setShowPasswordConfirm(true);
-      setShowPasswordIcon(true);
-    }
-  }
-
-  function handleFileChoose() {
-    setFileChosen(true);
   }
 
   return (
