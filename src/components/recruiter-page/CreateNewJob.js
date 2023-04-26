@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import  { useRecruiterPost } from "@/hooks/recruiterPost.js";
+import { useAuth } from "@/contexts/authentication";
 
 function CreateNewJob() {
   const { createPost, isLoading, isError } = useRecruiterPost();
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedJobType, setSelectedJobType] = useState("");
+  const { state } = useAuth();
+
+  const email = state.email;
+
   const [formData, setFormData] = useState({
     job_title: "",
     job_category: "",
@@ -21,7 +26,8 @@ function CreateNewJob() {
       ...formData,
       [event.target.name]: event.target.value,
       job_category: selectedOption, // กำหนดค่า job_category ให้เป็นค่า selectedOption
-      job_type : selectedJobType
+      job_type : selectedJobType,
+      userEmail : email
     });
   };
 
