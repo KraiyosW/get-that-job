@@ -32,7 +32,9 @@ export default async function handler(req, res) {
       if (recruiters.length === 0) {
         res.status(401).json({ message: 'Unauthorized' })
       } else {
-        res.status(200).json({ user: data , token : data.session.access_token })
+        const token = data.session.access_token
+        res.status(200).json({ user: data , token })
+        res.setHeader('Authorization', `Bearer ${token}`)
       }
     }
   } catch (error) {
@@ -138,4 +140,3 @@ export default async function handler(req, res) {
 //     res.status(500).json({ message: error.message })
 //   }
 // }
-

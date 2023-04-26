@@ -1,12 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
-import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken';
-
-dotenv.config();
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-const supabaseSecret = process.env.JWT_SECRET;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -14,26 +9,24 @@ export default async function handler(req, res) {
   const { method } = req;
 
   try {
+    
     switch (method) {
       case 'POST':
-        const { job_title, job_category, job_type, salary_min_range, salary_max_range, job_description, requirement, optional_requirement } = req.body;
-
-        // Check if access token exists in headers
-        const authToken = req.headers.authorization?.split(' ')[1]?.trim();
-        if (!authToken) {
-          res.status(401).send({ message: 'Unauthorized. Please provide an access token.' });
-          return;
-        }
-
-        // Verify access token and get user email
-        const decodedToken = jwt.verify(authToken, supabaseSecret);
-        const userEmail = decodedToken?.user_email;
-        if (!userEmail) {
-          res.status(401).send({ message: 'Invalid access token' });
-          return;
-        }
+        const {
+          job_title,
+          job_category,
+          job_type,
+          salary_min_range,
+          salary_max_range,
+          job_description,
+          requirement,
+          optional_requirement,
+          p_email
+        } = req.body;
 
         // Call the RPC function insert_job_posting
+        await supabase.rpc('refresh_schema');
+
         const { data: jobId, error: rpcError } = await supabase.rpc('insert_job_posting', {
           p_data: {
             job_title: job_title,
@@ -44,9 +37,9 @@ export default async function handler(req, res) {
             job_description: job_description,
             requirement: requirement,
             optional_requirement: optional_requirement,
-            post_status: true
+            post_status: true,
           },
-          p_email: userEmail
+          p_email: p_email,
         });
 
         if (rpcError) {

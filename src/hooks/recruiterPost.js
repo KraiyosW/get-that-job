@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const supabaseSecret = process.env.NEXT_PUBLIC_SUPABASE_JWT_SECRET;
+
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -27,8 +27,8 @@ export const useRecruiterPost = () => {
     try {
       let token =
         authToken?.access_token ||
-        sessionStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
-        localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token') ||
+        sessionStorage.getItem('sb:token') ||
+        localStorage.getItem('sb:token') ||
         '';
 
       console.log('token', token);
@@ -40,8 +40,8 @@ export const useRecruiterPost = () => {
           console.log(refreshError.message);
           return null;
         }
-        sessionStorage.setItem('sb-zsvpcibqzkxoqqpektgc-auth-token', session.access_token);
-        localStorage.setItem('sb-zsvpcibqzkxoqqpektgc-auth-token', session.access_token);
+        sessionStorage.setItem('sb:token', session.access_token);
+        localStorage.setItem('sb:token', session.access_token);
         console.log(session);
       }
 
@@ -66,6 +66,7 @@ export const useRecruiterPost = () => {
       setIsLoading(false);
     }
   };
+
 
   return { createPost, post, isLoading, isError };
 };

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import  { useRecruiterPost } from "@/hooks/recruiterPost.js";
+import { useAuth } from "@/contexts/authentication";
 
 function CreateNewJob() {
+  // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { createPost, isLoading, isError } = useRecruiterPost();
-  const [selectedOption, setSelectedOption] = useState("");
-  const [selectedJobType, setSelectedJobType] = useState("");
+  const { state } = useAuth();
+
+  // สร้าง state สำหรับเก็บข้อมูลจากฟอร์ม
   const [formData, setFormData] = useState({
     job_title: "",
     job_category: "",
@@ -14,26 +17,34 @@ function CreateNewJob() {
     job_description: "",
     requirement: "",
     optional_requirement: "",
+    p_email: state.email,
   });
-  
+
+  // สร้าง state สำหรับเก็บข้อมูล option ที่เลือก
+  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedJobType, setSelectedJobType] = useState("");
+
+  // ฟังก์ชั่นสำหรับการเปลี่ยนค่าใน form
   const handleChange = (event) => {
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
-      job_category: selectedOption, // กำหนดค่า job_category ให้เป็นค่า selectedOption
-      job_type : selectedJobType
+      job_category: selectedOption,
+      job_type : selectedJobType,
     });
   };
 
+  // ฟังก์ชั่นสำหรับการเลือก option ของ job category
   const handleSelectOption = (event) => {
     setSelectedOption(event.target.value);
   };
 
+  // ฟังก์ชั่นสำหรับการเลือก option ของ job type
   const handleSelectJobType = (event) => {
     setSelectedJobType(event.target.value);
   };
 
-
+  // ฟังก์ชั่นสำหรับการ submit form
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
