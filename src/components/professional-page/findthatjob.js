@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import babyswim from '../../image/babyswim.png'
@@ -7,18 +6,26 @@ import following from '../../image/following.png'
 import categorypic from '../../image/categorypic.png'
 import calendar from '../../image/calendar.png'
 import dollar from '../../image/dollar.png'
+import { createClient } from "@supabase/supabase-js";
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const Findthatjob = () => {
-    const [data, setData] = useState([]);
+    const [job, setJob] = useState([]);
     // const [followStatus, setFollowStatus] = useState({});
     // const [applicationStatus, setApplicationStatus] = useState({});
 
     const AllJob = async () => {
         try {
-            const result = await axios.get(
-                'http://localhost:3000/api/findthatjob'
-            );
-            setData(result.data);
+            const result = await supabase.from('jobs_postings').select('*').limit(10)
+            // const result = await axios.get(
+            //     'http://localhost:3000/api/findthatjob'
+            // );
+            // const result = await supabase.from("jobs_postings").find('*')
+            setJob(result.data);
+            console.log(result.data);
         } catch {
             console.error();
         }
@@ -46,30 +53,30 @@ const Findthatjob = () => {
 
         <div className='flex'>
             <main className='flex flex-col flex-wrap w-full items-center' >
-                <h6 className='mb-4'>{data.length} jobs for you</h6>
-                {data.map((item, index) => {
-                    <div key={index} className='grid grid-cols-3 gap-[15px]'>
+                <h6 className='mb-4'>{job.length} jobs for you</h6>
+                {job.map((item) => {
+                    <div key={item.job_post_id} className='grid grid-cols-3 gap-[15px]'>
                         <div className='flex flex-col justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[290px] h-[170px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]'>
                             <div className='flex items-center gap-4'>
                                 <div>
-                                    <Image src={babyswim} />
+                                    <Image alt='picture' src={babyswim} />
                                 </div>
 
                                 <div className='flex flex-col'>
                                     <div className='flex gap-1 items-center'>
-                                        <Image src={categorypic} />
+                                        <Image alt='picture' src={categorypic} />
                                         <p id='caption'>{item.job_category}</p>
                                     </div>
                                     <h6>{item.job_title}</h6>
-                                    <h2 id='subtitle2'>{item.company_name}</h2>
+                                    <h2 id='subtitle2'>{item.job_descrition}</h2>
                                     <div className='flex gap-4 '>
                                         <div className='flex gap-1 items-center'>
-                                            <Image src={calendar} className='h-[12.5px] w-[12.5px]' />
+                                            <Image alt='picture' src={calendar} className='h-[12.5px] w-[12.5px]' />
                                             <p id='caption'>{item.job_type}</p>
                                         </div>
                                         <div className='flex gap-1 items-center'>
-                                            <Image src={dollar} />
-                                            <p id='caption'>{`${item.salary_min} - ${item.salary_max}`}</p>
+                                            <Image alt='picture' src={dollar} />
+                                            <p id='caption'>{`${item.salary_min_range} - ${item.salary_max_range}`}</p>
                                         </div>
                                     </div>
 
@@ -77,7 +84,7 @@ const Findthatjob = () => {
                             </div>
                             <div className='flex justify-between'>
                                 <div className='flex gap-2 p-1'>
-                                    <Image src={following} className='w-[22px] h-[22px]' />
+                                    <Image alt='picture' src={following} className='w-[22px] h-[22px]' />
                                     <button >Follow</button>
                                 </div>
                                 <div>
