@@ -10,11 +10,13 @@ export default async function FindthatJob(req, res) {
         const rows = await supabase.from('job_test').select('*').limit(10)
         res.statusCode = 200
         res.json({ rows })
+
     } catch (error) {
         res.statusCode = 500
         res.json({ error: error.message })
     }
 };
+
 
 // import nextConnect from 'next-connect'
 // const handler = nextConnect()
