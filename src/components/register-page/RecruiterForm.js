@@ -46,8 +46,8 @@ const RecruiterForm = (props) => {
     }
     if (isValid) {
       const data = { email, password, company_name: company };
-      recruiterRegister(data);
-      props.onNext();
+      // recruiterRegister(data);
+      props.onNext(data);
     }
 
     console.log("Company Name:", company);
