@@ -9,6 +9,11 @@ import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
 import { createClient } from "@supabase/supabase-js";
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 const Findthatjob = () => {
   const [job, setJob] = useState([]);
   const router = useRouter();
