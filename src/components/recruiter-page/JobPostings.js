@@ -12,6 +12,7 @@ import closed from "../../image/closed.png";
 import pencil from "../../image/pencil.png";
 import { useState, useEffect } from 'react'
 import { createClient } from "@supabase/supabase-js";
+import { useRouter } from "next/router";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -23,6 +24,7 @@ function JobPostings() {
   const [job, setJob] = useState([]);
   const [jobStatus, setJobStatus] = useState([])
   const [isUpdating, setIsUpdating] = useState(false)
+  const router=useRouter()
 
 
   const AllJob = async () => {
@@ -49,6 +51,10 @@ function JobPostings() {
   const toggleExpanded = (postId) => {
     setIsExpanded((prevId) => (prevId === postId ? null : postId));
   };
+
+  const handleEdit = (id) =>{
+    router.push(`edit-job-post/${id}`);
+  }
 
 
 
@@ -186,7 +192,7 @@ function JobPostings() {
                       />
                       {item.post_status ? 'CLOSE' : 'CLOSED'}
                     </button>
-                    <button className="button_pink_tertiary flex flex-row">
+                    <button className="button_pink_tertiary flex flex-row" onClick={()=> handleEdit(item.job_post_id)}>
                       <Image
                         src={pencil}
                         alt="Edit Botton"

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import  { useRecruiterPost } from "@/hooks/recruiterPost.js";
-import { useAuth } from "@/contexts/authentication";
+
 
 function CreateNewJob() {
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
@@ -43,6 +43,8 @@ function CreateNewJob() {
   const handleSelectJobType = (event) => {
     setSelectedJobType(event.target.value);
   };
+
+ 
 
   // ฟังก์ชั่นสำหรับการ submit form
   const handleSubmit = async (event) => {
