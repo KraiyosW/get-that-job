@@ -52,7 +52,7 @@ const Findthatjob = () => {
     return (
         <div className='flex'>
             <main className='flex flex-col flex-wrap w-full items-center' >
-                <h6 className='mb-4'>{job.length} jobs for you</h6>
+                <h6 className='mb-4 mt-4'>{job.length} jobs for you</h6>
                 <div className='grid grid-cols-3 gap-[15px]'>
                     {job.map((item, index) => {
                         return (
