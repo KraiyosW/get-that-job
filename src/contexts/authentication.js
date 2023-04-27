@@ -30,6 +30,18 @@ function AuthProvider(props) {
     user: null,
     email: null 
   });
+  const [professionalState,setProfessionalState] = useState({
+    loading : true,
+    error : null,
+    user : null,
+    email : null
+  });
+  const [recruiterState,setRecruiterState] = useState({
+    loading : true,
+    error : null,
+    user : null,
+    email : null
+  })
   
 
   const professionalRegister = async (data) => {
@@ -72,7 +84,7 @@ function AuthProvider(props) {
         withCredentials: true,
       });
       localStorage.setItem('sb:token',response.data.token);
-      setState({...setState, user : response.data.user.user , email : response.data.user.user.email })
+      localStorage.setItem('email',response.data.user.user.email)
       console.log(response);
       return response;
     } catch (error) {
@@ -91,8 +103,8 @@ function AuthProvider(props) {
         withCredentials: true,
       });
       localStorage.setItem('sb:token', response.data.token);
+      localStorage.setItem('email',response.data.user.user.email)
       console.log(response);
-      setState({...setState, user : response.data.user.user , email : response.data.user.user.email })
       return response;
     } catch (error) {
       console.error("Error:", error);
@@ -108,8 +120,8 @@ function AuthProvider(props) {
       localStorage.removeItem("email");
       sessionStorage.removeItem("sb:token");
       setState({ ...state, user: null });
-      document.cookie =
-        "sb:token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite:true; Secure";
+      setRecruiterState({ ...recruiterState, user: null , email: null });
+      setProfessionalState({ ...professionalState, user: null , email: null });
     } catch (error) {
       console.error("Error:", error);
     }
@@ -123,6 +135,8 @@ function AuthProvider(props) {
     <AuthContext.Provider
       value={{
         state,
+        professionalState,
+        recruiterState,
         professionalRegister,
         recruiterRegister,
         professionalLogin,

@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/authentication";
 function CreateNewJob() {
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { createPost, isLoading, isError } = useRecruiterPost();
-  const { state } = useAuth();
+  const userEmail = localStorage.getItem("email");
 
   // สร้าง state สำหรับเก็บข้อมูลจากฟอร์ม
   const [formData, setFormData] = useState({
@@ -17,7 +17,7 @@ function CreateNewJob() {
     job_description: "",
     requirement: "",
     optional_requirement: "",
-    p_email: state.email,
+    p_email: userEmail,
   });
 
   // สร้าง state สำหรับเก็บข้อมูล option ที่เลือก
