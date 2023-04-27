@@ -36,6 +36,7 @@ const SidebarProfessional = () => {
       <Link href="/" className="max-[700px]:flex max-[700px]:justify-center">
         <Image
           src={GTJ}
+          alt="GTJ Logo"
           className="mb-4 max-[700px]:pl-[8px] max-[700px]:pt-[16px] pl-[16px] pt-[32px] w-[160px] cursor-pointer max-[700px]:hidden"
         />
       </Link>

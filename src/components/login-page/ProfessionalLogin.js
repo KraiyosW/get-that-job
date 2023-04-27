@@ -7,51 +7,51 @@ import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
 
 const ProfessionalLogin = () => {
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [passwordIcon, setPasswordIcon] = useState(false);
-  const [errorPassword, setErrorPassword] = useState('');
-  const [authMessage, setAuthMessage] = useState('');
+  const [errorPassword, setErrorPassword] = useState("");
+  const [authMessage, setAuthMessage] = useState("");
   const { professionalLogin } = useAuth();
 
   const router = useRouter();
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setErrorMessage('');
-    setAuthMessage('');
-    setErrorPassword('');
+    setErrorMessage("");
+    setAuthMessage("");
+    setErrorPassword("");
 
     if (!email.match(/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
-      setErrorMessage('Invalid email address.');
+      setErrorMessage("Invalid email address.");
       return;
     }
     if (password.length < 7) {
-      setErrorPassword('Password must be at least 8 characters long.');
+      setErrorPassword("Password must be at least 8 characters long.");
       return;
     }
 
-    /// check status before redirect // 
+    /// check status before redirect //
     try {
       const data = { email, password };
       // const authToken = JSON.parse(localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token'));
       await professionalLogin(data);
-      router.push('/findthatjob');
+      router.push("/find-that-job");
     } catch (error) {
-      console.error('Error:', error);
-      setAuthMessage(error.message = "Invild email or password : please check again");
+      console.error("Error:", error);
+      setAuthMessage(
+        (error.message = "Invild email or password : please check again")
+      );
     }
-
   }
 
   function handleEmailChange(event) {
     setEmail(event.target.value);
   }
   function handlePasswordChange(event) {
-    setPassword(event.target.value)
+    setPassword(event.target.value);
   }
 
   function handleShowPassword(event) {
@@ -62,7 +62,7 @@ const ProfessionalLogin = () => {
       setShowPassword(true);
       setPasswordIcon(true);
     }
-  };
+  }
 
   return (
     <div className="flex flex-col max-[767px]:items-center items-start">
@@ -111,8 +111,5 @@ const ProfessionalLogin = () => {
       </form>
     </div>
   );
-
-
-}
+};
 export { ProfessionalLogin };
-
