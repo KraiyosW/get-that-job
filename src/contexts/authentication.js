@@ -29,7 +29,7 @@ function AuthProvider(props) {
     loading: true,
     error: null,
     user: null,
-    email : null
+    email: null 
   });
   
 
@@ -105,6 +105,8 @@ function AuthProvider(props) {
     try {
       await axios.post("/api/logout");
       localStorage.removeItem("sb:token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("email");
       sessionStorage.removeItem("sb:token");
       setState({ ...state, user: null });
       document.cookie =
