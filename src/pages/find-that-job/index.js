@@ -1,6 +1,6 @@
 import React from "react";
 import SidebarProfessional from "@/components/SidebarProfessional";
-import Findthatjob from "@/components/professional/FindthatJob";
+import Findthatjob from "@/components/professional-page/findthatjob";
 
 
 const FindThatJob = () => {
@@ -9,7 +9,7 @@ const FindThatJob = () => {
       <div>
         <SidebarProfessional />
         <Findthatjob />
-        
+
       </div>
     </>
   );
