@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import calendar from "@/image/calendar.png";
+import calendar from "@/image/icon-calendar.png";
 
 const StepTwo = (props) => {
   //user information

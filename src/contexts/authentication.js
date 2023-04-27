@@ -5,7 +5,6 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const supabaseJWT = process.env.SUPABASE_JWT_SECRET;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -29,8 +28,20 @@ function AuthProvider(props) {
     loading: true,
     error: null,
     user: null,
+    email: null 
+  });
+  const [professionalState,setProfessionalState] = useState({
+    loading : true,
+    error : null,
+    user : null,
     email : null
   });
+  const [recruiterState,setRecruiterState] = useState({
+    loading : true,
+    error : null,
+    user : null,
+    email : null
+  })
   
 
   const professionalRegister = async (data) => {
@@ -73,7 +84,7 @@ function AuthProvider(props) {
         withCredentials: true,
       });
       localStorage.setItem('sb:token',response.data.token);
-      setState({...setState, user : response.data.user.user , email : response.data.user.user.email })
+      localStorage.setItem('email',response.data.user.user.email)
       console.log(response);
       return response;
     } catch (error) {
@@ -91,9 +102,9 @@ function AuthProvider(props) {
         headers,
         withCredentials: true,
       });
-      localStorage.setItem('sb:token',response.data.token);
+      localStorage.setItem('sb:token', response.data.token);
+      localStorage.setItem('email',response.data.user.user.email)
       console.log(response);
-      setState({...setState, user : response.data.user.user , email : response.data.user.user.email })
       return response;
     } catch (error) {
       console.error("Error:", error);
@@ -105,10 +116,12 @@ function AuthProvider(props) {
     try {
       await axios.post("/api/logout");
       localStorage.removeItem("sb:token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("email");
       sessionStorage.removeItem("sb:token");
       setState({ ...state, user: null });
-      document.cookie =
-        "sb:token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite:true; Secure";
+      setRecruiterState({ ...recruiterState, user: null , email: null });
+      setProfessionalState({ ...professionalState, user: null , email: null });
     } catch (error) {
       console.error("Error:", error);
     }
@@ -122,6 +135,8 @@ function AuthProvider(props) {
     <AuthContext.Provider
       value={{
         state,
+        professionalState,
+        recruiterState,
         professionalRegister,
         recruiterRegister,
         professionalLogin,

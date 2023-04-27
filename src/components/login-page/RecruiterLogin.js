@@ -3,7 +3,7 @@ import { useState } from "react";
 import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import Image from "next/image";
-import { useAuth } from "@/contexts/authentication";
+import { useAuth } from "@/contexts/authentication.js";
 import { useRouter } from "next/router";
 
 

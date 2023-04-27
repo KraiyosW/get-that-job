@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/authentication";
 function CreateNewJob() {
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { createPost, isLoading, isError } = useRecruiterPost();
-  const { state } = useAuth();
+  const userEmail = localStorage.getItem("email");
 
   // สร้าง state สำหรับเก็บข้อมูลจากฟอร์ม
   const [formData, setFormData] = useState({
@@ -17,7 +17,7 @@ function CreateNewJob() {
     job_description: "",
     requirement: "",
     optional_requirement: "",
-    p_email: state.email,
+    p_email: userEmail,
   });
 
   // สร้าง state สำหรับเก็บข้อมูล option ที่เลือก
@@ -48,9 +48,22 @@ function CreateNewJob() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const authToken = JSON.parse(localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token'));
+      const authToken = JSON.stringify(localStorage.getItem('sb:token'));
       const response = await createPost(formData,authToken);
       console.log(response);
+      setSelectedJobType("")
+      setSelectedOption("")
+      setFormData({
+        job_title: "",
+        job_category: "",
+        job_type: "",
+        salary_min_range: "",
+        salary_max_range: "",
+        job_description: "",
+        requirement: "",
+        optional_requirement: "",
+        p_email: state.email,
+      });
     } catch (error) {
       console.error(error);
     }
