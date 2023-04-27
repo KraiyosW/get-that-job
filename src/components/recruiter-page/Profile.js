@@ -63,9 +63,9 @@ function Profile() {
             </div>
             <div className="flex flex-col">
               <div>
-                <p className="mb-[4px]" id="overline">
+                <div className="mb-[4px]" id="overline">
                   COMPANY LOGO
-                </p>
+                </div>
               </div>
               <label
                 htmlFor="file-input"
@@ -93,9 +93,9 @@ function Profile() {
                 </div>
               </label>
               <div>
-                <p className="text-grey-secondary mt-[4px]" id="caption">
+                <div className="text-grey-secondary mt-[4px]" id="caption">
                   PNG, JPEG, IMG
-                </p>
+                </div>
               </div>
             </div>
           </div>
@@ -103,36 +103,36 @@ function Profile() {
             className="flex flex-col max-[700px]:items-center"
             id="file-form"
           >
-            <p className="mb-[4px] mt-[11px]" id="overline">
+            <div className="mb-[4px] mt-[11px]" id="overline">
               COMPANY EMAIL
-            </p>
+            </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[300px] h-[36px]"
               name="companyEmail"
               placeholder="web.works@mail.com"
               type="text"
             />
-            <p className="mb-[4px] mt-[8px]" id="overline">
+            <div className="mb-[4px] mt-[8px]" id="overline">
               COMPANY NAME
-            </p>
+            </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[300px] h-[36px]"
               name="companyName"
               placeholder="The Web Works"
               type="text"
             />
-            <p className="mb-[4px] mt-[8px]" id="overline">
+            <div className="mb-[4px] mt-[8px]" id="overline">
               COMPANY WEBSITE
-            </p>
+            </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[300px] h-[36px]"
               name="companyWebsite"
               placeholder="www.webworks.com"
               type="text"
             />
-            <p className="mb-[4px] mt-[8px]" id="overline">
+            <div className="mb-[4px] mt-[8px]" id="overline">
               ABOUT THE COMPANY
-            </p>
+            </div>
             <textarea
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[250px]"
               name="aboutTheCompany"

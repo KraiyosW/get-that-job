@@ -7,51 +7,50 @@ import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
 
 const ProfessionalLogin = () => {
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [passwordIcon, setPasswordIcon] = useState(false);
-  const [errorPassword, setErrorPassword] = useState('');
-  const [authMessage, setAuthMessage] = useState('');
+  const [errorPassword, setErrorPassword] = useState("");
+  const [authMessage, setAuthMessage] = useState("");
   const { professionalLogin } = useAuth();
 
   const router = useRouter();
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setErrorMessage('');
-    setAuthMessage('');
-    setErrorPassword('');
+    setErrorMessage("");
+    setAuthMessage("");
+    setErrorPassword("");
 
     if (!email.match(/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
-      setErrorMessage('Invalid email address.');
+      setErrorMessage("Invalid email address.");
       return;
     }
     if (password.length < 7) {
-      setErrorPassword('Password must be at least 8 characters long.');
+      setErrorPassword("Password must be at least 8 characters long.");
       return;
     }
 
-    /// check status before redirect // 
+    /// check status before redirect //
     try {
       const data = { email, password };
-      // const authToken = JSON.parse(localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token'));
       await professionalLogin(data);
-      router.push('/findthatjob');
+      router.push("/find-that-job");
     } catch (error) {
-      console.error('Error:', error);
-      setAuthMessage(error.message = "Invild email or password : please check again");
+      console.error("Error:", error);
+      setAuthMessage(
+        (error.message = "Invild email or password : please check again")
+      );
     }
-
   }
 
   function handleEmailChange(event) {
     setEmail(event.target.value);
   }
   function handlePasswordChange(event) {
-    setPassword(event.target.value)
+    setPassword(event.target.value);
   }
 
   function handleShowPassword(event) {
@@ -62,7 +61,7 @@ const ProfessionalLogin = () => {
       setShowPassword(true);
       setPasswordIcon(true);
     }
-  };
+  }
 
   return (
     <div className="flex flex-col max-[767px]:items-center items-start">
@@ -71,7 +70,7 @@ const ProfessionalLogin = () => {
         className="flex flex-col gap-[20px] mt-[20px] z-10"
       >
         <div>
-          <p id="overline mb-[4px]">EMAIL</p>
+          <div className="mb-[4px]" id="overline">EMAIL</div>
           <input
             className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
             name="email"
@@ -80,10 +79,10 @@ const ProfessionalLogin = () => {
             value={email}
             onChange={handleEmailChange}
           />
-          {errorMessage && <p className="text-rose-500">{errorMessage}</p>}
+          {errorMessage && <div className="text-rose-500" id="p-text">{errorMessage}</div>}
         </div>
         <div>
-          <p id="overline mb-[4px]">PASSWORD</p>
+          <div className="mb-[4px]" id="overline">PASSWORD</div>
           <div className="relative ">
             <input
               className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
@@ -100,8 +99,8 @@ const ProfessionalLogin = () => {
               className="w-[20px] absolute top-[8px] right-[10px] opacity-25 cursor-pointer"
             />
           </div>
-          {errorPassword && <p className="text-rose-500">{errorPassword}</p>}
-          {authMessage && <p className="text-rose-500">{authMessage}</p>}
+          {errorPassword && <div className="text-rose-500" id="p-text">{errorPassword}</div>}
+          {authMessage && <div className="text-rose-500" id="p-text">{authMessage}</div>}
         </div>
         <div className="flex max-[767px]:items-center items-start justify-end">
           <button className="button_pink mt-[16px]">
@@ -111,8 +110,5 @@ const ProfessionalLogin = () => {
       </form>
     </div>
   );
-
-
-}
+};
 export { ProfessionalLogin };
-

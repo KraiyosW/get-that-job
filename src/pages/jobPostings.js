@@ -61,12 +61,6 @@ function jobPostings() {
               </label>
             </div>
           </form>
-          <h6
-            className="max-[700px]:text-center mt-[20px] mb-[8px]"
-            id="heading6"
-          >
-            4 jobs postings found
-          </h6>
           <JobPostings />
         </div>
       </main>

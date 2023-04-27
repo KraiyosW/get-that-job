@@ -1,6 +1,9 @@
 import React from "react";
+
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+
 import Image from "next/image";
 import babyswim from "../../image/babyswim.png";
 import following from "../../image/following.png";
@@ -8,18 +11,26 @@ import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
 
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 const Findthatjob = () => {
+
   const [job, setJob] = useState([]);
+  const router = useRouter();
   // const [followStatus, setFollowStatus] = useState({});
   // const [applicationStatus, setApplicationStatus] = useState({});
-
   const AllJob = async () => {
     try {
-      const result = await axios.get("http://localhost:3000/api/findthatjob");
-      setJob(result.data.job.data);
-      console.log(result.data.job.data);
-    } catch (error) {
-      console.error(error);
+      const result = await supabase.from("jobs_postings").select("*").limit(10);
+      setJob(result.data);
+    } catch {
+      console.error();
+
     }
   };
   // const result = await axios.get(
@@ -44,6 +55,7 @@ const Findthatjob = () => {
   useEffect(() => {
     AllJob();
   }, []);
+
 
   const [jobList, setJobList] = useState([]);
   const [searchMessage, setSearchMessage] = useState("");
@@ -91,6 +103,10 @@ const Findthatjob = () => {
   // ฟังก์ชั่นสำหรับการเลือก option ของ job type
   const handleSelectJobType = (event) => {
     setSelectedJobType(event.target.value);
+  };
+  
+    const handleSeeMore = (id) => {
+    router.push(`find-that-job/${id}`);
   };
 
   return (
@@ -215,7 +231,9 @@ const Findthatjob = () => {
                       <p id="caption">{item.job_category}</p>
                     </div>
                     <h6>{item.job_title}</h6>
-                    <h2 id="subtitle2">{item.job_descrition}</h2>
+
+                    <h2 id="subtitle2">{item.job_description}</h2>
+
                     <div className="flex gap-4 ">
                       <div className="flex gap-1 items-center">
                         <Image
@@ -231,6 +249,8 @@ const Findthatjob = () => {
                       </div>
                     </div>
                   </div>
+
+                  
                 </div>
                 <div className="flex justify-between">
                   <div className="flex gap-2 p-1">
@@ -242,11 +262,15 @@ const Findthatjob = () => {
                     <button>Follow</button>
                   </div>
                   <div>
-                    <button className="border-[1px] border-[pink] rounded-[15px] py-1 px-3">
+                    <button
+                      className="border-[1px] border-[pink] rounded-[15px] py-1 px-3"
+                      onClick={() => handleSeeMore(item.job_post_id)}
+                    >
                       SEE MORE
                     </button>
                   </div>
                 </div>
+
               </div>
             );
           })}

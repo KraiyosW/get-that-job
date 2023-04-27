@@ -42,7 +42,7 @@ const SideBarRecruiter = () => {
             <div className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px]" id="sidebar-menu">
 
               <Image src={bag} alt="Job Postings" className="max-[700px]:hidden" />
-              <p className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Job Postings</p>
+              <div className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Job Postings</div>
             </div>
             <div className="py-[8px]">
               <Image src={Line} alt="Line" className="min-[701px]:hidden h-full w-[3px] rounded-[10px]" />
@@ -52,7 +52,7 @@ const SideBarRecruiter = () => {
           <Link href="/createNewJob" className="max-[700px]:flex max-[700px]:justify-center">
             <div className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px]" id="sidebar-menu">
               <Image src={paper} alt="Create New Job" className="max-[700px]:hidden" />
-              <p className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Create New Job</p>
+              <div className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Create New Job</div>
             </div>
             <div className="py-[8px]">
               <Image src={Line} alt="Line" className="min-[701px]:hidden h-full w-[3px] rounded-[10px]" />
@@ -62,7 +62,7 @@ const SideBarRecruiter = () => {
           <Link href="/editJobPosting" className="max-[700px]:flex max-[700px]:justify-center">
             <div className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[7px]" id="sidebar-menu">
               <Image src={edit} alt="Edit Job" className="ml-[4px] max-[700px]:hidden" />
-              <p className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Edit Job</p>
+              <div className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Edit Job</div>
             </div>
             <div className="py-[8px]">
               <Image src={Line} alt="Line" className="min-[701px]:hidden h-full w-[3px] rounded-[10px]" />
@@ -72,7 +72,7 @@ const SideBarRecruiter = () => {
           <Link href="/profile" className="max-[700px]:flex max-[700px]:justify-center">
             <div className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px]" id="sidebar-menu">
               <Image src={profile} alt="Profile" className="max-[700px]:hidden" />
-              <p className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Profile</p>
+              <div className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Profile</div>
             </div>
             <div className="py-[8px]">
               <Image src={Line} alt="Line" className="min-[701px]:hidden h-full w-[3px] rounded-[10px]" />
@@ -82,12 +82,12 @@ const SideBarRecruiter = () => {
 
           <div className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] cursor-pointer" onClick={handleLogout} id="sidebar-menu">
             <Image src={logout} alt="Log out" className="max-[700px]:hidden" />
-            <p className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Log out</p>
+            <div className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Log out</div>
           </div>
 
         </div>
         <div className="box-2 pl-[16px] max-[700px]:text-center max-[700px]:hidden">
-          <p>Â© 202X - Get That Job</p>
+          <div>Â© 202X - Get That Job</div>
         </div>
       </div>
     </div>

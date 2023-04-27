@@ -3,7 +3,7 @@ import { useState } from "react";
 import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import Image from "next/image";
-import { useAuth } from "@/contexts/authentication";
+import { useAuth } from "@/contexts/authentication.js";
 import { useRouter } from "next/router";
 
 
@@ -39,6 +39,7 @@ const RecruiterLogin = () => {
     try {
       const data = { email, password };
       await recruiterLogin(data);
+
       router.push('/jobPostings');
     } catch (error) {
       console.error('Error:', error);
@@ -71,7 +72,7 @@ return(
           className="flex flex-col gap-[20px] mt-[20px] z-10"
         >
           <div>
-            <p id="overline mb-[4px]">EMAIL</p>
+            <div className="mb-[4px]" id="overline">EMAIL</div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
               name="email"
@@ -80,10 +81,10 @@ return(
               value={email}
               onChange={handleEmailChange}
             />
-            {errorMessage && <p className="text-rose-500">{errorMessage}</p>}
+            {errorMessage && <div className="text-rose-500" id="p-text">{errorMessage}</div>}
           </div>
           <div>
-            <p id="overline mb-[4px]">PASSWORD</p>
+            <div className="mb-[4px]" id="overline">PASSWORD</div>
             <div className="relative ">
               <input
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
@@ -100,8 +101,8 @@ return(
                 className="w-[20px] absolute top-[8px] right-[10px] opacity-25 cursor-pointer"
               />
             </div>
-            {errorPassword && <p className="text-rose-500">{errorPassword}</p>}
-            {authMessage && <p className="text-rose-500">{authMessage}</p>}
+            {errorPassword && <div className="text-rose-500" id="p-text">{errorPassword}</div>}
+            {authMessage && <div className="text-rose-500" id="p-text">{authMessage}</div>}
           </div>
           <div className="flex max-[767px]:items-center items-start justify-end">
             <button className="button_pink mt-[16px]">

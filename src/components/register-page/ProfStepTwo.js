@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import calendar from "@/image/calendar.png";
+import calendar from "@/image/icon-calendar.png";
 
 const StepTwo = (props) => {
   //user information
@@ -207,7 +207,7 @@ const StepTwo = (props) => {
           onSubmit={handleSubmit}
         >
           <div>
-            <p id="overline mb-[4px]">NAME</p>
+            <p className="mb-[4px]" id="overline">NAME</p>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
               name="email"
@@ -218,7 +218,7 @@ const StepTwo = (props) => {
             {errorName && <p className="text-rose-500">{errorName}</p>}
           </div>
           <div>
-            <p id="overline mb-[4px]">PHONE</p>
+            <p className="mb-[4px]" id="overline">PHONE</p>
             <div className="relative">
               <input
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
@@ -235,7 +235,7 @@ const StepTwo = (props) => {
           {/* css maybe use position for push in same div with password input */}
 
           <div className="w-full">
-            <p id="overline mb-[4px]">BIRTH DATE</p>
+            <p className="mb-[4px]" id="overline">BIRTH DATE</p>
             <div className="relative ">
               <input
                 className="calendar relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
@@ -260,7 +260,7 @@ const StepTwo = (props) => {
           </div>
 
           <div>
-            <p id="overline mb-[4px]">LINKEDIN URL</p>
+            <p className="mb-[4px]" id="overline">LINKEDIN URL</p>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
               name="LINKDINURL"

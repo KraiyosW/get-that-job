@@ -33,8 +33,8 @@ export default async function handler(req, res) {
         res.status(401).json({ message: 'Unauthorized' })
       } else {
         const token = data.session.access_token
-        res.status(200).json({ user: data , token })
         res.setHeader('Authorization', `Bearer ${token}`)
+        res.status(200).json({ user: data, token })
       }
     }
   } catch (error) {
