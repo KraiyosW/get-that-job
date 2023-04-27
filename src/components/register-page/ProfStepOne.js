@@ -213,7 +213,7 @@ const StepOne = (props) => {
             {/* css maybe use position for push in same div with password input */}
 
             <div className="w-full">
-              <p id="overline mb-[4px]">PASSWORD CONFIRMATION</p>
+              <div className="mb-[4px]" id="overline">PASSWORD CONFIRMATION</div>
               <div className="relative ">
                 <input
                   className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"

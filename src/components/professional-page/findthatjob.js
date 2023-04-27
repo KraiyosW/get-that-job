@@ -57,7 +57,7 @@ const Findthatjob = () => {
                                     <div>
                                         <Image alt='picture' src={babyswim} />
                                     </div>
-
+                                    
                                     <div className='flex flex-col'>
                                         <div className='flex gap-1 items-center'>
                                             <Image alt='picture' src={categorypic} />
@@ -87,6 +87,7 @@ const Findthatjob = () => {
                                         <button className='border-[1px] border-[pink] rounded-[15px] py-1 px-3'>
                                             SEE MORE
                                         </button>
+
                                     </div>
                                 </div>
                             </div>
