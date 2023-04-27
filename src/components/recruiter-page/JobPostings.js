@@ -21,11 +21,13 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 function JobPostings() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [job, setJob] = useState([]);
-  const [status, setStatus] = useState(true);
+  const [jobStatus, setJobStatus] = useState([])
+  const [isUpdating, setIsUpdating] = useState(false)
+  
 
   const AllJob = async () => {
     try {
-        const result = await supabase.from('jobs_postings').select('*').limit(10)
+        const result = await supabase.from('jobs_postings').select('*').limit(20)
         const formattedJobs = result.data.map(job => ({
           ...job,
           created_at: new Date(job.created_at).toLocaleDateString('en-GB')
@@ -44,29 +46,29 @@ useEffect(() => {
     setIsExpanded(!isExpanded);
   };
 
-  const handleStatus = async (JobId) => {
-    try {
-      const jobToUpdate = job.find(item => item.JobId === JobId);
-        
-      await supabase
-        .from('jobs_postings')
-        .update({ post_status: !jobToUpdate.post_status })
-        .eq('job_post_id', JobId);
-  
-      setJob(job.map(item => {
-        if (item.JobId === JobId) {
-          return {
-            ...item,
-            post_status: !item.post_status
-          };
-        } else {
-          return item;
-        }
-      }));
-    } catch (error) {
-      console.error(error);
+  useEffect(() => {
+    handleStatus()
+  }, [])
+  //isUpdating
+
+  const handleStatus = async (jobId) => {
+    setIsUpdating(true)
+    let { data, error } = await supabase
+      .from('jobs_postings')
+      .update({ post_status: false })
+      .match({ job_post_id: jobId })
+    if (error) console.log('error', error)
+    else {
+      // อัพเดทสถานะของ job ใน state เมื่ออัพเดทข้อมูลในฐานข้อมูลสำเร็จ
+      setJobStatus((prevState) =>
+        prevState.map((job) =>
+          job.job_post_id === jobId ? { ...job, post_status: false } : job
+        )
+      )
     }
-  };
+
+    setIsUpdating(false)
+    };
 
   return (
     <>
@@ -117,7 +119,7 @@ useEffect(() => {
                       className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                     />
                     <div className="text-grey-secondary" id="caption">
-                    {item.job_salary_min_range} - {item.job_salary_max_range}
+                    {item.salary_min_range} - {item.salary_max_range}
                     </div>
                   </section>
                 </div>
@@ -176,7 +178,9 @@ useEffect(() => {
                 <div id="body2">SHOW</div>
               </div>
               <div className="flex flex-row items-center">
-                <button onClick={() => handleStatus(item.job_post_id)} className={`flex flex-row mr-[6px] ${item.post_status ? 'button_pink_tertiary' : 'button_gray'}`}>
+                <button onClick={() => handleStatus(item.job_post_id)} className={`flex flex-row mr-[6px] ${item.post_status ? 'button_pink_tertiary' : 'button_gray'}`}
+                disabled={!item.post_status || isUpdating}
+                >
                   <Image
                     src={item.post_status ? close : closed}
                     alt="Close Botton"
