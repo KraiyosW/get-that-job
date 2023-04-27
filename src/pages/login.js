@@ -48,7 +48,7 @@ export default function Login() {
             }`}
             onClick={() => handleClick("regular")}
           >
-            <p id="body2 mb-[6px]">PROFESSIONAL</p>
+            <p className="mb-[6px]" id="body2">PROFESSIONAL</p>
           </button>
           <button
             className={`border-b-4 border-[#BDBDBD] hover:border-b-[#F48FB1] ${
@@ -58,7 +58,7 @@ export default function Login() {
             }`}
             onClick={() => handleClick("recruiter")}
           >
-            <p id="body2  mb-[6px]">RECRUITER</p>
+            <p className="mb-[6px]" id="body2">RECRUITER</p>
           </button>
         </div>
         {activeTab === "regular" ? <ProfessionalLogin /> : <RecruiterLogin />}

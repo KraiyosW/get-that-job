@@ -64,9 +64,9 @@ function CreateNewJob() {
             Main information
           </h5>
           <form onSubmit={handleSubmit}>
-            <p className="mb-[4px]" id="overline">
+            <div className="mb-[4px]" id="overline">
               JOB TITLE
-            </p>
+            </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[360px] h-[36px]"
               name="job_title"
@@ -75,9 +75,9 @@ function CreateNewJob() {
               value={formData.job_title}
               onChange={handleChange}
             />
-            <p className="mt-[8px] mb-[4px]" id="overline">
+            <div className="mt-[8px] mb-[4px]" id="overline">
               JOB CATEGORY
-            </p>
+            </div>
             <select
                 className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
                 id="category"
@@ -91,9 +91,9 @@ function CreateNewJob() {
                 <option value="Graphic-Designer" >Graphic Designer</option>
                 <option value="Digital-Marketing" >Digital Marketing</option>
             </select>
-            <p className="mt-[8px] mb-[4px]" id="overline">
+            <div className="mt-[8px] mb-[4px]" id="overline">
               TYPE
-            </p>
+            </div>
             <select
               className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
               id="type"
@@ -108,9 +108,9 @@ function CreateNewJob() {
               <option value="Full-Time" >Full Time</option>
               <option value="Past-Time" >Past Time</option>
             </select>
-            <p className="mt-[8px] mb-[4px]" id="overline">
+            <div className="mt-[8px] mb-[4px]" id="overline">
               SALARY RANGE
-            </p>
+            </div>
             <div className="flex flex-row items-center max-[700px]:justify-center">
               <input
                 className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[90px] w-[102px] h-[36px] mr-[8px]"
@@ -152,9 +152,9 @@ function CreateNewJob() {
               Addtional information
             </h5>
             <div>
-              <p className="mt-[8px] mb-[4px]" id="overline">
+              <div className="mt-[8px] mb-[4px]" id="overline">
                 ABOUT THE JOB POSITION
-              </p>
+              </div>
               <textarea
                 className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[76px]"
                 name="job_description"
@@ -162,9 +162,9 @@ function CreateNewJob() {
                 value={formData.job_description}
                 onChange={handleChange}
               ></textarea>
-              <p className="mt-[8px] mb-[4px]" id="overline">
+              <div className="mt-[8px] mb-[4px]" id="overline">
                 MANDATORY REQUIREMENTS
-              </p>
+              </div>
               <textarea
                 className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[76px]"
                 name="requirement"
@@ -172,9 +172,9 @@ function CreateNewJob() {
                 value={formData.requirement}
                 onChange={handleChange}
               ></textarea>
-              <p className="mt-[8px] mb-[4px]" id="overline">
+              <div className="mt-[8px] mb-[4px]" id="overline">
                 OPTIONAL REQUIREMENTS
-              </p>
+              </div>
               <textarea
                 className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[76px]"
                 name="optional_requirement"

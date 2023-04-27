@@ -249,7 +249,7 @@ const StepThree = (props) => {
             {errorJob && <p className="text-rose-500">{errorJob}</p>}
           </div>
           <div>
-            <p id="overline mb-[4px]">PROFESSIONAL EXPERIENCE</p>
+            <p className="mb-[4px]" id="overline">PROFESSIONAL EXPERIENCE</p>
             <div className="relative ">
               <textarea
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[600px] h-[76px] "
@@ -266,7 +266,7 @@ const StepThree = (props) => {
           {/* css maybe use position for push in same div with password input */}
 
           <div className="w-full">
-            <p id="overline mb-[4px]">EDUCATION</p>
+            <div className="mb-[4px]" id="overline">EDUCATION</div>
             <div className="relative ">
               <textarea
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[600px] h-[76px]"
@@ -282,7 +282,7 @@ const StepThree = (props) => {
             )}
           </div>
           <div>
-            <p id="overline mb-[4px]">UPLOAD/UPDATE YOUR CV</p>
+            <div className="mb-[4px]" id="overline">UPLOAD/UPDATE YOUR CV</div>
             <div className="input-container flex relative justify-between">
               <input
                 id="upload"

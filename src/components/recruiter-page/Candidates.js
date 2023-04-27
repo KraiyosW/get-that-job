@@ -34,9 +34,9 @@ function Candidates() {
                         alt="job position"
                         className="w-[15px] h-[15px] mr-[6px]"
                       />
-                      <p className="text-grey-primary" id="body2">
+                      <div className="text-grey-primary" id="body2">
                         ตำแหน่งงาน
-                      </p>
+                      </div>
                     </section>
                   </div>
                 </div>
@@ -48,9 +48,9 @@ function Candidates() {
                       alt="Email Candidate"
                       className="max-[700px]:mr-[10px] mr-[6px]"
                     />
-                    <p className="max-[700px]:mr-[5px] text-grey-secondary" id="caption">
+                    <div className="max-[700px]:mr-[5px] text-grey-secondary" id="caption">
                     ramon.valdes@vecindad.com
-                    </p>
+                    </div>
                     </div>
                     <div className="flex flex-row">
                     <Image
@@ -58,9 +58,9 @@ function Candidates() {
                       alt="Phone Candidate"
                       className="max-[700px]:mr-[10px] mr-[6px]"
                     />
-                    <p className="max-[700px]:mr-[5px] text-grey-secondary" id="caption">
+                    <div className="max-[700px]:mr-[5px] text-grey-secondary" id="caption">
                     +524831212891
-                    </p>
+                    </div>
                     </div>
                    
                   </div>
@@ -71,7 +71,7 @@ function Candidates() {
                         alt="Email Candidate Date"
                         className="mr-[6px]"
                       />
-                    <p className="text-grey-primary" id="caption">เวลาที่แคนดิเดตกดสมัครมา</p>
+                    <div className="text-grey-primary" id="caption">เวลาที่แคนดิเดตกดสมัครมา</div>
                   </div>
                   <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center">
                       <Image
@@ -79,12 +79,12 @@ function Candidates() {
                         alt="Waiting for review"
                         className="mr-[6px]"
                       />
-                    <p className="text-pink-primary" id="caption">
+                    <div className="text-pink-primary" id="caption">
                     Waiting for 
-                    </p>
-                    <p className="text-pink-primary" id="caption">
+                    </div>
+                    <div className="text-pink-primary" id="caption">
                     review
-                    </p>
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-row items-center">
@@ -141,10 +141,10 @@ function Candidates() {
               </div>
               <div>
               <div className={`mt-1 mb-2 ${isExpanded ? "" : "hidden"}`}>
-                <p className="text-pink-tertiary mt-[10px] mb-[8px]" id="body1">
+                <div className="text-pink-tertiary mt-[10px] mb-[8px]" id="body1">
                   About the job position
-                </p>
-                <p className="" id="body2">
+                </div>
+                <div className="" id="body2">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
                   quis diam fringilla, luctus lectus dictum, volutpat lacus.
                   Vivamus lacinia felis ut mauris lacinia elementum. Sed faucibus
@@ -157,12 +157,12 @@ function Candidates() {
                   vestibulum accumsan elit, id pellentesque diam fermentum eget.
                   Aliquam mattis quis quam ut faucibus. Duis finibus nulla nec
                   enim eleifend dapibus.
-                </p>
+                </div>
               <div>
-                <p className="text-pink-tertiary mt-[16px] mb-[8px]" id="body1">
+                <div className="text-pink-tertiary mt-[16px] mb-[8px]" id="body1">
                   About the job position
-                </p>
-                <p className="" id="body2">
+                </div>
+                <div className="" id="body2">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
                   quis diam fringilla, luctus lectus dictum, volutpat lacus.
                   Vivamus lacinia felis ut mauris lacinia elementum. Sed faucibus
@@ -175,13 +175,13 @@ function Candidates() {
                   vestibulum accumsan elit, id pellentesque diam fermentum eget.
                   Aliquam mattis quis quam ut faucibus. Duis finibus nulla nec
                   enim eleifend dapibus.
-                </p>
+                </div>
               </div>
               <div>
-                <p className="text-pink-tertiary mt-[16px] mb-[8px]" id="body1">
+                <div className="text-pink-tertiary mt-[16px] mb-[8px]" id="body1">
                   About the job position
-                </p>
-                <p className="" id="body2">
+                </div>
+                <div className="" id="body2">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
                   quis diam fringilla, luctus lectus dictum, volutpat lacus.
                   Vivamus lacinia felis ut mauris lacinia elementum. Sed faucibus
@@ -194,7 +194,7 @@ function Candidates() {
                   vestibulum accumsan elit, id pellentesque diam fermentum eget.
                   Aliquam mattis quis quam ut faucibus. Duis finibus nulla nec
                   enim eleifend dapibus.
-                </p>
+                </div>
               </div>
               <div className="flex justify-center mt-[25px]">
               <button className="button_bg_white flex flex-row justify-center w-[200px]">

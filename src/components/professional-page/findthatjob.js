@@ -15,6 +15,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Findthatjob = () => {
+
   const [job, setJob] = useState([]);
   const router = useRouter();
   // const [followStatus, setFollowStatus] = useState({});
@@ -92,6 +93,7 @@ const Findthatjob = () => {
                       </div>
                     </div>
                   </div>
+                  
                 </div>
                 <div className="flex justify-between">
                   <div className="flex gap-2 p-1">

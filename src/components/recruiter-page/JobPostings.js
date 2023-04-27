@@ -8,20 +8,80 @@ import TTcandidate from "../../image/total-candidate.png";
 import candidate from "../../image/candidate.png";
 import show from "../../image/show.png";
 import close from "../../image/close.png";
+import closed from "../../image/closed.png";
 import pencil from "../../image/pencil.png";
-import { useState } from "react";
+import { useState, useEffect } from 'react'
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 function JobPostings() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [job, setJob] = useState([]);
+  const [jobStatus, setJobStatus] = useState([])
+  const [isUpdating, setIsUpdating] = useState(false)
+  
+
+  const AllJob = async () => {
+    try {
+        const result = await supabase.from('jobs_postings').select('*').limit(20)
+        const formattedJobs = result.data.map(job => ({
+          ...job,
+          created_at: new Date(job.created_at).toLocaleDateString('en-GB')
+        }));
+        setJob(formattedJobs);
+
+    } catch {
+        console.error();
+    }
+};
+useEffect(() => {
+  AllJob();
+}, []);
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };
 
+  useEffect(() => {
+    handleStatus()
+  }, [])
+  //isUpdating
+
+  const handleStatus = async (jobId) => {
+    setIsUpdating(true)
+    let { data, error } = await supabase
+      .from('jobs_postings')
+      .update({ post_status: false })
+      .match({ job_post_id: jobId })
+    if (error) console.log('error', error)
+    else {
+      // อัพเดทสถานะของ job ใน state เมื่ออัพเดทข้อมูลในฐานข้อมูลสำเร็จ
+      setJobStatus((prevState) =>
+        prevState.map((job) =>
+          job.job_post_id === jobId ? { ...job, post_status: false } : job
+        )
+      )
+    }
+
+    setIsUpdating(false)
+    };
+
   return (
     <>
       <div className="flex flex-col">
-        <div className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[100%] h-auto ">
+      <h6
+            className="max-[700px]:text-center mt-[20px] mb-[8px]"
+            id="heading6"
+          >
+            {job.length} jobs postings found
+          </h6>
+      {job.map((item, index) => {
+        return (
+        <div key={index} className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[100%] mb-[20px] h-auto ">
           <div className="flex flex-col" id="box-job-all">
             <div
               className="max-[700px]:text-center flex flex-row flex-wrap justify-between w-[100%]"
@@ -29,7 +89,7 @@ function JobPostings() {
             >
               <div id="job-title flex flex-col">
                 <h6 className="mb-[4px]" id="heading6">
-                  The job title
+                {item.job_title}
                 </h6>
                 <div className="max-[700px]:mb-[15px] flex flex-row">
                   <section className="flex flex-row mr-[9px]">
@@ -38,9 +98,9 @@ function JobPostings() {
                       alt="Type Job"
                       className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                     />
-                    <p className="text-grey-secondary" id="caption">
-                      Manufactoring
-                    </p>
+                    <div className="text-grey-secondary" id="caption">
+                    {item.job_category}
+                    </div>
                   </section>
                   <section className="flex flex-row mr-[9px]">
                     <Image
@@ -48,9 +108,9 @@ function JobPostings() {
                       alt="Time working"
                       className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                     />
-                    <p className="text-grey-secondary" id="caption">
-                      Full time
-                    </p>
+                    <div className="text-grey-secondary" id="caption">
+                    {item.job_type}
+                    </div>
                   </section>
                   <section className="flex flex-row mr-[9px]">
                     <Image
@@ -58,9 +118,9 @@ function JobPostings() {
                       alt="Salary"
                       className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                     />
-                    <p className="text-grey-secondary" id="caption">
-                      2.0k - 2.5k
-                    </p>
+                    <div className="text-grey-secondary" id="caption">
+                    {item.salary_min_range} - {item.salary_max_range}
+                    </div>
                   </section>
                 </div>
               </div>
@@ -71,10 +131,10 @@ function JobPostings() {
                     alt="Job Date Open"
                     className="max-[700px]:mr-[10px]"
                   />
-                  <p className="max-[700px]:mr-[5px]" id="caption">
+                  <div className="max-[700px]:mr-[5px]" id="caption">
                     Open on
-                  </p>
-                  <p id="caption">07/11/20</p>
+                  </div>
+                  <div id="caption">{item.created_at}</div>
                 </div>
                 <div className="max-[700px]:mt-[5px] max-[700px]:mb-[5px] max-[700px]:flex-row max-[700px]:justify-start mr-[20px] flex flex-col items-center justify-center">
                   <div className="flex flex-row">
@@ -83,12 +143,12 @@ function JobPostings() {
                       alt="Total Candidates"
                       className="mr-[6px]"
                     />
-                    <p className="max-[700px]:mr-[5px]" id="caption">
+                    <div className="max-[700px]:mr-[5px]" id="caption">
                       5
-                    </p>
+                    </div>
                   </div>
-                  <p id="caption">Total</p>
-                  <p id="caption">Candidates</p>
+                  <div id="caption">Total</div>
+                  <div id="caption">Candidates</div>
                 </div>
                 <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center">
                   <div className="flex flex-row">
@@ -97,16 +157,16 @@ function JobPostings() {
                       alt="Candidates on track"
                       className="mr-[6px]"
                     />
-                    <p className="text-pink-primary" id="caption">
+                    <div className="text-pink-primary" id="caption">
                       3
-                    </p>
+                    </div>
                   </div>
-                  <p className="text-pink-primary" id="caption">
+                  <div className="text-pink-primary" id="caption">
                     Candidates
-                  </p>
-                  <p className="text-pink-primary" id="caption">
+                  </div>
+                  <div className="text-pink-primary" id="caption">
                     on track
-                  </p>
+                  </div>
                 </div>
               </div>
               <div className="max-[700px]:mt-[10px] max-[700px]:mb-[10px] flex flex-row items-center">
@@ -115,16 +175,18 @@ function JobPostings() {
                   alt="Show"
                   className="w-[25px] h-[25px] mr-[5px]"
                 />
-                <p id="body2">SHOW</p>
+                <div id="body2">SHOW</div>
               </div>
               <div className="flex flex-row items-center">
-                <button className="button_pink_tertiary flex flex-row mr-[6px]">
+                <button onClick={() => handleStatus(item.job_post_id)} className={`flex flex-row mr-[6px] ${item.post_status ? 'button_pink_tertiary' : 'button_gray'}`}
+                disabled={!item.post_status || isUpdating}
+                >
                   <Image
-                    src={close}
+                    src={item.post_status ? close : closed}
                     alt="Close Botton"
                     className="w-[25px] h-[25px] mr-[5px]"
                   />
-                  CLOSE
+                  {item.post_status ? 'CLOSE' : 'CLOSED'}
                 </button>
                 <button className="button_pink_tertiary flex flex-row">
                   <Image
@@ -176,71 +238,42 @@ function JobPostings() {
             </div>
             <div>
               <div className={`mt-1 mb-2 ${isExpanded ? "" : "hidden"}`}>
-                <p className="text-pink-tertiary mt-[10px] mb-[8px]" id="body1">
+                <div className="text-pink-tertiary mt-[10px] mb-[8px]" id="body1">
                   About the job position
-                </p>
-                <p className="" id="body2">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                  quis diam fringilla, luctus lectus dictum, volutpat lacus.
-                  Vivamus lacinia felis ut mauris lacinia elementum. Sed
-                  faucibus dapibus egestas. Etiam dolor neque, posuere at purus
-                  cursus, molestie eleifend lacus. Aenean eu diam eu enim
-                  commodo accumsan ut sit amet odio. Nam maximus varius leo, et
-                  porttitor ante sodales ut. Pellentesque euismod commodo nunc
-                  ut tincidunt. Sed fringilla nunc leo, a euismod ipsum aliquet
-                  placerat. Integer suscipit semper mi, sit amet mollis augue
-                  mollis in. Proin vestibulum accumsan elit, id pellentesque
-                  diam fermentum eget. Aliquam mattis quis quam ut faucibus.
-                  Duis finibus nulla nec enim eleifend dapibus.
-                </p>
-                <div>
-                  <p
-                    className="text-pink-tertiary mt-[16px] mb-[8px]"
-                    id="body1"
-                  >
-                    About the job position
-                  </p>
-                  <p className="" id="body2">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nulla quis diam fringilla, luctus lectus dictum, volutpat
-                    lacus. Vivamus lacinia felis ut mauris lacinia elementum.
-                    Sed faucibus dapibus egestas. Etiam dolor neque, posuere at
-                    purus cursus, molestie eleifend lacus. Aenean eu diam eu
-                    enim commodo accumsan ut sit amet odio. Nam maximus varius
-                    leo, et porttitor ante sodales ut. Pellentesque euismod
-                    commodo nunc ut tincidunt. Sed fringilla nunc leo, a euismod
-                    ipsum aliquet placerat. Integer suscipit semper mi, sit amet
-                    mollis augue mollis in. Proin vestibulum accumsan elit, id
-                    pellentesque diam fermentum eget. Aliquam mattis quis quam
-                    ut faucibus. Duis finibus nulla nec enim eleifend dapibus.
-                  </p>
+                </div>
+                <div className="" id="body2">
+                {item.job_description}
                 </div>
                 <div>
-                  <p
+                  <div
                     className="text-pink-tertiary mt-[16px] mb-[8px]"
                     id="body1"
                   >
-                    About the job position
-                  </p>
-                  <p className="" id="body2">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nulla quis diam fringilla, luctus lectus dictum, volutpat
-                    lacus. Vivamus lacinia felis ut mauris lacinia elementum.
-                    Sed faucibus dapibus egestas. Etiam dolor neque, posuere at
-                    purus cursus, molestie eleifend lacus. Aenean eu diam eu
-                    enim commodo accumsan ut sit amet odio. Nam maximus varius
-                    leo, et porttitor ante sodales ut. Pellentesque euismod
-                    commodo nunc ut tincidunt. Sed fringilla nunc leo, a euismod
-                    ipsum aliquet placerat. Integer suscipit semper mi, sit amet
-                    mollis augue mollis in. Proin vestibulum accumsan elit, id
-                    pellentesque diam fermentum eget. Aliquam mattis quis quam
-                    ut faucibus. Duis finibus nulla nec enim eleifend dapibus.
-                  </p>
+                    Mandatory Requirements
+                  </div>
+                  <div className="" id="body2">
+                  {item.requirement}
+                  </div>
+                </div>
+                <div>
+                  <div
+                    className="text-pink-tertiary mt-[16px] mb-[8px]"
+                    id="body1"
+                  >
+                    Optional Requirements
+                  </div>
+                  <div className="" id="body2">
+                  {item.optional_requirement}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        )
+      }
+      )
+      };
       </div>
     </>
   );
