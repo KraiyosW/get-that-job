@@ -36,7 +36,6 @@ const ProfessionalLogin = () => {
     /// check status before redirect //
     try {
       const data = { email, password };
-      // const authToken = JSON.parse(localStorage.getItem('sb-zsvpcibqzkxoqqpektgc-auth-token'));
       await professionalLogin(data);
       router.push("/find-that-job");
     } catch (error) {
