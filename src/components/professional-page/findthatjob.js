@@ -56,18 +56,18 @@ const Findthatjob = () => {
                             <div className='flex flex-col'>
                                 <div className='flex gap-1 items-center'>
                                     <Image src={categorypic} />
-                                    <p id='caption'>Manufactoring</p>
+                                    <div id='caption'>Manufactoring</div>
                                 </div>
                                 <h6>The job title</h6>
                                 <h2 id='subtitle2'>The Company Name </h2>
                                 <div className='flex gap-4 '>
                                     <div className='flex gap-1 items-center'>
                                         <Image src={calendar} className='h-[12.5px] w-[12.5px]' />
-                                        <p id='caption'>Full time</p>
+                                        <div id='caption'>Full time</div>
                                     </div>
                                     <div className='flex gap-1 items-center'>
                                         <Image src={dollar} />
-                                        <p id='caption'>2.0k - 2.5k</p>
+                                        <div id='caption'>2.0k - 2.5k</div>
                                     </div>
                                 </div>
 

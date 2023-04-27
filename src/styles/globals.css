@@ -58,31 +58,31 @@ h6#heading6 {
   font-weight: 500;
 }
 
-p#body1 {
+#body1 {
   font-size: 1rem;
   line-height: 1.5rem;
   font-weight: 400;
 }
 
-p#body2 {
+#body2 {
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 400;
 }
 
-p#caption {
+#caption {
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 400;
 }
 
-p#overline {
+#overline {
   font-size: 0.625rem;
   line-height: 0.75rem;
   font-weight: 400;
 }
 
-p {
+#p-text {
   font-size: 0.75rem;
   line-height: 1.5rem;
 }
@@ -163,7 +163,12 @@ button.button_pink_tertiary {
   border-radius: 16px;
   color: white;
 }
-
+button.button_gray {
+  background-color: #E1E2E1;
+  padding: 8px 16px 8px 16px;
+  border-radius: 16px;
+  color: #8E8E8E;
+}
 button.button_previous {
   width: 131px;
 }

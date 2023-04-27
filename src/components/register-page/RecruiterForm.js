@@ -151,7 +151,7 @@ const RecruiterForm = () => {
           className="flex flex-col gap-[20px] mt-[20px] z-10"
         >
           <div>
-            <p id="overline mb-[4px]">COMPANY</p>
+            <p className="mb-[4px]" id="overline">COMPANY</p>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
               name="company"
@@ -163,7 +163,7 @@ const RecruiterForm = () => {
             {errorCompany && <p className="text-rose-500">{errorCompany}</p>}
           </div>
           <div>
-            <p id="overline mb-[4px]">EMAIL</p>
+            <p className="mb-[4px]" id="overline">EMAIL</p>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
               name="email"
@@ -175,7 +175,7 @@ const RecruiterForm = () => {
             {errorMessage && <p className="text-rose-500">{errorMessage}</p>}
           </div>
           <div>
-            <p id="overline mb-[4px]">PASSWORD</p>
+            <p className="mb-[4px]" id="overline">PASSWORD</p>
             <div className="relative">
               <input
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
@@ -200,7 +200,7 @@ const RecruiterForm = () => {
 
           {/* css maybe use position for push in same div with password input */}
           <div>
-            <p id="overline mb-[4px]">PASSWORD CONFIRMATION</p>
+            <p className="mb-[4px]" id="overline">PASSWORD CONFIRMATION</p>
             <div className="relative">
               <input
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
