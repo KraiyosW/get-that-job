@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import babyswim from '../../image/babyswim.png'
@@ -6,12 +7,7 @@ import following from '../../image/following.png'
 import categorypic from '../../image/categorypic.png'
 import calendar from '../../image/calendar.png'
 import dollar from '../../image/dollar.png'
-import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const Findthatjob = () => {
     const [job, setJob] = useState([]);
     // const [followStatus, setFollowStatus] = useState({});
@@ -19,11 +15,11 @@ const Findthatjob = () => {
 
     const AllJob = async () => {
         try {
-            const result = await supabase.from('jobs_postings').select('*').limit(10)
-            setJob(result.data);
-
-        } catch {
-            console.error();
+            const result = await axios.get('http://localhost:3000/api/findthatjob')
+            setJob(result.data.job.data);
+            console.log(result.data.job.data);
+        } catch (error) {
+            console.error(error);
         }
     };
     // const result = await axios.get(

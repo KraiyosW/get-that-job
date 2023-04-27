@@ -1,16 +1,16 @@
 import React from "react";
 import SidebarProfessional from "@/components/SidebarProfessional";
-import Findthatjob from "@/components/professional-page/FindthatJob";
+import Findthatjob from "@/components/professional-page/findthatjob";
 import FilterJob from "@/components/professional-page/FilterJob";
 
 const FindThatJob = () => {
-  return (
-    <div>
-      <SidebarProfessional />
-      <FilterJob/>
-      <Findthatjob />
-    </div>
-  );
+    return (
+        <div>
+            <SidebarProfessional />
+            <FilterJob />
+            <Findthatjob />
+        </div>
+    );
 };
 
 export default FindThatJob;
