@@ -51,6 +51,19 @@ function CreateNewJob() {
       const authToken = JSON.stringify(localStorage.getItem('sb:token'));
       const response = await createPost(formData,authToken);
       console.log(response);
+      setSelectedJobType("")
+      setSelectedOption("")
+      setFormData({
+        job_title: "",
+        job_category: "",
+        job_type: "",
+        salary_min_range: "",
+        salary_max_range: "",
+        job_description: "",
+        requirement: "",
+        optional_requirement: "",
+        p_email: state.email,
+      });
     } catch (error) {
       console.error(error);
     }
