@@ -27,7 +27,11 @@ function JobPostings() {
 
   const AllJob = async () => {
     try {
-      const result = await supabase.from('jobs_postings').select('*').limit(20)
+      const result = await supabase
+          .from('jobs_postings')
+          .select('*')
+          .limit(20)
+          .order('created_at', { ascending: true });
       const formattedJobs = result.data.map(job => ({
         ...job,
         created_at: new Date(job.created_at).toLocaleDateString('en-GB')
@@ -40,7 +44,7 @@ function JobPostings() {
   };
   useEffect(() => {
     AllJob();
-  }, [job]);
+  }, [job,jobStatus]);
 
   const toggleExpanded = (postId) => {
     setIsExpanded((prevId) => (prevId === postId ? null : postId));

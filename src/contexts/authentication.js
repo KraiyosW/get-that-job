@@ -30,19 +30,6 @@ function AuthProvider(props) {
     user: null,
     email: null 
   });
-  const [professionalState,setProfessionalState] = useState({
-    loading : true,
-    error : null,
-    user : null,
-    email : null
-  });
-  const [recruiterState,setRecruiterState] = useState({
-    loading : true,
-    error : null,
-    user : null,
-    email : null
-  })
-  
 
   const professionalRegister = async (data) => {
     try {
@@ -135,8 +122,6 @@ function AuthProvider(props) {
     <AuthContext.Provider
       value={{
         state,
-        professionalState,
-        recruiterState,
         professionalRegister,
         recruiterRegister,
         professionalLogin,
