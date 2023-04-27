@@ -118,8 +118,8 @@ function JobPostings() {
                           alt="Salary"
                           className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                         />
-                        <div className="text-grey-secondary" id="caption">
-                          {item.job_salary_min_range} - {item.job_salary_max_range}
+                        <div className="text-grey-secondary" id="caption" key={index}>
+                          {item.salary_min_range} - {item.salary_max_range}
                         </div>
                       </section>
                     </div>
