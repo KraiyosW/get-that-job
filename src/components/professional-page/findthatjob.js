@@ -8,7 +8,6 @@ import following from "../../image/following.png";
 import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
-
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -24,13 +23,13 @@ const Findthatjob = () => {
     // const [applicationStatus, setApplicationStatus] = useState({});
     const AllJob = async () => {
         try {
-            const result = await supabase.from("jobs_postings").select("*").limit(10);
-            setJob(result.data);
+            const result = await await axios.get('http://localhost:3000/api/findthatjob')
+            setJob(result.data.job.data);
         } catch {
             console.error();
-
         }
     };
+
     // const result = await axios.get(
     //     'http://localhost:3000/api/findthatjob'
     // );
@@ -50,9 +49,6 @@ const Findthatjob = () => {
     //     });
     // };
 
-    useEffect(() => {
-        AllJob();
-    }, []);
 
 
     const [jobList, setJobList] = useState([]);
@@ -67,22 +63,6 @@ const Findthatjob = () => {
     // สร้าง state สำหรับเก็บข้อมูล option ที่เลือก
     const [selectedOption, setSelectedOption] = useState("");
     const [selectedJobType, setSelectedJobType] = useState("");
-
-    // Search by Jobtitle or Companyname
-    const findJob = async () => {
-        try {
-            const result = await axios.get("http://localhost:3000/api/findthatjob");
-            setJobList(result.data.jobList.data);
-            console.log(result.data.joblist.data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    useEffect(() => {
-        findJob();
-    }, [searchMessage]);
-
     // ฟังก์ชั่นสำหรับการเปลี่ยนค่าใน form
     const handleChange = (event) => {
         setFormData({
@@ -106,6 +86,14 @@ const Findthatjob = () => {
     const handleSeeMore = (id) => {
         router.push(`find-that-job/${id}`);
     };
+
+    useEffect(() => {
+        AllJob();
+    }, [job]);
+
+    const filteredJobs = job.filter(item => item.job_title.indexOf(searchMessage) || item.job_category.indexOf(selectedOption));
+
+
 
     return (
         <div className="flex flex-col">
@@ -212,7 +200,7 @@ const Findthatjob = () => {
             <main className="flex flex-col flex-wrap w-full items-center">
                 <h6 className="mb-4 mt-4">{job.length} jobs for you</h6>
                 <div className="grid grid-cols-3 gap-[15px]">
-                    {job.map((item, index) => {
+                    {filteredJobs.map((item, index) => {
                         return (
                             <div
                                 key={index}
