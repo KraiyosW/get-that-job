@@ -13,13 +13,8 @@ import { useRouter } from "next/router";
 
 const SideBarRecruiter = () => {
 
-  const { isAuthenticated, logoutAuth } = useAuth();
+  const { logoutAuth } = useAuth();
   const router = useRouter();
-
-  if (!isAuthenticated) {
-    return null;
-  }
-
 
   const handleLogout = async () => {
     try {
