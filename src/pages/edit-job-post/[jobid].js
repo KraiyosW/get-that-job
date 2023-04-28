@@ -83,23 +83,33 @@ console.log(post)
 
 
   // ฟังก์ชั่นสำหรับการเปลี่ยนค่าใน form
-  const handleChange = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-      job_category: selectedOption,
-      job_type : selectedJobType,
-    });
-  };
-  // ฟังก์ชั่นสำหรับการเลือก option ของ job category
-  const handleSelectOption = (event) => {
-    setSelectedOption(event.target.value);
-  };
+const handleChange = (event) => {
+  setFormData({
+    ...formData,
+    [event.target.name]: event.target.value,
+    job_category: selectedOption,
+    job_type: selectedJobType,
+  });
+};
 
-  // ฟังก์ชั่นสำหรับการเลือก option ของ job type
-  const handleSelectJobType = (event) => {
-    setSelectedJobType(event.target.value);
-  };
+// ฟังก์ชั่นสำหรับการเลือก option ของ job category
+const handleSelectOption = (event) => {
+  setSelectedOption(event.target.value);
+  setFormData({
+    ...formData,
+    job_category: event.target.value,
+  });
+};
+
+// ฟังก์ชั่นสำหรับการเลือก option ของ job type
+const handleSelectJobType = (event) => {
+  setSelectedJobType(event.target.value);
+  setFormData({
+    ...formData,
+    job_type: event.target.value,
+  });
+};
+
 
 
   // ฟังก์ชั่นสำหรับการ submit form
