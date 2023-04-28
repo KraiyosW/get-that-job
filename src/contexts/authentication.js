@@ -30,19 +30,12 @@ function AuthProvider(props) {
     user: null,
     email: null 
   });
-  const [professionalState,setProfessionalState] = useState({
-    loading : true,
-    error : null,
-    user : null,
-    email : null
+  const [recruiterState, setRecruiterState] = useState({
+    loading: true,
+    error: null,
+    user: null,
+    email: null 
   });
-  const [recruiterState,setRecruiterState] = useState({
-    loading : true,
-    error : null,
-    user : null,
-    email : null
-  })
-  
 
   const professionalRegister = async (data) => {
     try {
@@ -104,6 +97,7 @@ function AuthProvider(props) {
       });
       localStorage.setItem('sb:token', response.data.token);
       localStorage.setItem('email',response.data.user.user.email)
+      setRecruiterState({...recruiterState , user : response.data.user.user , email : response.data.user.user.email});
       console.log(response);
       return response;
     } catch (error) {
@@ -135,10 +129,9 @@ function AuthProvider(props) {
     <AuthContext.Provider
       value={{
         state,
-        professionalState,
-        recruiterState,
         professionalRegister,
         recruiterRegister,
+        recruiterState,
         professionalLogin,
         recruiterLogin,
         logoutAuth,

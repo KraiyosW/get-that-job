@@ -12,6 +12,7 @@ import closed from "../../image/closed.png";
 import pencil from "../../image/pencil.png";
 import { useState, useEffect } from 'react'
 import { createClient } from "@supabase/supabase-js";
+import { useRouter } from "next/router";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -23,11 +24,16 @@ function JobPostings() {
   const [job, setJob] = useState([]);
   const [jobStatus, setJobStatus] = useState([])
   const [isUpdating, setIsUpdating] = useState(false)
+  const router= useRouter()
 
 
   const AllJob = async () => {
     try {
-      const result = await supabase.from('jobs_postings').select('*').limit(20)
+      const result = await supabase
+          .from('jobs_postings')
+          .select('*')
+          .limit(20)
+          .order('created_at', { ascending: true });
       const formattedJobs = result.data.map(job => ({
         ...job,
         created_at: new Date(job.created_at).toLocaleDateString('en-GB')
@@ -40,11 +46,15 @@ function JobPostings() {
   };
   useEffect(() => {
     AllJob();
-  }, [job]);
+  }, [jobStatus]);
 
   const toggleExpanded = (postId) => {
     setIsExpanded((prevId) => (prevId === postId ? null : postId));
   };
+
+  const handleEdit = (id) =>{
+    router.push(`edit-job-post/${id}`);
+  }
 
 
 
@@ -114,8 +124,8 @@ function JobPostings() {
                           alt="Salary"
                           className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                         />
-                        <div className="text-grey-secondary" id="caption">
-                          {item.job_salary_min_range} - {item.job_salary_max_range}
+                        <div className="text-grey-secondary" id="caption" key={index}>
+                          {item.salary_min_range} - {item.salary_max_range}
                         </div>
                       </section>
                     </div>
@@ -182,7 +192,7 @@ function JobPostings() {
                       />
                       {item.post_status ? 'CLOSE' : 'CLOSED'}
                     </button>
-                    <button className="button_pink_tertiary flex flex-row">
+                    <button className="button_pink_tertiary flex flex-row" onClick={()=> handleEdit(item.job_post_id)}>
                       <Image
                         src={pencil}
                         alt="Edit Botton"
