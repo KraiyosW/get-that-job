@@ -63,8 +63,18 @@ h6#heading6 {
   line-height: 1.5rem;
   font-weight: 400;
 }
+p#body1 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
 
 #body2 {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+p#body2 {
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 400;
@@ -75,8 +85,18 @@ h6#heading6 {
   line-height: 1rem;
   font-weight: 400;
 }
+p#caption {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
+}
 
 #overline {
+  font-size: 0.625rem;
+  line-height: 0.75rem;
+  font-weight: 400;
+}
+p#overline {
   font-size: 0.625rem;
   line-height: 0.75rem;
   font-weight: 400;
