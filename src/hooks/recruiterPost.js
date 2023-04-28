@@ -67,8 +67,53 @@ export const useRecruiterPost = () => {
     }
   };
 
+  const editJobPost = async (data, authToken) => {
+    setIsError(false);
+    setIsLoading(true);
+    try {
+      let token =
+        authToken?.access_token ||
+        sessionStorage.getItem('sb:token') ||
+        localStorage.getItem('sb:token') ||
+        '';
+  
+      console.log('token', token);
+      if (!token) {
+        const { data: session, error: refreshError } =
+          await supabase.auth.refreshSession({ refreshToken: authToken?.refresh_token });
+  
+        if (refreshError) {
+          console.log(refreshError.message);
+          return null;
+        }
+        sessionStorage.setItem('sb:token', session.access_token);
+        localStorage.setItem('sb:token', session.access_token);
+        console.log(session);
+      }
+  
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      };
+  
+      const response = await axios.put('/api/edit-job-post-recruiter', JSON.stringify(data), {
+        headers,
+        credentials: 'include',
+      });
+      console.log(response.data);
+      alert('Edit Job Post successfully');
+      setPost(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+      setIsError(true);
+      alert(`Failed to edit job post: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  return { createPost, post, isLoading, isError };
+
+  return { createPost,editJobPost, post, isLoading, isError };
 };
 
 export const RecruiterPostProvider = ({ children }) => {
