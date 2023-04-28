@@ -24,30 +24,67 @@ export default async function handler(req, res) {
           p_email
         } = req.body;
 
-        // Call the RPC function update_job_posting
-        await supabase.rpc('refresh_schema');
+        // get recruiter_id using email
+        const { data: recruiterData, error: recruiterError } = await supabase
+          .from('recruiters')
+          .select('recruiter_id')
+          .eq('email', p_email);
 
-        const { data: jobId, error: rpcError } = await supabase.rpc('update_job_posting', {
-          p_data: {
-            job_title: job_title,
-            job_category: job_category,
-            job_type: job_type,
-            salary_min_range: salary_min_range,
-            salary_max_range: salary_max_range,
-            job_description: job_description,
-            requirement: requirement,
-            optional_requirement: optional_requirement,
-            post_status: true,
-          },
-          p_email: p_email,
-          p_job_post_id: job_post_id,
-        });
-
-        if (rpcError) {
-          throw new Error(rpcError.message);
+        if (recruiterError) {
+          throw new Error(recruiterError.message);
         }
 
-        res.send(jobId);
+        if (recruiterData.length === 0) {
+          throw new Error(`Recruiter email ${p_email} not found`);
+        }
+
+        const recruiter_id = recruiterData[0].recruiter_id;
+
+        // get old data
+        console.log('job_post_id:', job_post_id);
+console.log('recruiter_id:', recruiter_id);
+
+const { data: oldData, error: oldDataError } = await supabase
+  .from('jobs_postings')
+  .select('*')
+  .eq('job_post_id', job_post_id)
+  .eq('recruiter_id', recruiter_id);
+
+console.log('oldData:', oldData);
+console.log('oldDataError:', oldDataError);
+
+        if (oldDataError) {
+          throw new Error(oldDataError.message);
+        }
+
+        if (oldData.length === 0) {
+          throw new Error(`Job posting with ID ${job_post_id} not found for recruiter with email ${p_email}`);
+        }
+
+        const oldDataRecord = oldData[0];
+
+        // update data
+        const { data: newData, error: newDataError } = await supabase
+          .from('jobs_postings')
+          .update({
+            job_title: job_title ?? oldDataRecord.job_title,
+            job_category: job_category ?? oldDataRecord.job_category,
+            job_type: job_type ?? oldDataRecord.job_type,
+            salary_min_range: salary_min_range ?? oldDataRecord.salary_min_range,
+            salary_max_range: salary_max_range ?? oldDataRecord.salary_max_range,
+            job_description: job_description ?? oldDataRecord.job_description,
+            requirement: requirement ?? oldDataRecord.requirement,
+            optional_requirement: optional_requirement ?? oldDataRecord.optional_requirement,
+            post_status: true
+          })
+          .eq('job_post_id', job_post_id)
+          .eq('recruiter_id', recruiter_id);
+
+        if (newDataError) {
+          throw new Error(newDataError.message);
+        }
+
+        res.send(job_post_id);
         break;
 
       default:

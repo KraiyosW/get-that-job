@@ -24,7 +24,7 @@ function JobPostings() {
   const [job, setJob] = useState([]);
   const [jobStatus, setJobStatus] = useState([])
   const [isUpdating, setIsUpdating] = useState(false)
-  const router=useRouter()
+  const router= useRouter()
 
 
   const AllJob = async () => {
@@ -46,7 +46,7 @@ function JobPostings() {
   };
   useEffect(() => {
     AllJob();
-  }, [job,jobStatus]);
+  }, [jobStatus]);
 
   const toggleExpanded = (postId) => {
     setIsExpanded((prevId) => (prevId === postId ? null : postId));

@@ -11,12 +11,13 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+
 function EditJobPost() {
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { editJobPost, isLoading, isError } = useRecruiterPost();
   const { recruiterState } = useAuth();
   const [post,setPost] = useState({})
-    // สร้าง state สำหรับเก็บข้อมูล option ที่เลือก
+  // สร้าง state สำหรับเก็บข้อมูล option ที่เลือก
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedJobType, setSelectedJobType] = useState("");
   const userEmail = recruiterState.email;
@@ -26,48 +27,57 @@ function EditJobPost() {
 
 
   // สร้าง state สำหรับเก็บข้อมูลจากฟอร์ม
-const [formData, setFormData] = useState({
-  job_title: "",
-  job_category: "",
-  job_type: "",
-  salary_min_range: "",
-  salary_max_range: "",
-  job_description: "",
-  requirement: "",
-  optional_requirement: "",
-  p_email: userEmail,
-});
+  const [formData, setFormData] = useState({
+    job_title: "",
+    job_category: "",
+    job_type: "",
+    salary_min_range: "",
+    salary_max_range: "",
+    job_description: "",
+    requirement: "",
+    optional_requirement: "",
+    p_email: userEmail,
+  });
+  console.log(userEmail)
 
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const posts = await supabase
-        .from("jobs_postings")
-        .select(`*, recruiters (*)`)
-        .eq("job_post_id", Number(id))
-        .single();
-
-      setPost(posts.data);
-
-      setFormData({
-        ...formData,
-        job_title: post.job_title,
-        job_category: post.job_category,
-        job_type: post.job_type,
-        salary_min_range: post.salary_min_range,
-        salary_max_range: post.salary_max_range,
-        job_description: post.job_description,
-        requirement: post.requirement,
-        optional_requirement: post.optional_requirement,
-        p_email: userEmail
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  if (id) fetchData();
-}, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (!id) return; // check if id is null or undefined
+          
+        const posts = await supabase
+          .from("jobs_postings")
+          .select(`*, recruiters (*)`)
+          .eq("job_post_id", Number(id))
+          .single();
+  
+        if (!posts.data) return; // check if post is undefined or null
+  
+        setPost(posts.data);
+  
+        setFormData({
+          ...formData,
+          job_post_id : posts.data.job_post_id,
+          job_title: posts.data.job_title,
+          job_category: posts.data.job_category,
+          job_type: posts.data.job_type,
+          salary_min_range: posts.data.salary_min_range,
+          salary_max_range: posts.data.salary_max_range,
+          job_description: posts.data.job_description,
+          requirement: posts.data.requirement,
+          optional_requirement: posts.data.optional_requirement,
+          p_email: posts.data.recruiters.email
+        });
+  
+        setSelectedOption(posts.data.job_category);
+        setSelectedJobType(posts.data.job_type);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    fetchData();
+  }, [id, userEmail]);
 
 console.log(post)
 
@@ -81,7 +91,6 @@ console.log(post)
       job_type : selectedJobType,
     });
   };
-
   // ฟังก์ชั่นสำหรับการเลือก option ของ job category
   const handleSelectOption = (event) => {
     setSelectedOption(event.target.value);
@@ -100,7 +109,7 @@ console.log(post)
       const authToken = JSON.stringify(localStorage.getItem('sb:token'));
       const response = await editJobPost(formData,authToken);
       console.log(response);
-      router.push('/JobPostings')
+      router.push('/jobPostings')
     } catch (error) {
       console.error(error);
     }
