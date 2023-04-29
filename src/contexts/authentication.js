@@ -45,10 +45,8 @@ function AuthProvider(props) {
         },
       });
       console.log(response);
-      alert("Registration completed!");
     } catch (error) {
       console.error("Error:", error);
-      alert("Registration failed.");
     }
   };
 
@@ -60,10 +58,8 @@ function AuthProvider(props) {
         },
       });
       console.log(response);
-      alert("Registration completed!");
     } catch (error) {
       console.error("Error:", error);
-      alert("Registration failed.");
     }
   };
 
