@@ -130,7 +130,7 @@ const handleSelectJobType = (event) => {
     <SideBarRecruiter/>
       <main className="bg-white-secondary h-screen">
         <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px] max-[700px]:items-center max-[700px]:text-center">
-          <h4 id="heading4">Create new job posting</h4>
+          <h4 id="heading4">Edit job posting</h4>
           <h5 className="mt-[24px] mb-[8px]" id="heading5">
             Main information
           </h5>
@@ -256,7 +256,7 @@ const handleSelectJobType = (event) => {
             </div>
             <br />
             <button type="submit" className="button_pink_new mt-[24px]">
-              POST THIS JOB
+            EDIT THIS JOB
             </button>
           </form>
         </div>

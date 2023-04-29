@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import  { useRecruiterPost } from "@/hooks/recruiterPost.js";
-
+import { useRouter } from "next/router";
 
 function CreateNewJob() {
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { createPost, isLoading, isError } = useRecruiterPost();
   const userEmail = localStorage.getItem("email");
+  const router = useRouter();
 
   // สร้าง state สำหรับเก็บข้อมูลจากฟอร์ม
   const [formData, setFormData] = useState({
@@ -52,7 +53,10 @@ function CreateNewJob() {
     try {
       const authToken = JSON.stringify(localStorage.getItem('sb:token'));
       const response = await createPost(formData,authToken);
+      router.push('/jobPostings')
+     
       console.log(response);
+    
       setSelectedJobType("")
       setSelectedOption("")
       setFormData({
@@ -64,7 +68,7 @@ function CreateNewJob() {
         job_description: "",
         requirement: "",
         optional_requirement: "",
-        p_email: state.email,
+        p_email: userEmail,
       });
     } catch (error) {
       console.error(error);

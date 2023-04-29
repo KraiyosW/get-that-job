@@ -14,12 +14,14 @@ const RecruiterPostContext = React.createContext({
   isLoading: false,
   isError: null,
   createPost: () => {},
+  editJobPost:() => {}
 });
 
 export const useRecruiterPost = () => {
   const [post, setPost] = useState(null);
   const [isError, setIsError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const createPost = async (data, authToken) => {
     setIsError(false);
@@ -56,12 +58,11 @@ export const useRecruiterPost = () => {
         credentials: 'include',
       });
       console.log(response.data);
-      alert('Create Job Post successfully');
       setPost(response.data);
+      router.push('/JobPostings')
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
-      alert(`Failed to create job post: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -101,12 +102,11 @@ export const useRecruiterPost = () => {
         credentials: 'include',
       });
       console.log(response.data);
-      alert('Edit Job Post successfully');
       setPost(response.data);
+      router.push('/JobPostings')
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
-      alert(`Failed to edit job post: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -117,7 +117,7 @@ export const useRecruiterPost = () => {
 };
 
 export const RecruiterPostProvider = ({ children }) => {
-  const { createPost, post, isLoading, isError } = useRecruiterPost();
+  const { createPost, post, isLoading, isError , editJobPost } = useRecruiterPost();
   const router = useRouter();
   const { id } = router.query;
   const value = { createPost, post, isLoading, isError, id };
