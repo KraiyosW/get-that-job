@@ -50,8 +50,6 @@ function JobDetails() {
     if (id) fetchPost();
   });
 
-  if (!post) return <div>Loading...</div>;
-
   const handleGoBack = () => {
     router.push("/find-that-job");
   };
