@@ -121,39 +121,38 @@ const Findthatjob = () => {
     }
     // const filteredJobs = job.filter(item => item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) || item.job_category.includes(category));
     const filterJobs = job.filter((jobs) => {
-
         if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
             return (
                 (jobs.job_category.includes(category) &&
                     jobs.job_title.toLowerCase().includes(searchMessage) &&
                     jobs.job_type.includes(selectedJobType) &&
-                    jobs.salary_min_range >= salaryMin &&
-                    jobs.salary_max_range <= salaryMax) ||
+                    jobs.salary >= salaryMin &&
+                    jobs.salary <= salaryMax) ||
                 (jobs.job_category.includes(category) &&
                     jobs.job_description.toLowerCase().includes(searchMessage) &&
                     jobs.job_type.includes(selectedJobType) &&
-                    jobs.salary_min_range >= salaryMin &&
-                    jobs.salary_max_range <= salaryMax)
+                    jobs.salary >= salaryMin &&
+                    jobs.salary <= salaryMax)
             );
         } else if (category !== "Select or create a category" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-            return jobs.job_category.includes(category) && jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+            return jobs.job_category.includes(category) && jobs.job_type.includes(selectedJobType) && jobs.salary >= salaryMin && jobs.salary <= salaryMax;
         } else if (searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
             return (
                 jobs.job_title.toLowerCase().includes(searchMessage) ||
                 jobs.job_description.toLowerCase().includes(searchMessage)) &&
                 jobs.job_type.includes(selectedJobType) &&
-                jobs.salary_min_range >= salaryMin &&
-                jobs.salary_max_range <= salaryMax;
+                jobs.salary >= salaryMin &&
+                jobs.salary <= salaryMax;
         } else if (category !== "Select or create a category" && salaryMin !== "" && salaryMax !== "") {
-            return jobs.job_category.includes(category) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+            return jobs.job_category.includes(category) && jobs.salary >= salaryMin && jobs.salary <= salaryMax;
         } else if (searchMessage.toLowerCase() !== "" && salaryMin !== "" && salaryMax !== "") {
             return (
                 jobs.job_title.toLowerCase().includes(searchMessage) ||
                 jobs.job_description.toLowerCase().includes(searchMessage)) &&
-                jobs.salary_min_range >= salaryMin &&
-                jobs.salary_max_range <= salaryMax;
+                jobs.salary >= salaryMin &&
+                jobs.salary <= salaryMax;
         } else if (selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-            return jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+            return jobs.job_type.includes(selectedJobType) && jobs.salary >= salaryMin && jobs.salary <= salaryMax;
         } else if (category !== "Select or create a category") {
             return jobs.job_category.includes(category);
         } else if (searchMessage.toLowerCase() !== "") {
