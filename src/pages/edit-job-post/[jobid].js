@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import SideBarRecruiter from "@/components/SidebarRecruiter.js";
 import { useAuth } from "@/contexts/authentication";
 import { createClient } from "@supabase/supabase-js";
-
+import Sidebarbar from '@/components/sidebarbar.js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -127,7 +127,7 @@ function EditJobPost() {
 
   return (
     <>
-      <SideBarRecruiter />
+      <Sidebarbar />
       <main className="bg-white-secondary h-screen">
         <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px] max-[700px]:items-center max-[700px]:text-center">
           <h4 id="heading4">Edit job posting</h4>
