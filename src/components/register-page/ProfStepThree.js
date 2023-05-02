@@ -40,58 +40,58 @@ const StepThree = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     let isValid = true;
-    setLoading(true);
-
-    if (jobTitle.trim() === "") {
-      setErrorJob("Please enter your job title.");
-      isValid = false;
-    } else if (jobTitle.length < 5 || jobTitle.length > 50) {
-      setErrorJob("Please enter a job title between 5 and 50 characters.");
-      isValid = false;
-    } else {
-      setErrorJob("");
-    }
-
-    if (!experience || experience < 0) {
-      setErrorExp("Please enter your professional experience.");
-      isValid = false;
-    } else if (experience.length < 300 || experience.length > 2000) {
-      setErrorExp(
-        "Professional experience must be between 300 and 2000 characters."
-      );
-      isValid = false;
-    } else {
-      setErrorExp("");
-    }
-
-    if (education.trim() === "") {
-      setErrorEducation("Please enter your educational background.");
-      isValid = false;
-    } else if (education.length < 300 || education.length > 2000) {
-      setErrorEducation(
-        "Education background must be between 300 and 2000 characters."
-      );
-      isValid = false;
-    } else {
-      setErrorEducation("");
-    }
-
-    if (file === null) {
-      setErrorCv("Please select your CV file.");
-      isValid = false;
-    } else if (file.size > 5 * 1024 * 1024) {
-      setErrorCv("File size should be less than or equal to 5MB.");
-      isValid = false;
-    } else {
-      setErrorCv("");
-    }
 
     if (buttonClicked === "previousButton") {
       props.onPrevious();
     } else if (buttonClicked === "skipButton") {
       props.onSkip();
     } else if (buttonClicked === "finishButton") {
+      if (jobTitle.trim() === "") {
+        setErrorJob("Please enter your job title.");
+        isValid = false;
+      } else if (jobTitle.length < 5 || jobTitle.length > 50) {
+        setErrorJob("Please enter a job title between 5 and 50 characters.");
+        isValid = false;
+      } else {
+        setErrorJob("");
+      }
+
+      if (!experience || experience < 0) {
+        setErrorExp("Please enter your professional experience.");
+        isValid = false;
+      } else if (experience.length < 300 || experience.length > 2000) {
+        setErrorExp(
+          "Professional experience must be between 300 and 2000 characters."
+        );
+        isValid = false;
+      } else {
+        setErrorExp("");
+      }
+
+      if (education.trim() === "") {
+        setErrorEducation("Please enter your educational background.");
+        isValid = false;
+      } else if (education.length < 300 || education.length > 2000) {
+        setErrorEducation(
+          "Education background must be between 300 and 2000 characters."
+        );
+        isValid = false;
+      } else {
+        setErrorEducation("");
+      }
+
+      if (file === null) {
+        setErrorCv("Please select your CV file.");
+        isValid = false;
+      } else if (file.size > 5 * 1024 * 1024) {
+        setErrorCv("File size should be less than or equal to 5MB.");
+        isValid = false;
+      } else {
+        setErrorCv("");
+      }
+
       if (isValid) {
+        setLoading(true);
         try {
           // Upload file to Supabase Storage
           const fileExt = file.name.split(".").pop();
@@ -249,7 +249,9 @@ const StepThree = (props) => {
             {errorJob && <p className="text-rose-500">{errorJob}</p>}
           </div>
           <div>
-            <p className="mb-[4px]" id="overline">PROFESSIONAL EXPERIENCE</p>
+            <p className="mb-[4px]" id="overline">
+              PROFESSIONAL EXPERIENCE
+            </p>
             <div className="relative ">
               <textarea
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[600px] h-[76px] "
@@ -266,7 +268,9 @@ const StepThree = (props) => {
           {/* css maybe use position for push in same div with password input */}
 
           <div className="w-full">
-            <div className="mb-[4px]" id="overline">EDUCATION</div>
+            <div className="mb-[4px]" id="overline">
+              EDUCATION
+            </div>
             <div className="relative ">
               <textarea
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[600px] h-[76px]"
@@ -282,7 +286,9 @@ const StepThree = (props) => {
             )}
           </div>
           <div>
-            <div className="mb-[4px]" id="overline">UPLOAD/UPDATE YOUR CV</div>
+            <div className="mb-[4px]" id="overline">
+              UPLOAD/UPDATE YOUR CV
+            </div>
             <div className="input-container flex relative justify-between">
               <input
                 id="upload"

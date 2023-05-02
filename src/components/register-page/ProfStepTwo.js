@@ -24,66 +24,68 @@ const StepTwo = (props) => {
     event.preventDefault();
     let isValid = true;
 
-    if (name.trim() === "") {
-      setErrorName("Please enter your name.");
-      isValid = false;
-    } else if (!/^[a-zA-Z]+ [a-zA-Z]+$/.test(name)) {
-      setErrorName(
-        "Please enter a valid name in the format 'First Name Last Name'."
-      );
-      isValid = false;
-    } else {
-      setErrorName("");
-    }
-
-    if (phone.trim() === "") {
-      setErrorPhone("Please enter your phone number.");
-      isValid = false;
-    } else if (!/^\+(?:[0-9]●?){6,14}[0-9]$/.test(phone)) {
-      setErrorPhone("Please enter a valid phone number in the given format");
-      isValid = false;
-    } else {
-      setErrorPhone("");
-    }
-
-    const today = new Date();
-    const minBirthDate = new Date(
-      today.getFullYear() - 18,
-      today.getMonth(),
-      today.getDate()
-    );
-    const selectedBirthDate = new Date(birthDate);
-
-    if (!birthDate) {
-      setErrorBirthDate("Please enter your birth date.");
-      isValid = false;
-    } else if (selectedBirthDate > today) {
-      setErrorBirthDate("Birth date cannot be in the future.");
-      isValid = false;
-    } else if (selectedBirthDate > minBirthDate) {
-      setErrorBirthDate("You must be at least 18 years old to register");
-      isValid = false;
-    } else {
-      setErrorBirthDate("");
-    }
-
-    if (!linkedin) {
-      setErrorLinkedin("Please enter your LinkedIn profile URL.");
-      isValid = false;
-    } else if (
-      linkedin.trim() === "" ||
-      "" ||
-      !/^(https?:\/\/)?([\w\.]+)\.([a-z]{2,6}\.?)(\/[\w-]+)*\/?$/.test(linkedin)
-    ) {
-      setErrorLinkedin("Please enter a valid LinkedIn profile URL.");
-      isValid = false;
-    } else {
-      setErrorLinkedin("");
-    }
-
     if (buttonClicked === "skipButton") {
       props.onSkip();
     } else if (buttonClicked === "nextButton") {
+      if (name.trim() === "") {
+        setErrorName("Please enter your name.");
+        isValid = false;
+      } else if (!/^[a-zA-Z]+ [a-zA-Z]+$/.test(name)) {
+        setErrorName(
+          "Please enter a valid name in the format 'First Name Last Name'."
+        );
+        isValid = false;
+      } else {
+        setErrorName("");
+      }
+
+      if (phone.trim() === "") {
+        setErrorPhone("Please enter your phone number.");
+        isValid = false;
+      } else if (!/^\+(?:[0-9]●?){6,14}[0-9]$/.test(phone)) {
+        setErrorPhone("Please enter a valid phone number in the given format");
+        isValid = false;
+      } else {
+        setErrorPhone("");
+      }
+
+      const today = new Date();
+      const minBirthDate = new Date(
+        today.getFullYear() - 18,
+        today.getMonth(),
+        today.getDate()
+      );
+      const selectedBirthDate = new Date(birthDate);
+
+      if (!birthDate) {
+        setErrorBirthDate("Please enter your birth date.");
+        isValid = false;
+      } else if (selectedBirthDate > today) {
+        setErrorBirthDate("Birth date cannot be in the future.");
+        isValid = false;
+      } else if (selectedBirthDate > minBirthDate) {
+        setErrorBirthDate("You must be at least 18 years old to register");
+        isValid = false;
+      } else {
+        setErrorBirthDate("");
+      }
+
+      if (!linkedin) {
+        setErrorLinkedin("Please enter your LinkedIn profile URL.");
+        isValid = false;
+      } else if (
+        linkedin.trim() === "" ||
+        "" ||
+        !/^(https?:\/\/)?([\w\.]+)\.([a-z]{2,6}\.?)(\/[\w-]+)*\/?$/.test(
+          linkedin
+        )
+      ) {
+        setErrorLinkedin("Please enter a valid LinkedIn profile URL.");
+        isValid = false;
+      } else {
+        setErrorLinkedin("");
+      }
+
       if (isValid) {
         props.onNext({
           name: name,
@@ -207,7 +209,9 @@ const StepTwo = (props) => {
           onSubmit={handleSubmit}
         >
           <div>
-            <p className="mb-[4px]" id="overline">NAME</p>
+            <p className="mb-[4px]" id="overline">
+              NAME
+            </p>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
               name="email"
@@ -218,7 +222,9 @@ const StepTwo = (props) => {
             {errorName && <p className="text-rose-500">{errorName}</p>}
           </div>
           <div>
-            <p className="mb-[4px]" id="overline">PHONE</p>
+            <p className="mb-[4px]" id="overline">
+              PHONE
+            </p>
             <div className="relative">
               <input
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
@@ -235,7 +241,9 @@ const StepTwo = (props) => {
           {/* css maybe use position for push in same div with password input */}
 
           <div className="w-full">
-            <p className="mb-[4px]" id="overline">BIRTH DATE</p>
+            <p className="mb-[4px]" id="overline">
+              BIRTH DATE
+            </p>
             <div className="relative ">
               <input
                 className="calendar relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
@@ -260,7 +268,9 @@ const StepTwo = (props) => {
           </div>
 
           <div>
-            <p className="mb-[4px]" id="overline">LINKEDIN URL</p>
+            <p className="mb-[4px]" id="overline">
+              LINKEDIN URL
+            </p>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
               name="LINKDINURL"

@@ -31,7 +31,7 @@ const RegisterForm = () => {
     setStep(step - 1);
   };
 
-  const handleSkip = () => {
+  const handleSkip = (data) => {
     setUserData({ ...userData, ...data });
     router.push("/login");
     professionalRegister(userData);

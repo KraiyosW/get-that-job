@@ -28,13 +28,19 @@ function AuthProvider(props) {
     loading: true,
     error: null,
     user: null,
-    email: null 
+    email: null,
+  });
+  const [professionalState, setProfessionalState] = useState({
+    loading: true,
+    error: null,
+    user: null,
+    email: null,
   });
   const [recruiterState, setRecruiterState] = useState({
     loading: true,
     error: null,
     user: null,
-    email: null 
+    email: null,
   });
 
   const professionalRegister = async (data) => {
@@ -45,8 +51,10 @@ function AuthProvider(props) {
         },
       });
       console.log(response);
+      alert("Registration completed!");
     } catch (error) {
       console.error("Error:", error);
+      alert("Registration failed.");
     }
   };
 
@@ -58,8 +66,10 @@ function AuthProvider(props) {
         },
       });
       console.log(response);
+      alert("Registration completed!");
     } catch (error) {
       console.error("Error:", error);
+      alert("Registration failed.");
     }
   };
 
@@ -68,12 +78,16 @@ function AuthProvider(props) {
       const headers = {
         "Content-Type": "application/json",
       };
-      const response = await axios.post('/api/login-professional', JSON.stringify(data), {
-        headers,
-        withCredentials: true,
-      });
-      localStorage.setItem('sb:token',response.data.token);
-      localStorage.setItem('email',response.data.user.user.email)
+      const response = await axios.post(
+        "/api/login-professional",
+        JSON.stringify(data),
+        {
+          headers,
+          withCredentials: true,
+        }
+      );
+      localStorage.setItem("sb:token", response.data.token);
+      localStorage.setItem("email", response.data.user.user.email);
       console.log(response);
       return response;
     } catch (error) {
@@ -87,13 +101,16 @@ function AuthProvider(props) {
       const headers = {
         "Content-Type": "application/json",
       };
-      const response = await axios.post('/api/login-recruiter', JSON.stringify(data), {
-        headers,
-        withCredentials: true,
-      });
-      localStorage.setItem('sb:token', response.data.token);
-      localStorage.setItem('email',response.data.user.user.email)
-      setRecruiterState({...recruiterState , user : response.data.user.user , email : response.data.user.user.email});
+      const response = await axios.post(
+        "/api/login-recruiter",
+        JSON.stringify(data),
+        {
+          headers,
+          withCredentials: true,
+        }
+      );
+      localStorage.setItem("sb:token", response.data.token);
+      localStorage.setItem("email", response.data.user.user.email);
       console.log(response);
       return response;
     } catch (error) {
@@ -110,8 +127,8 @@ function AuthProvider(props) {
       localStorage.removeItem("email");
       sessionStorage.removeItem("sb:token");
       setState({ ...state, user: null });
-      setRecruiterState({ ...recruiterState, user: null , email: null });
-      setProfessionalState({ ...professionalState, user: null , email: null });
+      setRecruiterState({ ...recruiterState, user: null, email: null });
+      setProfessionalState({ ...professionalState, user: null, email: null });
     } catch (error) {
       console.error("Error:", error);
     }
@@ -125,9 +142,10 @@ function AuthProvider(props) {
     <AuthContext.Provider
       value={{
         state,
+        professionalState,
+        recruiterState,
         professionalRegister,
         recruiterRegister,
-        recruiterState,
         professionalLogin,
         recruiterLogin,
         logoutAuth,
