@@ -13,6 +13,7 @@ import pencil from "../../image/pencil.png";
 import { useState, useEffect } from 'react'
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/authentication";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -26,25 +27,34 @@ function JobPostings() {
   const [isUpdating, setIsUpdating] = useState(false)
   const [selectedOption, setSelectedOption] = useState("all");
   const router= useRouter()
+  const {recruiterState} = useAuth();
+  const userEmail = recruiterState.email
+  
 
 
   const AllJob = async () => {
     try {
-      const result = await supabase
-          .from('jobs_postings')
-          .select('*')
-          .limit(20)
-          .order('created_at', { ascending: true });
-      const formattedJobs = result.data.map(job => ({
+      const { data: jobPostingsData } = await supabase
+  .from('jobs_postings')
+  .select(`
+    jobs_postings.*,
+    recruiters.email
+  `)
+  .eq('recruiters.email', userEmail)
+  .order('jobs_postings.created_at', { ascending: false })
+  
+      console.log(jobPostingsData)
+      const formattedJobs = jobPostingsData.map(job => ({
         ...job,
         created_at: new Date(job.created_at).toLocaleDateString('en-GB')
       }));
       setJob(formattedJobs);
-
-    } catch {
-      console.error();
+    } catch (error) {
+      console.error(error);
     }
   };
+  
+  
   useEffect(() => {
     AllJob();
   }, [jobStatus]);
