@@ -28,31 +28,42 @@ function JobPostings() {
   const [selectedOption, setSelectedOption] = useState("all");
   const router= useRouter()
   const {recruiterState} = useAuth();
-  const userEmail = recruiterState.email
+  const userEmail = localStorage.getItem('email')
   
 
 
   const AllJob = async () => {
+    console.log(userEmail)
     try {
-      const { data: jobPostingsData } = await supabase
-  .from('jobs_postings')
-  .select(`
-    jobs_postings.*,
-    recruiters.email
-  `)
-  .eq('recruiters.email', userEmail)
-  .order('jobs_postings.created_at', { ascending: false })
+      const { data: jobPostingsData, error } = await supabase
+        .rpc("get_jobs_by_email", { user_email: userEmail });
   
-      console.log(jobPostingsData)
+      if (error) {
+        console.error("Error fetching data:", error);
+        return;
+      }
+  
+      if (!jobPostingsData || jobPostingsData.length === 0) {
+        console.warn("No job postings found for the given email");
+        setJob([]);
+        return;
+      }
+  
+      console.log(jobPostingsData);
       const formattedJobs = jobPostingsData.map(job => ({
         ...job,
         created_at: new Date(job.created_at).toLocaleDateString('en-GB')
       }));
       setJob(formattedJobs);
     } catch (error) {
-      console.error(error);
+      console.error("Error:", error);
     }
   };
+  
+  
+  
+  
+  
   
   
   useEffect(() => {

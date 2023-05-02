@@ -88,6 +88,7 @@ function AuthProvider(props) {
       );
       localStorage.setItem("sb:token", response.data.token);
       localStorage.setItem("email", response.data.user.user.email);
+      setProfessionalState({...professionalState , user: response.data.user.user , email : response.data.user.user.email})
       console.log(response);
       return response;
     } catch (error) {
