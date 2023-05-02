@@ -52,7 +52,7 @@ export default async function handler(req, res) {
               role: "recruiter",
               company_website: company_website,
               about_company: about_company,
-              logo: logo,
+              logo,
             },
             { returning: "minimal" }
           );

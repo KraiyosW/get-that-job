@@ -1,6 +1,6 @@
 import { useState } from "react";
 import RecruiterForm from "../register-page/RecruiterForm";
-import RecruiterFormPage3 from "../register-page/RecruiterFormPage3";
+import RecruiterFormPage2 from "./RecruiterFormPage2";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/authentication";
 
@@ -36,10 +36,11 @@ const RecruiterFormUi = () => {
     <div>
       {step === 1 && <RecruiterForm onNext={handleNextStep} />}
       {step === 2 && (
-        <RecruiterFormPage3 
-        userData={userData}
-        onSkip={handleSkip}
-        onFinishRegistration={handleFinishRegistration} />
+        <RecruiterFormPage2
+          userData={userData}
+          onSkip={handleSkip}
+          onFinishRegistration={handleFinishRegistration}
+        />
       )}
     </div>
   );
