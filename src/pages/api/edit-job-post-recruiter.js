@@ -42,16 +42,16 @@ export default async function handler(req, res) {
 
         // get old data
         console.log('job_post_id:', job_post_id);
-console.log('recruiter_id:', recruiter_id);
+        console.log('recruiter_id:', recruiter_id);
 
-const { data: oldData, error: oldDataError } = await supabase
-  .from('jobs_postings')
-  .select('*')
-  .eq('job_post_id', job_post_id)
-  .eq('recruiter_id', recruiter_id);
+            const { data: oldData, error: oldDataError } = await supabase
+              .from('jobs_postings')
+              .select('*')
+              .eq('job_post_id', job_post_id)
+              .eq('recruiter_id', recruiter_id);
 
-console.log('oldData:', oldData);
-console.log('oldDataError:', oldDataError);
+            console.log('oldData:', oldData);
+            console.log('oldDataError:', oldDataError);
 
         if (oldDataError) {
           throw new Error(oldDataError.message);
@@ -75,6 +75,7 @@ console.log('oldDataError:', oldDataError);
             job_description: job_description ?? oldDataRecord.job_description,
             requirement: requirement ?? oldDataRecord.requirement,
             optional_requirement: optional_requirement ?? oldDataRecord.optional_requirement,
+            updated_at: new Date().toISOString(),
             post_status: true
           })
           .eq('job_post_id', job_post_id)
