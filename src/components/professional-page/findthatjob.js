@@ -19,20 +19,17 @@ const Findthatjob = () => {
 
     const [job, setJob] = useState([]);
     const [searchMessage, setSearchMessage] = useState("");
-    const [selectedOption, setSelectedOption] = useState("");
-    const [selectedJobType, setSelectedJobType] = useState("");
+    const [category, setCategory] = useState("Select or create a category");
+    const [selectedJobType, setSelectedJobType] = useState("Select a type");
+    const [salaryMin, setSalaryMin] = useState("")
+    const [salaryMax, setSalaryMax] = useState("")
     const router = useRouter();
     // const [followStatus, setFollowStatus] = useState({});
     // const [applicationStatus, setApplicationStatus] = useState({});
 
     const getJobs = async () => {
         try {
-            const params = new URLSearchParams();
-            params.append("job_title", searchMessage);
-            params.append("job_category", selectedOption);
-            params.append("job_type", selectedJobType);
-
-            const result = await axios.get(`http://localhost:3000/api/findthatjob?${params.toString()}`)
+            const result = await axios.get(`http://localhost:3000/api/findthatjob`)
             setJob(result.data.job.data);
 
         } catch (error) {
@@ -72,14 +69,14 @@ const Findthatjob = () => {
         setFormData({
             ...formData,
             [event.target.name]: event.target.value,
-            job_category: selectedOption,
+            job_category: category,
             job_type: selectedJobType,
         });
     };
 
     // ฟังก์ชั่นสำหรับการเลือก option ของ job category
-    const handleSelectOption = (event) => {
-        setSelectedOption(event.target.value);
+    const handleCategory = (event) => {
+        setCategory(event.target.value);
     };
 
     // ฟังก์ชั่นสำหรับการเลือก option ของ job type
@@ -98,11 +95,71 @@ const Findthatjob = () => {
         return text;
     }
 
-    useEffect(() => {
-        getJobs({ searchMessage, selectedOption, selectedJobType });
-    }, [searchMessage, selectedOption, selectedJobType]);
+    function handleSalaryMin(event) {
+        setSalaryMin(event.target.value);
+    }
 
-    // const filteredJobs = job.filter(item => item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) || item.job_category.includes(selectedOption));
+    function handleSalaryMax(event) {
+        setSalaryMax(event.target.value);
+    }
+
+
+    useEffect(() => {
+        getJobs();
+    }, []);
+
+    // const filteredJobs = job.filter(item => item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) || item.job_category.includes(category));
+    const filterJobs = job.filter((jobs) => {
+
+        if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+            return (
+                (jobs.job_category.includes(category) &&
+                    jobs.job_title.toLowerCase().includes(searchMessage) &&
+                    jobs.job_type.includes(selectedJobType) &&
+                    jobs.salary_min_range >= salaryMin &&
+                    jobs.salary_max_range <= salaryMax) ||
+                (jobs.job_category.includes(category) &&
+                    jobs.job_description.toLowerCase().includes(searchMessage) &&
+                    jobs.job_type.includes(selectedJobType) &&
+                    jobs.salary_min_range >= salaryMin &&
+                    jobs.salary_max_range <= salaryMax)
+            );
+        } else if (category !== "Select or create a category" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+            return jobs.job_category.includes(category) && jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+        } else if (searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+            return (
+                jobs.job_title.toLowerCase().includes(searchMessage) ||
+                jobs.job_description.toLowerCase().includes(searchMessage)) &&
+                jobs.job_type.includes(selectedJobType) &&
+                jobs.salary_min_range >= salaryMin &&
+                jobs.salary_max_range <= salaryMax;
+        } else if (category !== "Select or create a category" && salaryMin !== "" && salaryMax !== "") {
+            return jobs.job_category.includes(category) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+        } else if (searchMessage.toLowerCase() !== "" && salaryMin !== "" && salaryMax !== "") {
+            return (
+                jobs.job_title.toLowerCase().includes(searchMessage) ||
+                jobs.job_description.toLowerCase().includes(searchMessage)) &&
+                jobs.salary_min_range >= salaryMin &&
+                jobs.salary_max_range <= salaryMax;
+        } else if (selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+            return jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+        } else if (category !== "Select or create a category") {
+            return jobs.job_category.includes(category);
+        } else if (searchMessage.toLowerCase() !== "") {
+            return (
+                jobs.job_title.toLowerCase().includes(searchMessage) ||
+                jobs.job_description.toLowerCase().includes(searchMessage)
+            );
+        } else if (selectedJobType !== "Select a type") {
+            return jobs.job_type.includes(selectedJobType);
+        } else {
+            return jobs;
+        }
+    });
+    console.log(salaryMin);
+
+
+
 
 
 
@@ -131,9 +188,9 @@ const Findthatjob = () => {
                                         className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
                                         id="category"
                                         name="job_category"
-                                        value={selectedOption}
+                                        value={category}
                                         onChange={(event) => {
-                                            handleSelectOption(event);
+                                            handleCategory(event);
                                         }}
                                     >
                                         <option
@@ -175,8 +232,8 @@ const Findthatjob = () => {
                                             placeholder="min"
                                             type="text"
                                             id="input-range"
-                                            value={formData.salary_min_range}
-                                            onChange={handleChange}
+                                            value={salaryMin}
+                                            onChange={handleSalaryMin}
                                         />
                                         <svg
                                             width="11"
@@ -201,8 +258,8 @@ const Findthatjob = () => {
                                             placeholder="max"
                                             type="text"
                                             id="input-range"
-                                            value={formData.salary_max_range}
-                                            onChange={handleChange}
+                                            value={salaryMax}
+                                            onChange={handleSalaryMax}
                                         />
                                     </div>
                                 </div>
@@ -212,9 +269,10 @@ const Findthatjob = () => {
 
 
                     <div className="flex flex-col flex-wrap w-full items-center">
-                        <h6 className="max-[700px]:text-center mb-4 mt-4">{job.length} jobs for you</h6>
+                        <h6 className="max-[700px]:text-center mb-4 mt-4">{filterJobs.length} jobs for you</h6>
                         <div className="flex felx-row flex-wrap gap-[15px]">
-                            {job.map((item, index) => {
+
+                            {filterJobs.map((item, index) => {
 
                                 return (
                                     <div
