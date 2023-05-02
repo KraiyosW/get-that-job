@@ -11,7 +11,7 @@ const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseURL, supabaseAnonKey);
 
-const RecruiterFormPage3 = (props) => {
+const RecruiterFormPage2 = (props) => {
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [password, setPassword] = useState("");
@@ -107,7 +107,8 @@ const RecruiterFormPage3 = (props) => {
     if (buttonClicked === "finishButton") {
       if (isValid) {
         try {
-          const fileName = file.name;
+          const fileExt = file.name.split(".").pop();
+          const fileName = `${Math.random()}.${fileExt}`;
           const filePath = `${fileName}`;
           const profData = {
             company_website: companyWebsite,
@@ -120,7 +121,7 @@ const RecruiterFormPage3 = (props) => {
 
           const { data, error } = await supabase.storage
             .from("recruiters_logo")
-            .upload(`user-${Date.now()}`, file);
+            .upload(filePath, file);
 
           if (error) {
             setErrorMessage(`Error uploading file: ${error.message}`);
@@ -300,4 +301,4 @@ const RecruiterFormPage3 = (props) => {
   );
 };
 
-export default RecruiterFormPage3;
+export default RecruiterFormPage2;
