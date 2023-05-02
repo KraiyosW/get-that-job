@@ -72,7 +72,7 @@ function JobPostings() {
   if (!isAuthenticated) {
     return (<div className="flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] bg-white-secondary ">
     <h2 className="mt-[3rem] text-center text-pink-primary" id="heading2">!!! Please log in before accessing this page !!!</h2>
-    <Link href='/login' className="mt-[2rem]  hover:text-pink-primary text-[2rem] underline-offset-2">Login page.....</Link>
+    <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
     </div>);
   }
 

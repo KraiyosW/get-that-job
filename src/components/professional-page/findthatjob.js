@@ -9,6 +9,7 @@ import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
 import { createClient } from "@supabase/supabase-js";
+import Link from "next/link";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -19,16 +20,18 @@ const Findthatjob = () => {
 
     const [job, setJob] = useState([]);
     const router = useRouter();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     // const [followStatus, setFollowStatus] = useState({});
     // const [applicationStatus, setApplicationStatus] = useState({});
     const AllJob = async () => {
         try {
-            const result = await await axios.get('http://localhost:3000/api/findthatjob')
+            const result = await axios.get('http://localhost:3000/api/findthatjob')
             setJob(result.data.job.data);
         } catch {
             console.error();
         }
     };
+    
 
     // const result = await axios.get(
     //     'http://localhost:3000/api/findthatjob'
@@ -95,8 +98,19 @@ const Findthatjob = () => {
     }
 
     useEffect(() => {
+        const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
+        setIsAuthenticated(!!token); 
         AllJob();
-    }, []);
+    }, [isAuthenticated]);
+
+    if (!isAuthenticated) {
+    return (<div className="max-w-full max-h-screen flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] ">
+    <h2 className="mt-[3rem] text-center text-pink-primary" id="heading2">!!! Please log in before accessing this page !!!</h2>
+    <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
+    </div>);
+
+     
+  }
 
     const filteredJobs = job.filter(item => item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) || item.job_category.includes(selectedOption));
 
