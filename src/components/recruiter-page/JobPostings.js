@@ -24,6 +24,7 @@ function JobPostings() {
   const [job, setJob] = useState([]);
   const [jobStatus, setJobStatus] = useState([])
   const [isUpdating, setIsUpdating] = useState(false)
+  const [selectedOption, setSelectedOption] = useState("all");
   const router= useRouter()
 
 
@@ -75,9 +76,57 @@ function JobPostings() {
     }
     setIsUpdating(false)
   };
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
 
   return (
     <>
+    <h4 className="max-[700px]:text-center mb-[24px]" id="heading4">
+            Job Postings
+          </h4>
+          <p className="max-[700px]:text-center mb-[6px]" id="overline">
+            Filter your Job Postings
+          </p>
+          <form className="flex flex-row flex-wrap gap-[12px]">
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  value="all"
+                  checked={selectedOption === "all"}
+                  onChange={handleOptionChange}
+                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
+                  id="my-radio"
+                />
+                <span>All</span>
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  value="candidates"
+                  checked={selectedOption === "candidates"}
+                  onChange={handleOptionChange}
+                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
+                />
+                With candidates on track
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  value="closed"
+                  checked={selectedOption === "closed"}
+                  onChange={handleOptionChange}
+                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
+                />
+                Closed
+              </label>
+            </div>
+          </form>
       <div className="flex flex-col">
         <h6
           className="max-[700px]:text-center mt-[20px] mb-[8px]"
