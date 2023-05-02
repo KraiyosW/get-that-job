@@ -1,12 +1,13 @@
 import React from "react";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import SidebarProfessional from "@/components/SidebarProfessional";
 import Image from "next/image";
 import applyIcon from "@/image/icon-apply.png";
 import backIcon from "@/image/icon-back.png";
 import companyLogo from "@/image/logo-web-works.png";
+import upload from "@/image/upload.png";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -19,9 +20,13 @@ function JobApply() {
   const [post, setPost] = useState(null);
   const [timeAgo, setTimeAgo] = useState("");
   const [selectedOption, setSelectedOption] = useState("all");
+  const [errorCv, setErrorCv] = useState(null);
 
   const router = useRouter();
   const id = router.query["jobId"];
+
+  const inputFile = useRef(null);
+  const fileNameField = useRef(null);
 
   useEffect(() => {
     // Fetch the specific post from Supabase based on the id parameter
@@ -58,6 +63,11 @@ function JobApply() {
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
+  function handleFileUpload(event) {
+    setFile(event.target.files[0]);
+    const uploadedFileName = event.target.files[0].name;
+    fileNameField.current.textContent = uploadedFileName;
+  }
 
   return (
     <>
@@ -256,7 +266,7 @@ function JobApply() {
                 </div>
                 <div className="box-3">
                   <section className="content-section flex flex-col">
-                    <div className="about-company">
+                    <div className="form-section">
                       <h5 id="heading5" className="text-pink-tertiary mb-[8px]">
                         Complete your application
                       </h5>
@@ -266,67 +276,108 @@ function JobApply() {
                       >
                         Send your cv updated
                       </p>
-                      <form className="flex max-[700px]:flex-col flex-row flex-wrap gap-[12px]">
-                        <div>
-                          <label>
+                      <form className="flex max-[700px]:flex-col flex-col flex-wrap gap-[12px]">
+                        <div className="flex max-[700px]:flex-col flex-row flex-wrap gap-[12px]">
+                          <div>
+                            <label>
+                              <input
+                                type="radio"
+                                value="all"
+                                checked={selectedOption === "all"}
+                                onChange={handleOptionChange}
+                                className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
+                                id="my-radio"
+                              />
+                              <span>Use current CV</span>
+                            </label>
+                          </div>
+                          <div>
+                            <label>
+                              <input
+                                type="radio"
+                                value="waiting"
+                                checked={selectedOption === "waiting"}
+                                onChange={handleOptionChange}
+                                className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
+                              />
+                              Upload new CV
+                            </label>
+                          </div>
+                        </div>
+
+                        <div className="cv-section">
+                          <div className="input-container flex relative justify-between">
                             <input
-                              type="radio"
-                              value="all"
-                              checked={selectedOption === "all"}
-                              onChange={handleOptionChange}
-                              className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
-                              id="my-radio"
+                              id="upload"
+                              name="files"
+                              type="file"
+                              multiple
+                              accept=".pdf"
+                              onChange={(e) => handleFileUpload(e)}
                             />
-                            <span>All</span>
-                          </label>
+                            <label htmlFor="upload" className="relative">
+                              <span>Choose a file</span>
+                              <Image
+                                src={upload}
+                                alt="Upload icon"
+                                className="w-[20px] h-[20px] absolute bottom-[9px] left-[6px]"
+                              />
+                            </label>
+                            <p
+                              id="file-name"
+                              ref={fileNameField}
+                              className="text-[14px] text-[#616161] absolute top-[7px] left-[150px]"
+                            >
+                              No file chosen
+                            </p>
+                          </div>
+                          <p className="mt-[4px] text-[#8E8E8E]">
+                            Only PDF. Max size 5MB
+                          </p>
+                          {errorCv && (
+                            <p className="text-rose-500">{errorCv}</p>
+                          )}
                         </div>
                         <div>
-                          <label>
-                            <input
-                              type="radio"
-                              value="waiting"
-                              checked={selectedOption === "waiting"}
-                              onChange={handleOptionChange}
-                              className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
+                          <p className="mb-[4px] uppercase" id="overline">
+                            PROFESSIONAL EXPERIENCE (TAKEN FROM YOUR PROFILE)
+                          </p>
+                          <div className="relative ">
+                            <textarea
+                              className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[760px] h-[256px] "
+                              name="experience"
+                              placeholder="Worked 6 years in a bitcoin farm until I decided to change my life...."
+                              style={{ resize: "none" }}
                             />
-                            Waiting
-                          </label>
+                          </div>
                         </div>
-                        <div>
-                          <label>
-                            <input
-                              type="radio"
-                              value="in-progress"
-                              checked={selectedOption === "in-progress"}
-                              onChange={handleOptionChange}
-                              className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
+
+                        {/* css maybe use position for push in same div with password input */}
+
+                        <div className="w-full">
+                          <p className="mb-[4px] uppercase" id="overline">
+                            WHY ARE YOU INTERESTED IN WORKING AT THE{" "}
+                            {post.recruiters.company_name}
+                          </p>
+                          <div className="relative ">
+                            <textarea
+                              className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[760px] h-[76px]"
+                              name="birthdate"
+                              placeholder="Mention things about The Company Name SA that excite you. Why would you be a good candidate?"
+                              style={{ resize: "none" }}
                             />
-                            In progress
-                          </label>
+                          </div>
+                          <p id="overline">Between 50 and 2000 characters</p>
                         </div>
-                        <div>
-                          <label>
-                            <input
-                              type="radio"
-                              value="finished"
-                              checked={selectedOption === "finished"}
-                              onChange={handleOptionChange}
-                              className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
+                        <div className="btn flex justify-center">
+                          <button class="apply-button bg-pink-primary rounded-[16px] text-white w-[173px] h-[56px] py-[16px] pr-[24px] text-right font-medium relative">
+                            <Image
+                              className="w-[20px] h-[20px] absolute left-[27px]"
+                              src={applyIcon}
+                              alt="apply icon"
                             />
-                            Finished
-                          </label>
-                        </div>
-                        <div>
-                          <label>
-                            <input
-                              type="radio"
-                              value="declined"
-                              checked={selectedOption === "declined"}
-                              onChange={handleOptionChange}
-                              className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
-                            />
-                            Declined
-                          </label>
+                            Apply Now
+                          </button>
                         </div>
                       </form>
                     </div>
