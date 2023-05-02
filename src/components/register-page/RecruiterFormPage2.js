@@ -9,24 +9,31 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseURL, supabaseAnonKey);
 
-const RecruiterFormPage2 = (props) => {
+const RecruiterFormPage3 = (props) => {
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [errorCompany, setErrorCompany] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const [passwordIcon, setPasswordIcon] = useState(false);
-  const [showPasswordIcon, setShowPasswordIcon] = useState(false);
-  const supabase = createClient(supabaseURL, supabaseAnonKey);
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const userData = props.userData;
   const { recruiterRegister } = useAuth();
   const router = useRouter();
+
+  //user information
+  const [companyWebsite, setCompanyWebsite] = useState("");
+  const [aboutCompany, setAboutCompany] = useState("");
+  const [logo, setLogo] = useState(null);
+
+  const [buttonClicked, setButtonClicked] = useState(null);
+  const handleButtonClick = (event) => {
+    const buttonId = event.target.id;
+    setButtonClicked(buttonId);
+  };
 
   function handleFileInputChange(event) {
     const file = event.target.files[0];
@@ -40,42 +47,19 @@ const RecruiterFormPage2 = (props) => {
     };
   }
 
-  const handleUpdateProfile = async (event) => {
-    event.preventDefault();
+  //   const handleUpdateProfile = async (event) => {
+  //     event.preventDefault();
 
-    const fileInput = document.getElementById("fileInput");
-    const file = fileInput.files[0];
-    let isValid = true;
-    console.log("file", file);
-    if (!file) {
-      alert("Please select a file to upload.");
-      return;
-    }
+  //      && isValid;
+  //     props.onFinishRegistration({ companyWebsite, aboutCompany, logo });
+  //     router.push("/login");
 
-    const { data, error } =
-      (await supabase.storage
-        .from("profiles/recruiter")
-        .upload(`user-${Date.now()}`, file)) && isValid;
-    props.onFinishRegistration({ companyWebsite, aboutCompany, logo });
-    router.push("/login");
-
-    if (error) {
-      alert("Error uploading file: ", error.message);
-    } else {
-      alert("File uploaded successfully!");
-    }
-  };
-
-  //user information
-  const [companyWebsite, setCompanyWebsite] = useState("");
-  const [aboutCompany, setAboutCompany] = useState("");
-  const [logo, setLogo] = useState("");
-
-  const [buttonClicked, setButtonClicked] = useState(null);
-  const handleButtonClick = (event) => {
-    const buttonId = event.target.id;
-    setButtonClicked(buttonId);
-  };
+  //     if (error) {
+  //       alert("Error uploading file: ", error.message);
+  //     } else {
+  //       alert("File uploaded successfully!");
+  //     }
+  //   };
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -83,51 +67,82 @@ const RecruiterFormPage2 = (props) => {
     setLoading(true);
     setErrorCompany("");
     setErrorMessage("");
+    const fileInput = document.getElementById("fileInput");
+    const file = fileInput.files[0];
+    console.log("file", file);
+
     if (buttonClicked === "skipButton") {
       router.push("/login");
     }
-    if (!companyWebsite.match(/^[a-zA-Z0-9._:/]+\.[a-zA-Z0-9]+\.[A-Za-z/]+$/)) {
-      setErrorCompany("Please fill a company website");
+    const websiteRegex = /^[a-zA-Z0-9._:/]+\.[a-zA-Z0-9]+\.[A-Za-z/]+$/;
+    if (!companyWebsite.match(websiteRegex)) {
+      setErrorCompany("Please enter a valid company website");
       isValid = false;
     }
-    if (!aboutCompany.match(/[a-zA-Z0-9._/]/)) {
-      setErrorMessage("Between 100 and 2000 characters");
+    if (!aboutCompany || aboutCompany.length < 0) {
+      setErrorMessage("Please fill in about your company");
+      isValid = false;
+    } else {
+      const aboutCompanyMinLength = 100;
+      const aboutCompanyMaxLength = 2000;
+
+      if (
+        aboutCompany.length < aboutCompanyMinLength ||
+        aboutCompany.length > aboutCompanyMaxLength
+      ) {
+        setErrorMessage(
+          `Please enter between ${aboutCompanyMinLength} and ${aboutCompanyMaxLength} characters for the about company field`
+        );
+        isValid = false;
+      } else {
+        setErrorMessage("");
+      }
+    }
+
+    if (!file) {
+      setErrorMessage("Please select a file to upload");
       return;
     }
+
     if (buttonClicked === "finishButton") {
       if (isValid) {
         try {
-          const fileExt = file.name.split(".").pop();
-          const fileName = `${Math.random()}.${fileExt}`;
+          const fileName = file.name;
           const filePath = `${fileName}`;
           const profData = {
             company_website: companyWebsite,
             about_company: aboutCompany,
             logo: filePath,
           };
+          console.log("profData:", profData);
 
           recruiterRegister({ ...userData, ...profData });
 
-          const { error: uploadError } = await supabase.storage
-            .from("profiles/recruiter")
+          const { data, error } = await supabase.storage
+            .from("recruiters_logo")
             .upload(`user-${Date.now()}`, file);
-          if (uploadError) {
-            throw uploadError;
+
+          if (error) {
+            setErrorMessage(`Error uploading file: ${error.message}`);
+          } else if (aboutCompany === true) {
+            setErrorMessage("File uploaded successfully!");
           }
 
           router.push("/login");
         } catch (error) {
-          alert(error.message);
+          setErrorMessage(`Error uploading file: ${error.message}`);
         } finally {
           setLoading(false);
         }
+      } else {
+        // do nothing
       }
     }
-
-    console.log("Company Name:", company);
-    console.log("Email:", email);
-    console.log("Password", password);
   }
+
+  console.log("company_website:", companyWebsite);
+  console.log("about_company:", aboutCompany);
+  console.log("logo:", "");
 
   function handleCompanyWebsiteChange(event) {
     setCompanyWebsite(event.target.value);
@@ -225,7 +240,7 @@ const RecruiterFormPage2 = (props) => {
               onChange={handleAboutCompanyChange}
             ></textarea>
 
-            {errorMessage && <p className="text-[#8E8E8E]">{errorMessage}</p>}
+            {errorMessage && <p className="text-rose-500">{errorMessage}</p>}
 
             <div className="flex flex-col items-start">
               <p className="w-[380px] h-auto leading-tight uppercase mb-[3px] mt-[5px]">
@@ -237,6 +252,7 @@ const RecruiterFormPage2 = (props) => {
                     type="file"
                     id="fileInput"
                     accept="image/*"
+                    value={logo}
                     onChange={handleFileInputChange}
                   />
                   <div className="icon-file">
@@ -271,7 +287,7 @@ const RecruiterFormPage2 = (props) => {
             </button>
             <button
               className="button_pink mt-[16px]"
-              onClick={handleUpdateProfile}
+              onClick={handleButtonClick}
               id="finishButton"
             >
               Finish<section id="arrow-right"></section>
@@ -284,4 +300,4 @@ const RecruiterFormPage2 = (props) => {
   );
 };
 
-export default RecruiterFormPage2;
+export default RecruiterFormPage3;
