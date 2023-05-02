@@ -254,13 +254,16 @@ const StepTwo = (props) => {
                 onBlur={(event) => (event.target.type = "text")}
                 onChange={handleDateChange}
               />
-              <div class="open-button absolute right-[10px] top-[9px] calendar-picker-indicator">
+              <label
+                htmlFor="birthdate"
+                class="open-button absolute right-[10px] top-[9px] max-[767px]:right-[45px] calendar-picker-indicator"
+              >
                 <Image
                   src={calendar}
                   alt="Calendar icon"
                   className="w-[20px] h-[20px]"
                 />
-              </div>
+              </label>
             </div>
             {errorBirthDate && (
               <p className="text-rose-500">{errorBirthDate}</p>

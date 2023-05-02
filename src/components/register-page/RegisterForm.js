@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/authentication";
 const RegisterForm = () => {
   const { professionalRegister } = useAuth();
   const router = useRouter();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [userData, setUserData] = useState({
     email: null,
     password: null,
