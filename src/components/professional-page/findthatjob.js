@@ -8,24 +8,34 @@ import following from "../../image/following.png";
 import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
-import { createClient } from "@supabase/supabase-js";
+// import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+// const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Findthatjob = () => {
 
     const [job, setJob] = useState([]);
+    const [searchMessage, setSearchMessage] = useState("");
+    const [selectedOption, setSelectedOption] = useState("");
+    const [selectedJobType, setSelectedJobType] = useState("");
     const router = useRouter();
     // const [followStatus, setFollowStatus] = useState({});
     // const [applicationStatus, setApplicationStatus] = useState({});
-    const AllJob = async () => {
+
+    const getJobs = async () => {
         try {
-            const result = await await axios.get('http://localhost:3000/api/findthatjob')
+            const params = new URLSearchParams();
+            params.append("job_title", searchMessage);
+            params.append("job_category", selectedOption);
+            params.append("job_type", selectedJobType);
+
+            const result = await axios.get(`http://localhost:3000/api/findthatjob?${params.toString()}`)
             setJob(result.data.job.data);
-        } catch {
+
+        } catch (error) {
             console.error();
         }
     };
@@ -49,10 +59,6 @@ const Findthatjob = () => {
     //     });
     // };
 
-
-
-    const [jobList, setJobList] = useState([]);
-    const [searchMessage, setSearchMessage] = useState("");
     const [formData, setFormData] = useState({
         job_category: "",
         job_type: "",
@@ -60,9 +66,7 @@ const Findthatjob = () => {
         salary_max_range: "",
     });
 
-    // สร้าง state สำหรับเก็บข้อมูล option ที่เลือก
-    const [selectedOption, setSelectedOption] = useState("");
-    const [selectedJobType, setSelectedJobType] = useState("");
+
     // ฟังก์ชั่นสำหรับการเปลี่ยนค่าใน form
     const handleChange = (event) => {
         setFormData({
@@ -95,10 +99,10 @@ const Findthatjob = () => {
     }
 
     useEffect(() => {
-        AllJob();
-    }, []);
+        getJobs({ searchMessage, selectedOption, selectedJobType });
+    }, [searchMessage, selectedOption, selectedJobType]);
 
-    const filteredJobs = job.filter(item => item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) || item.job_category.includes(selectedOption));
+    // const filteredJobs = job.filter(item => item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) || item.job_category.includes(selectedOption));
 
 
 
@@ -208,9 +212,9 @@ const Findthatjob = () => {
 
 
                     <div className="flex flex-col flex-wrap w-full items-center">
-                        <h6 className="max-[700px]:text-center mb-4 mt-4">{filteredJobs.length} jobs for you</h6>
+                        <h6 className="max-[700px]:text-center mb-4 mt-4">{job.length} jobs for you</h6>
                         <div className="flex felx-row flex-wrap gap-[15px]">
-                            {filteredJobs.map((item, index) => {
+                            {job.map((item, index) => {
 
                                 return (
                                     <div
