@@ -7,7 +7,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default async function FindthatJob(req, res) {
     try {
-        const job = await supabase.from('jobs_postings').select('*').limit(10)
+        const job = await supabase.from('jobs_postings').select('*').limit(100)
         res.statusCode = 200
         res.json({ job })
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import  { useRecruiterPost } from "@/hooks/recruiterPost.js";
+import { useRecruiterPost } from "@/hooks/recruiterPost.js";
 import { useRouter } from "next/router";
 import SideBarRecruiter from "@/components/SidebarRecruiter.js";
 import { useAuth } from "@/contexts/authentication";
@@ -16,7 +16,7 @@ function EditJobPost() {
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { editJobPost, isLoading, isError } = useRecruiterPost();
   const { recruiterState } = useAuth();
-  const [post,setPost] = useState({})
+  const [post, setPost] = useState({})
   // สร้าง state สำหรับเก็บข้อมูล option ที่เลือก
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedJobType, setSelectedJobType] = useState("");
@@ -44,20 +44,20 @@ function EditJobPost() {
     const fetchData = async () => {
       try {
         if (!id) return; // check if id is null or undefined
-          
+
         const posts = await supabase
           .from("jobs_postings")
           .select(`*, recruiters (*)`)
           .eq("job_post_id", Number(id))
           .single();
-  
+
         if (!posts.data) return; // check if post is undefined or null
-  
+
         setPost(posts.data);
-  
+
         setFormData({
           ...formData,
-          job_post_id : posts.data.job_post_id,
+          job_post_id: posts.data.job_post_id,
           job_title: posts.data.job_title,
           job_category: posts.data.job_category,
           job_type: posts.data.job_type,
@@ -68,47 +68,47 @@ function EditJobPost() {
           optional_requirement: posts.data.optional_requirement,
           p_email: posts.data.recruiters.email
         });
-  
+
         setSelectedOption(posts.data.job_category);
         setSelectedJobType(posts.data.job_type);
       } catch (error) {
         console.log(error);
       }
     };
-  
+
     fetchData();
   }, [id, userEmail]);
 
-console.log(post)
+  console.log(post)
 
 
   // ฟังก์ชั่นสำหรับการเปลี่ยนค่าใน form
-const handleChange = (event) => {
-  setFormData({
-    ...formData,
-    [event.target.name]: event.target.value,
-    job_category: selectedOption,
-    job_type: selectedJobType,
-  });
-};
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+      job_category: selectedOption,
+      job_type: selectedJobType,
+    });
+  };
 
-// ฟังก์ชั่นสำหรับการเลือก option ของ job category
-const handleSelectOption = (event) => {
-  setSelectedOption(event.target.value);
-  setFormData({
-    ...formData,
-    job_category: event.target.value,
-  });
-};
+  // ฟังก์ชั่นสำหรับการเลือก option ของ job category
+  const handleSelectOption = (event) => {
+    setSelectedOption(event.target.value);
+    setFormData({
+      ...formData,
+      job_category: event.target.value,
+    });
+  };
 
-// ฟังก์ชั่นสำหรับการเลือก option ของ job type
-const handleSelectJobType = (event) => {
-  setSelectedJobType(event.target.value);
-  setFormData({
-    ...formData,
-    job_type: event.target.value,
-  });
-};
+  // ฟังก์ชั่นสำหรับการเลือก option ของ job type
+  const handleSelectJobType = (event) => {
+    setSelectedJobType(event.target.value);
+    setFormData({
+      ...formData,
+      job_type: event.target.value,
+    });
+  };
 
 
 
@@ -117,7 +117,7 @@ const handleSelectJobType = (event) => {
     event.preventDefault();
     try {
       const authToken = JSON.stringify(localStorage.getItem('sb:token'));
-      const response = await editJobPost(formData,authToken);
+      const response = await editJobPost(formData, authToken);
       console.log(response);
       router.push('/jobPostings')
     } catch (error) {
@@ -127,7 +127,7 @@ const handleSelectJobType = (event) => {
 
   return (
     <>
-    <SideBarRecruiter/>
+      <SideBarRecruiter />
       <main className="bg-white-secondary h-screen">
         <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px] max-[700px]:items-center max-[700px]:text-center">
           <h4 id="heading4">Edit job posting</h4>
@@ -150,17 +150,17 @@ const handleSelectJobType = (event) => {
               JOB CATEGORY
             </div>
             <select
-                className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
-                id="category"
-                name="job_category"
-                value={selectedOption}
-                onChange={(event)=>{handleSelectOption(event)}}
-              >
-                <option value="" disabled>Select or create a category</option>
-                <option value="Software-Developer" >Software Developer</option>
-                <option value="Sales" >Sales</option>
-                <option value="Graphic-Designer" >Graphic Designer</option>
-                <option value="Digital-Marketing" >Digital Marketing</option>
+              className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
+              id="category"
+              name="job_category"
+              value={selectedOption}
+              onChange={(event) => { handleSelectOption(event) }}
+            >
+              <option value="" disabled>Select or create a category</option>
+              <option value="Software-Developer" >Software Developer</option>
+              <option value="Sales" >Sales</option>
+              <option value="Graphic-Designer" >Graphic Designer</option>
+              <option value="Digital-Marketing" >Digital Marketing</option>
             </select>
             <div className="mt-[8px] mb-[4px]" id="overline">
               TYPE
@@ -170,14 +170,14 @@ const handleSelectJobType = (event) => {
               id="type"
               name="job_type"
               value={selectedJobType}
-              onChange={(event)=>{handleSelectJobType(event)}}
-              
+              onChange={(event) => { handleSelectJobType(event) }}
+
             >
               <option value="" disabled selected>
                 Select a type
               </option>
               <option value="Full-Time" >Full Time</option>
-              <option value="Past-Time" >Past Time</option>
+              <option value="Part-Time" >Part Time</option>
             </select>
             <div className="mt-[8px] mb-[4px]" id="overline">
               SALARY RANGE
@@ -256,7 +256,7 @@ const handleSelectJobType = (event) => {
             </div>
             <br />
             <button type="submit" className="button_pink_new mt-[24px]">
-            EDIT THIS JOB
+              EDIT THIS JOB
             </button>
           </form>
         </div>
@@ -265,4 +265,4 @@ const handleSelectJobType = (event) => {
   );
 }
 
-export default  EditJobPost;
+export default EditJobPost;
