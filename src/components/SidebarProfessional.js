@@ -10,11 +10,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 
 const SidebarProfessional = () => {
   const { logoutAuth } = useAuth();
   const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("sb:token"); 
+    setIsAuthenticated(!!token); 
+  }, [isAuthenticated]);
 
 
 
@@ -26,6 +34,13 @@ const SidebarProfessional = () => {
       console.error("Error:", error);
     }
   };
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
+
+ 
 
   return (
     <div className="m-0 p-0 w-[240px] bg-white-tertiary fixed h-screen overflow-auto max-[700px]:w-screen max-[700px]:h-auto max-[700px]:relative" id="sidebar">

@@ -10,11 +10,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const SideBarRecruiter = () => {
 
   const { logoutAuth } = useAuth();
   const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("sb:token"); 
+    setIsAuthenticated(!!token); 
+  }, [isAuthenticated]);
 
   const handleLogout = async () => {
     try {
@@ -24,6 +31,9 @@ const SideBarRecruiter = () => {
       console.error('Error:', error);
     }
   };
+  if (!isAuthenticated) {
+    return null;
+  }
 
 
   return (
