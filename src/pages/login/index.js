@@ -1,8 +1,8 @@
 import Head from "next/head";
-import Navigatebar from "../components/Navigatebar.js";
+import Navigatebar from "../../components/Navigatebar.js";
 import { ProfessionalLogin } from "@/components/login-page/ProfessionalLogin.js";
 import { RecruiterLogin } from "@/components/login-page/RecruiterLogin.js";
-import BackgroundMan from "../components/BackgroundMan.js";
+import BackgroundMan from "../../components/BackgroundMan.js";
 import React, { useState } from "react";
 
 export default function Login() {
@@ -48,7 +48,9 @@ export default function Login() {
             }`}
             onClick={() => handleClick("regular")}
           >
-            <p className="mb-[6px]" id="body2">PROFESSIONAL</p>
+            <p className="mb-[6px]" id="body2">
+              PROFESSIONAL
+            </p>
           </button>
           <button
             className={`border-b-4 border-[#BDBDBD] hover:border-b-[#F48FB1] ${
@@ -58,7 +60,9 @@ export default function Login() {
             }`}
             onClick={() => handleClick("recruiter")}
           >
-            <p className="mb-[6px]" id="body2">RECRUITER</p>
+            <p className="mb-[6px]" id="body2">
+              RECRUITER
+            </p>
           </button>
         </div>
         {activeTab === "regular" ? <ProfessionalLogin /> : <RecruiterLogin />}

@@ -1,15 +1,13 @@
 import React from "react";
-import SidebarProfessional from "@/components/SidebarProfessional";
+import SideBarRecruiter from "@/components/SidebarRecruiter";
 import EditJobPosting from "@/components/recruiter-page/EditJobPosting.js";
-
 
 const EditJobPost = () => {
   return (
     <>
       <div>
-        <SidebarProfessional />
+        <SideBarRecruiter />
         <EditJobPosting />
-
       </div>
     </>
   );

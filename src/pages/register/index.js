@@ -1,8 +1,8 @@
 import Head from "next/head";
-import Navigatebar from "../components/Navigatebar.js";
-import RegisterForm from "../components/register-page/RegisterForm.js";
-import RecruiterFormUi from "../components/register-page/RecruiterFormUi.js";
-import BackgroundWoman from "../components/BackgroundWoman.js";
+import Navigatebar from "../../components/Navigatebar.js";
+import RegisterForm from "../../components/register-page/RegisterForm.js";
+import RecruiterFormUi from "../../components/register-page/RecruiterFormUi.js";
+import BackgroundWoman from "../../components/BackgroundWoman.js";
 import React, { useState } from "react";
 
 export default function Register() {
@@ -45,7 +45,9 @@ export default function Register() {
             }`}
             onClick={() => handleClick("regular")}
           >
-            <p className="mb-[6px]" id="body2">PROFESSIONAL</p>
+            <p className="mb-[6px]" id="body2">
+              PROFESSIONAL
+            </p>
           </button>
           <button
             className={`border-b-4 border-[#BDBDBD] hover:border-b-[#F48FB1] ${
@@ -55,7 +57,9 @@ export default function Register() {
             }`}
             onClick={() => handleClick("recruiter")}
           >
-            <p className="mb-[6px]" id="body2">RECRUITER</p>
+            <p className="mb-[6px]" id="body2">
+              RECRUITER
+            </p>
           </button>
         </div>
         {activeTab === "regular" ? <RegisterForm /> : <RecruiterFormUi />}
