@@ -13,6 +13,8 @@ import pencil from "../../image/pencil.png";
 import { useState, useEffect } from 'react'
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
+import { useAuth } from '@/contexts/authentication.js';
+import Link from "next/link";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -25,29 +27,54 @@ function JobPostings() {
   const [jobStatus, setJobStatus] = useState([])
   const [isUpdating, setIsUpdating] = useState(false)
   const [selectedOption, setSelectedOption] = useState("all");
+  const {recruiterState} = useAuth();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const router= useRouter()
+  const userEmail =  recruiterState.email
 
 
   const AllJob = async () => {
+    console.log(userEmail)
     try {
-      const result = await supabase
-          .from('jobs_postings')
-          .select('*')
-          .limit(20)
-          .order('created_at', { ascending: true });
-      const formattedJobs = result.data.map(job => ({
+      const { data: jobPostingsData, error } = await supabase
+        .rpc("get_jobs_by_email", { user_email: userEmail });
+  
+      if (error) {
+        console.error("Error fetching data:", error);
+        return;
+      }
+  
+      if (!jobPostingsData || jobPostingsData.length === 0) {
+        console.warn("No job postings found for the given email");
+        setJob([]);
+        return;
+      }
+  
+      console.log(jobPostingsData);
+      const formattedJobs = jobPostingsData.map(job => ({
         ...job,
         created_at: new Date(job.created_at).toLocaleDateString('en-GB')
       }));
       setJob(formattedJobs);
-
-    } catch {
-      console.error();
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
+  
   useEffect(() => {
+    const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
+    setIsAuthenticated(!!token); 
     AllJob();
-  }, [jobStatus]);
+  }, [jobStatus,isAuthenticated]);
+
+  
+  if (!isAuthenticated) {
+    return (<div className="flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] bg-white-secondary ">
+    <h2 className="mt-[3rem] text-center text-pink-primary" id="heading2">!!! Please log in before accessing this page !!!</h2>
+    <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
+    </div>);
+  }
 
   const toggleExpanded = (postId) => {
     setIsExpanded((prevId) => (prevId === postId ? null : postId));
@@ -79,6 +106,8 @@ function JobPostings() {
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
+
+ 
 
   return (
     <>
@@ -328,7 +357,7 @@ function JobPostings() {
           )
         }
         )
-        };
+        }
       </div>
     </>
   );

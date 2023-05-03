@@ -111,9 +111,52 @@ export const useRecruiterPost = () => {
       setIsLoading(false);
     }
   };
+  const editRecruiterProfile = async (data, authToken) => {
+    setIsError(false);
+    setIsLoading(true);
+    try {
+      let token =
+        authToken?.access_token ||
+        sessionStorage.getItem('sb:token') ||
+        localStorage.getItem('sb:token') ||
+        '';
+  
+      console.log('token', token);
+      if (!token) {
+        const { data: session, error: refreshError } =
+          await supabase.auth.refreshSession({ refreshToken: authToken?.refresh_token });
+  
+        if (refreshError) {
+          console.log(refreshError.message);
+          return null;
+        }
+        sessionStorage.setItem('sb:token', session.access_token);
+        localStorage.setItem('sb:token', session.access_token);
+        console.log(session);
+      }
+  
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      };
+  
+      const response = await axios.put('/api/edit-reqruiter-profile', JSON.stringify(data), {
+        headers,
+        credentials: 'include',
+      });
+      console.log(response.data);
+      setPost(response.data);
+      router.push('/JobPostings')
+    } catch (error) {
+      console.error('Error:', error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
 
-  return { createPost,editJobPost, post, isLoading, isError };
+  return { createPost,editJobPost, editRecruiterProfile,post, isLoading, isError };
 };
 
 export const RecruiterPostProvider = ({ children }) => {

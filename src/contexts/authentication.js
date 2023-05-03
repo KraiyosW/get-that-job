@@ -29,6 +29,7 @@ function AuthProvider(props) {
     error: null,
     user: null,
     email: null,
+    isAuthenticated: false, // ป้องกันการเข้าถึงหากยังไม่ login
   });
   const [professionalState, setProfessionalState] = useState({
     loading: true,
@@ -88,6 +89,7 @@ function AuthProvider(props) {
       );
       localStorage.setItem("sb:token", response.data.token);
       localStorage.setItem("email", response.data.user.user.email);
+      setProfessionalState({...professionalState , user: response.data.user.user , email : response.data.user.user.email})
       console.log(response);
       return response;
     } catch (error) {
@@ -111,6 +113,7 @@ function AuthProvider(props) {
       );
       localStorage.setItem("sb:token", response.data.token);
       localStorage.setItem("email", response.data.user.user.email);
+      setRecruiterState({...recruiterState , user: response.data.user.user , email : response.data.user.user.email})
       console.log(response);
       return response;
     } catch (error) {
@@ -134,9 +137,13 @@ function AuthProvider(props) {
     }
   };
 
-  const token =
-    typeof window !== "undefined" ? window.sessionStorage.getItem("token") : "";
-  const isAuthenticated = token !== "";
+  let token = null;
+if (typeof globalThis !== "undefined" && globalThis.localStorage) {
+  token = globalThis.localStorage.getItem("sb:token");
+}
+const isAuthenticated = token !== "";
+
+
 
   return (
     <AuthContext.Provider

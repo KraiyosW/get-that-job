@@ -10,11 +10,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const SideBarRecruiter = () => {
 
   const { logoutAuth } = useAuth();
   const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("sb:token"); 
+    setIsAuthenticated(!!token); 
+  }, [isAuthenticated]);
 
   const handleLogout = async () => {
     try {
@@ -25,10 +32,14 @@ const SideBarRecruiter = () => {
     }
   };
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
 
   return (
     <div className="m-0 p-0 w-[240px] bg-white-tertiary fixed h-screen overflow-auto max-[700px]:w-screen max-[700px]:h-auto max-[700px]:relative" id="sidebar">
-      <Link href="/" className="max-[700px]:flex max-[700px]:justify-center">
+      <Link href="/" className="max-[700px]:flex max-[700px]:justify-center" onClick={()=>{handleLogout()}}>
         <Image src={GTJ} className="mb-4 max-[700px]:pl-[8px] max-[700px]:pt-[16px] pl-[16px] pt-[32px] w-[160px] cursor-pointer max-[700px]:hidden" />
       </Link>
       <div className="box-all">
