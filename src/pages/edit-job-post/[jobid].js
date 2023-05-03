@@ -119,7 +119,7 @@ const handleSelectJobType = (event) => {
       const authToken = JSON.stringify(localStorage.getItem('sb:token'));
       const response = await editJobPost(formData,authToken);
       console.log(response);
-      router.push('/jobPostings')
+      router.push('/job-postings')
     } catch (error) {
       console.error(error);
     }

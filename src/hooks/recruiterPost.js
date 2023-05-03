@@ -59,7 +59,7 @@ export const useRecruiterPost = () => {
       });
       console.log(response.data);
       setPost(response.data);
-      router.push('/JobPostings')
+      router.push('/job-postings')
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
@@ -103,7 +103,7 @@ export const useRecruiterPost = () => {
       });
       console.log(response.data);
       setPost(response.data);
-      router.push('/JobPostings')
+      router.push('/job-postings')
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
@@ -146,7 +146,7 @@ export const useRecruiterPost = () => {
       });
       console.log(response.data);
       setPost(response.data);
-      router.push('/JobPostings')
+      router.push('/job-postings')
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
