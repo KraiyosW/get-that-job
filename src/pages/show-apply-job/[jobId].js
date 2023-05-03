@@ -22,7 +22,7 @@ function ShowCandidates() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [post,setPost] = useState({})
   const router = useRouter();
-  const id = router.query["jobid"]
+  const id = router.query["jobId"]
   console.log(id)
 
   useEffect(()=>{
@@ -30,14 +30,14 @@ function ShowCandidates() {
         try{
             if(!id) return; 
             const posts = await supabase
-            .from("professional")
-            .select(`*,professional_apply_jobs(*),recruiters_status(*)`)
+            .from("professional_apply_jobs")
+            .select(`*, professional (*), recruiters_status (*)`)
             .eq('job_post_id',Number(id))
-            .single();
 
             if (!posts.data) return;
 
             setPost(posts.data);
+            console.log(posts.data[0].professional_id)
         } catch (error) {
             console.log(error);
         }

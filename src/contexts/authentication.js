@@ -24,6 +24,7 @@ supabase.auth.onAuthStateChange((event, session) => {
 const AuthContext = React.createContext();
 
 function AuthProvider(props) {
+
   const [state, setState] = useState({
     loading: true,
     error: null,
@@ -35,7 +36,7 @@ function AuthProvider(props) {
     loading: true,
     error: null,
     user: null,
-    email: null,
+    email: null
   });
   const [recruiterState, setRecruiterState] = useState({
     loading: true,
