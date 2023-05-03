@@ -12,11 +12,7 @@ function jobPostings() {
     <>
       <Head />
       <SideBarRecruiter />
-      <main className="bg-white-secondary h-screen">
-        <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
           <JobPostings />
-        </div>
-      </main>
     </>
   );
 }

@@ -55,7 +55,7 @@ const SidebarProfessional = () => {
           </div>
         </Link>
 
-        <Link href="/" className="max-[700px]:flex max-[700px]:justify-center">
+        <Link href="/applications" className="max-[700px]:flex max-[700px]:justify-center">
           <div className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px]" id="sidebar-menu">
             <Image src={apllication} alt="Your applications" className="max-[700px]:hidden" />
             <div className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">Your applications</div>

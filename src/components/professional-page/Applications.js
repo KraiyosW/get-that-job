@@ -24,42 +24,36 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 function Applications() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [job, setJob] = useState([]);
-  const [pro, setPro] = useState([]);
   const [jobStatus, setJobStatus] = useState([]);
   const [selectedOption, setSelectedOption] = useState("all");
-  const [timeAgo, setTimeAgo] = useState("");
   const router = useRouter();
   const AllJob = async () => {
     try {
       const result = await supabase
-        .from("jobs_postings")
-        .select(
-          `*,
-              recruiters(recruiter_id,company_name)`
-        )
+        .from("professional_apply_jobs")
+        .select(`*, professional (*), jobs_postings (*, recruiters (*))`)
         .limit(20)
         .order("created_at", { ascending: true });
       const formattedJobs = result.data.map((job) => ({
         ...job,
-        created_at: moment(job.created_at).fromNow(),
-        company_name: job.recruiters.company_name,
-        salary_min_range: numeral(job.salary_min_range).format("0a"),
-        salary_max_range: numeral(job.salary_max_range).format("0a"),
+        pro_created_at: moment(job.created_at).fromNow(),
+        created_at: moment(job.jobs_postings.created_at).fromNow(),
+        company_name: job.jobs_postings.recruiters.company_name,
+        salary_min_range: numeral(job.jobs_postings.salary_min_range).format(
+          "0a"
+        ),
+        salary_max_range: numeral(job.jobs_postings.salary_max_range).format(
+          "0a"
+        ),
+        job_title: job.jobs_postings.job_title,
+        job_category: job.jobs_postings.job_category,
+        job_type: job.jobs_postings.job_type,
+        job_description: job.jobs_postings.job_description,
+        requirement: job.jobs_postings.requirement,
+        optional_requirement: job.jobs_postings.optional_requirement,
+        company_logo: job.jobs_postings.recruiters.logo,
       }));
       setJob(formattedJobs);
-    } catch {
-      console.error();
-    }
-    try {
-      const proData = await supabase.from("professional").select(`*,
-          professional_apply_jobs(*)`);
-      const formattedPro = proData.data.map((pro) => ({
-        ...pro,
-        pro_created_at: moment(
-          pro.professional_apply_jobs.created_at
-        ).fromNow(),
-      }));
-      setPro(formattedPro);
     } catch {
       console.error();
     }
@@ -156,9 +150,6 @@ function Applications() {
               {job.length} applications found
             </h6>
             {job.map((item, index) => {
-              const formattedPro = pro.find(
-                (proItem) => proItem.job_post_id === item.id
-              );
               return (
                 <div
                   key={index}
@@ -169,11 +160,17 @@ function Applications() {
                       className="max-[700px]:text-center flex flex-row flex-wrap max-[700px]:justify-between items-center w-[100%]"
                       id="job-head-row"
                     >
-                      <div className="min-[701px]:flex min-[701px]:flex-row max-[919px]:w-[100%] min-[920px]:w-[35%]">
+                      <div className="min-[701px]:flex min-[701px]:flex-row max-[919px]:w-[100%] min-[920px]:w-[40%]">
                         <div className="max-[700px]:flex max-[700px]:w-full max-[700px]:justify-center max-[700px]:mb-[20px] min-[701px]:mr-[18px]">
                           <Image
                             className="w-[60px] min-[701px]:w-[100px] min-[821px]:w-[60px] h-[60px]"
-                            src={logoMockup}
+                            src={
+                              item.company_logo !== null
+                                ? logoMockup
+                                : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${item.company_logo}`
+                            }
+                            width={200}
+                            height={200}
                             alt="logo company"
                           />
                         </div>
@@ -188,7 +185,7 @@ function Applications() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex flex-col max-[919px]:w-[100%] min-[920px]:w-[35%]">
+                      <div className="flex flex-col max-[919px]:w-[100%] min-[920px]:w-[40%]">
                         <div className="max-[700px]:flex-col flex flex-row mb-[8px]">
                           <div className="flex flex-row mr-[9px] max-[700px]:mb-[8px] max-[700px]:items-center">
                             <Image
@@ -247,7 +244,7 @@ function Applications() {
                           >
                             Sent
                             <br />
-                            {formattedPro ? formattedPro.pro_created_at : ""}
+                            {item.pro_created_at}
                           </p>
                         </div>
                         <div className="flex flex-col items-center max-[700px]:mr-[15px]">
