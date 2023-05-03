@@ -22,7 +22,7 @@ function ShowCandidates() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [post,setPost] = useState({})
   const router = useRouter();
-  const id = router.query["jobId"]
+  const id = router.query["jobid"]
   console.log(id)
 
   useEffect(()=>{

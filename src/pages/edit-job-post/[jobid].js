@@ -23,7 +23,7 @@ function EditJobPost() {
   const [selectedJobType, setSelectedJobType] = useState("");
   const userEmail = recruiterState.email;
   const router = useRouter();
-  const id = router.query["jobId"]
+  const id = router.query["jobid"]
   console.log(id)
 
 
