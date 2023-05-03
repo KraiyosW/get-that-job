@@ -5,33 +5,37 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+
+
 export default async function FindthatJob(req, res) {
 
     const searchMessage = req.query.title || "";
     const category = req.query.category || "";
     const selectedJobType = req.query.type || "";
 
-    let query = supabase.from("jobs_postings").select();
+    console.log(category);
 
-    if (searchMessage) {
-        query = query.ilike("job_title", `%${searchMessage}%`);
-    }
+    // let query = supabase.from("jobs_postings").select();
 
-    if (category) {
-        query = query.eq("job_category", category);
-    }
+    // if (searchMessage) {
+    //     query = query.ilike("job_title", `%${searchMessage}%`);
+    // }
 
-    if (selectedJobType) {
-        query = query.eq("job_type", selectedJobType);
-    }
+    // if (category) {
+    //     query = query.eq("job_category", category);
+    // }
 
-    const { data, error } = await query;
+    // if (selectedJobType) {
+    //     query = query.eq("job_type", selectedJobType);
+    // }
 
-    if (error) {
-        res.status(500).json({ error: "An error occurred while fetching jobs." });
-    } else {
-        res.status(200).json({ jobs: data });
-    }
+    // const { data, error } = await query;
+
+    // if (error) {
+    //     res.status(500).json({ error: "An error occurred while fetching jobs." });
+    // } else {
+    //     res.status(200).json({ jobs: data });
+    // }
 }
 
     // const searchMessage = req.query.title || "";
