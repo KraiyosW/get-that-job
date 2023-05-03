@@ -14,8 +14,8 @@ const Findthatjob = () => {
 
     const [job, setJob] = useState([]);
     const [searchMessage, setSearchMessage] = useState("");
-    const [category, setCategory] = useState("Select or create a category");
-    const [selectedJobType, setSelectedJobType] = useState("Select a type");
+    const [category, setCategory] = useState("");
+    const [selectedJobType, setSelectedJobType] = useState("");
     const [salaryMin, setSalaryMin] = useState("")
     const [salaryMax, setSalaryMax] = useState("")
     const router = useRouter();
@@ -23,20 +23,23 @@ const Findthatjob = () => {
     // const [followStatus, setFollowStatus] = useState({});
     // const [applicationStatus, setApplicationStatus] = useState({});
 
-    const getJobs = async () => {
+    const getJobs = async (input) => {
+
+
+        const { searchMessage, category, selectedJobType } = input;
         try {
-            const params = new URLSearchParams();
-            params.append("job_title", searchMessage);
-            params.append("job_category", selectedOption);
-            params.append("job_type", selectedJobType);
-            const result = await axios.get(`http://localhost:3000/api/findthatjob?${params.toString()}`)
-
+            const query = new URLSearchquery();
+            query.append("title", searchMessage);
+            query.append("category", category);
+            query.append("type", selectedJobType);
+            const result = await axios.get(`http://localhost:3000/api/findthatjob?${query.toString()}`)
             setJob(result.data.job.data);
-
         } catch (error) {
-            console.error();
+
         }
+        ;
     };
+    console.log(category);
 
 
     // const result = await axios.get(
@@ -120,34 +123,6 @@ const Findthatjob = () => {
         setSalaryMax(event.target.value);
     }
 
-    const filterJobs = job.filter((jobs) => {
-        if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type") {
-            return (
-                jobs.job_category.includes(category) &&
-                (jobs.job_title.toLowerCase().includes(searchMessage) ||
-                    jobs.job_description.toLowerCase().includes(searchMessage)) &&
-                jobs.job_type.includes(selectedJobType)
-            );
-        } else if (category !== "Select or create a category" && selectedJobType !== "Select a type") {
-            return jobs.job_category.includes(category) && jobs.job_type.includes(selectedJobType);
-        } else if (searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type") {
-            return (
-                jobs.job_title.toLowerCase().includes(searchMessage) ||
-                jobs.job_description.toLowerCase().includes(searchMessage)) &&
-                jobs.job_type.includes(selectedJobType);
-        } else if (category !== "Select or create a category") {
-            return jobs.job_category.includes(category);
-        } else if (searchMessage.toLowerCase() !== "") {
-            return (
-                jobs.job_title.toLowerCase().includes(searchMessage) ||
-                jobs.job_description.toLowerCase().includes(searchMessage)
-            );
-        } else if (selectedJobType !== "Select a type") {
-            return jobs.job_type.includes(selectedJobType);
-        } else {
-            return jobs;
-        }
-    });
 
     // const filterJobs = job.filter((jobs) => {
     //     if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
@@ -304,10 +279,10 @@ const Findthatjob = () => {
 
 
                     <div className="flex flex-col flex-wrap w-full items-center">
-                        <h6 className="max-[700px]:text-center mb-4 mt-4">{filterJobs.length} jobs for you</h6>
+                        <h6 className="max-[700px]:text-center mb-4 mt-4">{job.length} jobs for you</h6>
                         <div className="flex felx-row flex-wrap gap-[15px]">
 
-                            {filterJobs.map((item, index) => {
+                            {job.map((item, index) => {
 
                                 return (
                                     <div
@@ -380,95 +355,79 @@ const Findthatjob = () => {
 export default Findthatjob
 
 
-{/* /* export default Findthatjob;
-// <div className='flex'>
-//     <main className='flex flex-col flex-wrap w-full items-center' >
-//         <h6 className='mb-4'>12 jobs for you</h6>
-//         <div className='grid grid-cols-3 gap-[15px]'>
-//             <div className='flex flex-col justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[290px] h-[170px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]'>
-//                 <div className='flex items-center gap-4'>
-//                     <div>
-//                         <Image src={babyswim} />
-//                     </div>
+// const filterJobs = job.filter((jobs) => {
+    //     if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type") {
+    //         return (
+    //             jobs.job_category.includes(category) &&
+    //             (jobs.job_title.toLowerCase().includes(searchMessage) ||
+    //                 jobs.job_description.toLowerCase().includes(searchMessage)) &&
+    //             jobs.job_type.includes(selectedJobType)
+    //         );
+    //     } else if (category !== "Select or create a category" && selectedJobType !== "Select a type") {
+    //         return jobs.job_category.includes(category) && jobs.job_type.includes(selectedJobType);
+    //     } else if (searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type") {
+    //         return (
+    //             jobs.job_title.toLowerCase().includes(searchMessage) ||
+    //             jobs.job_description.toLowerCase().includes(searchMessage)) &&
+    //             jobs.job_type.includes(selectedJobType);
+    //     } else if (category !== "Select or create a category") {
+    //         return jobs.job_category.includes(category);
+    //     } else if (searchMessage.toLowerCase() !== "") {
+    //         return (
+    //             jobs.job_title.toLowerCase().includes(searchMessage) ||
+    //             jobs.job_description.toLowerCase().includes(searchMessage)
+    //         );
+    //     } else if (selectedJobType !== "Select a type") {
+    //         return jobs.job_type.includes(selectedJobType);
+    //     } else {
+    //         return jobs;
+    //     }
+    // });
 
-//                     <div className='flex flex-col'>
-//                         <div className='flex gap-1 items-center'>
-//                             <Image src={categorypic} />
-//                             <p id='caption'>Manufactoring</p>
-//                         </div>
-//                         <h6>The job title</h6>
-//                         <h2 id='subtitle2'>The Company Name </h2>
-//                         <div className='flex gap-4 '>
-//                             <div className='flex gap-1 items-center'>
-//                                 <Image src={calendar} className='h-[12.5px] w-[12.5px]' />
-//                                 <p id='caption'>Full time</p>
-//                             </div>
-//                             <div className='flex gap-1 items-center'>
-//                                 <Image src={dollar} />
-//                                 <p id='caption'>2.0k - 2.5k</p>
-//                             </div>
-//                         </div>
-
-//                     </div>
-//                 </div>
-//                 <div className='flex justify-between'>
-//                     <div className='flex gap-2 p-1'>
-//                         <Image src={following} className='w-[22px] h-[22px]' />
-//                         <button >Follow</button>
-//                     </div>
-//                     <div>
-//                         <button className='border-[1px] border-[pink] rounded-[15px] py-1 px-3'>
-//                             SEE MORE
-//                         </button>
-//                     </div>
-//                 </div>
-
-//             </div>
-//         </div>
-//     </main >
-// </div >
-// <div className='flex'>
-//     <SideBarProfessional />
-//     <main className='flex flex-col flex-wrap ' >
-//         <h6 className='bg-black'>{data.length} jobs for you</h6>
-//         {data.map((item) => { */}
-{/* //             <div key={item.id} className='w-1/3 p-4'>
-//                 <div className='flex items-center'>
-//                     <div>
-//                         <Image src={item.img} />
-//                     </div>
-
-//                     <div className='flex flex-col'>
-//                         <p id='caption'>{item.category}</p>
-//                         <h6>{item.title}</h6>
-//                         <h2 id='subtitle2'>{item.companyName}</h2>
-//                         <span>
-//                             <div>
-//                                 <Image src={calendar} />
-//                                 <p id='caption'>{item.type}</p>
-//                             </div>
-//                             <div>
-//                                 <Image src={dollar} />
-//                                 <p id='caption'>{item.salary}</p>
-//                             </div>
-//                         </span>
-
-//                     </div>
-//                 </div>
-//                 <div className='flex justify-between'>
-//                     <div className='flex'>
-//                         <Image src={followStatus[item.id] ? following : notFollowing} />
-//                         <button onClick={() => handleFollowClick(item.id)}>
-//                             {followStatus[item.id] ? 'FOLLOWING' : 'FOLLOW'}
-//                         </button>
-//                     </div>
-//                     <div>
-//                         <button onClick={() => handleApplyClick(item.id)}>
-//                             {applicationStatus[item.id] ? 'APPLIED' : 'SEE MORE'}
-//                         </button>
-//                     </div>
-//                 </div>
-//             </div>
-//         })}
-//     </main>
-// </div> */} 
+    // const filterJobs = job.filter((jobs) => {
+    //     if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+    //         return (
+    //             (jobs.job_category.includes(category) &&
+    //                 jobs.job_title.toLowerCase().includes(searchMessage) &&
+    //                 jobs.job_type.includes(selectedJobType) &&
+    //                 jobs.salary_min_range >= salaryMin &&
+    //                 jobs.salary_max_range <= salaryMax) ||
+    //             (jobs.job_category.includes(category) &&
+    //                 jobs.job_description.toLowerCase().includes(searchMessage) &&
+    //                 jobs.job_type.includes(selectedJobType) &&
+    //                 jobs.salary_min_range >= salaryMin &&
+    //                 jobs.salary_max_range <= salaryMax)
+    //         );
+    //     } else if (category !== "Select or create a category" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+    //         return jobs.job_category.includes(category) && jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+    //     } else if (searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+    //         return (
+    //             jobs.job_title.toLowerCase().includes(searchMessage) ||
+    //             jobs.job_description.toLowerCase().includes(searchMessage)) &&
+    //             jobs.job_type.includes(selectedJobType) &&
+    //             jobs.salary_min_range >= salaryMin &&
+    //             jobs.salary_max_range <= salaryMax;
+    //     } else if (category !== "Select or create a category" && salaryMin !== "" && salaryMax !== "") {
+    //         return jobs.job_category.includes(category) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+    //     } else if (searchMessage.toLowerCase() !== "" && salaryMin !== "" && salaryMax !== "") {
+    //         return (
+    //             jobs.job_title.toLowerCase().includes(searchMessage) ||
+    //             jobs.job_description.toLowerCase().includes(searchMessage)) &&
+    //             jobs.salary_min_range >= salaryMin &&
+    //             jobs.salary_max_range <= salaryMax;
+    //     } else if (selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+    //         return jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+    //     } else if (category !== "Select or create a category") {
+    //         return jobs.job_category.includes(category);
+    //     } else if (searchMessage.toLowerCase() !== "") {
+    //         return (
+    //             jobs.job_title.toLowerCase().includes(searchMessage) ||
+    //             jobs.job_description.toLowerCase
+    //                 ().includes(searchMessage)
+    //         );
+    //     } else if (selectedJobType !== "Select a type") {
+    //         return jobs.job_type.includes(selectedJobType);
+    //     } else {
+    //         return jobs;
+    //     }
+    // });
