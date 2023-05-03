@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import numeral from "numeral";
 import TypeJob from "../../image/type-job.png";
 import TimeWorking from "../../image/time-working.png";
 import Salary from "../../image/salary.png";
@@ -10,6 +11,7 @@ import show from "../../image/show.png";
 import close from "../../image/close.png";
 import closed from "../../image/closed.png";
 import pencil from "../../image/pencil.png";
+import Warning from "../Warning";
 import { useState, useEffect } from 'react'
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
@@ -63,17 +65,16 @@ function JobPostings() {
   };
   
   useEffect(() => {
-    const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
+    const token = localStorage.getItem("sb:token"); 
     setIsAuthenticated(!!token); 
     AllJob();
   }, [jobStatus,isAuthenticated]);
 
   
   if (!isAuthenticated) {
-    return (<div className="flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] bg-white-secondary ">
-    <h2 className="mt-[3rem] text-center text-pink-primary" id="heading2">!!! Please log in before accessing this page !!!</h2>
-    <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
-    </div>);
+    return(
+      <Warning/>
+    );
   }
 
   const toggleExpanded = (postId) => {
@@ -82,6 +83,10 @@ function JobPostings() {
 
   const handleEdit = (id) =>{
     router.push(`edit-job-post/${id}`);
+  }
+
+  const handleShowCandidate = (id) =>{
+    router.push(`show-apply-job/${id}`);
   }
 
 
@@ -111,6 +116,8 @@ function JobPostings() {
 
   return (
     <>
+    <main className="bg-white-secondary h-screen">
+        <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
     <h4 className="max-[700px]:text-center mb-[24px]" id="heading4">
             Job Postings
           </h4>
@@ -203,7 +210,7 @@ function JobPostings() {
                           className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                         />
                         <div className="text-grey-secondary" id="caption" key={index}>
-                          {item.salary_min_range} - {item.salary_max_range}
+                          {numeral(item.salary_min_range).format("0a")} - {numeral(item.salary_max_range).format("0a")}
                         </div>
                       </section>
                     </div>
@@ -254,12 +261,14 @@ function JobPostings() {
                     </div>
                   </div>
                   <div className="max-[700px]:mt-[10px] max-[700px]:mb-[10px] flex flex-row items-center">
+                    <button onClick={()=>(handleShowCandidate(item.job_post_id))}>
                     <Image
                       src={show}
                       alt="Show"
                       className="w-[25px] h-[25px] mr-[5px]"
                     />
                     <div id="body2">SHOW</div>
+                    </button>
                   </div>
                   <div className="flex flex-row items-center">
                     <button onClick={() => handleStatus(item.job_post_id)} className={`flex flex-row mr-[6px] ${item.post_status ? 'button_pink_tertiary' : 'button_gray'}`}>
@@ -359,6 +368,8 @@ function JobPostings() {
         )
         }
       </div>
+      </div>
+      </main>
     </>
   );
 }

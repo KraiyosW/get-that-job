@@ -8,6 +8,7 @@ import following from "../../image/following.png";
 import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
+import Warning from "../Warning";
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 
@@ -104,17 +105,12 @@ const Findthatjob = () => {
     }, [isAuthenticated]);
 
     if (!isAuthenticated) {
-    return (<div className="max-w-full max-h-screen flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] ">
-    <h2 className="mt-[3rem] text-center text-pink-primary" id="heading2">!!! Please log in before accessing this page !!!</h2>
-    <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
-    </div>);
-
-     
+    return(
+        <Warning/>
+    ) ;
   }
 
     const filteredJobs = job.filter(item => item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) || item.job_category.includes(selectedOption));
-
-
 
     return (
         <main className="bg-[#F5F5F6] h-screen">
