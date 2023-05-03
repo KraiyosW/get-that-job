@@ -10,8 +10,8 @@ import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
 import Link from "next/link";
 
-const Findthatjob = () => {
 
+const Findthatjob = () => {
     const [job, setJob] = useState([]);
     const [searchMessage, setSearchMessage] = useState("");
     const [category, setCategory] = useState("");
@@ -19,12 +19,12 @@ const Findthatjob = () => {
     const [salaryMin, setSalaryMin] = useState("")
     const [salaryMax, setSalaryMax] = useState("")
     const router = useRouter();
+
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     // const [followStatus, setFollowStatus] = useState({});
     // const [applicationStatus, setApplicationStatus] = useState({});
 
     const getJobs = async (input) => {
-
 
         const { searchMessage, category, selectedJobType } = input;
         try {
@@ -32,15 +32,13 @@ const Findthatjob = () => {
             query.append("title", searchMessage);
             query.append("category", category);
             query.append("type", selectedJobType);
-            const result = await axios.get(`http://localhost:3000/api/findthatjob?${query.toString()}`)
+            const result = await axios.get(`http://localhost:3000/api/findthatjob?query=${query.toString()}`)
             setJob(result.data.job.data);
         } catch (error) {
 
         }
         ;
     };
-    console.log(category);
-
 
     // const result = await axios.get(
     //     'http://localhost:3000/api/findthatjob'
@@ -100,28 +98,28 @@ const Findthatjob = () => {
         return text;
     }
 
+}
+function handleSalaryMin(event) {
+    setSalaryMin(event.target.value);
+}
 
-    useEffect(() => {
-        const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
-        setIsAuthenticated(!!token);
-        getJobs({ searchMessage, selectedOption, selectedJobType });
-    }, [searchMessage, selectedOption, selectedJobType]);
+function handleSalaryMax(event) {
+    setSalaryMax(event.target.value);
+}
 
-    if (!isAuthenticated) {
-        return (<div className="max-w-full max-h-screen flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] ">
-            <h2 className="mt-[3rem] text-center text-pink-primary" id="heading2">!!! Please log in before accessing this page !!!</h2>
-            <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
-        </div>);
+useEffect(() => {
+    const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
+    setIsAuthenticated(!!token);
+    getJobs({ searchMessage, selectedOption, selectedJobType });
+}, [searchMessage, selectedOption, selectedJobType]);
+
+if (!isAuthenticated) {
+    return (<div className="max-w-full max-h-screen flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] ">
+        <h2 className="mt-[3rem] text-center text-pink-primary" id="heading2">!!! Please log in before accessing this page !!!</h2>
+        <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
+    </div>);
 
 
-    }
-    function handleSalaryMin(event) {
-        setSalaryMin(event.target.value);
-    }
-
-    function handleSalaryMax(event) {
-        setSalaryMax(event.target.value);
-    }
 
 
     // const filterJobs = job.filter((jobs) => {
@@ -279,11 +277,10 @@ const Findthatjob = () => {
 
 
                     <div className="flex flex-col flex-wrap w-full items-center">
-                        <h6 className="max-[700px]:text-center mb-4 mt-4">{job.length} jobs for you</h6>
+                        <h6 className="max-[700px]:text-center mb-4 mt-4">{job ? job.length : 0} jobs for you</h6>
                         <div className="flex felx-row flex-wrap gap-[15px]">
 
-                            {job.map((item, index) => {
-
+                            {job && job.map((item, index) => {
                                 return (
                                     <div
                                         key={index}

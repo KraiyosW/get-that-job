@@ -1,25 +1,31 @@
-import axios from "axios";
-
-const getJobs = async (input) => {
-
-    const { searchMessage, category, selectedJobType } = input;
-    try {
-        const query = new URLSearchquery();
-        query.append("title", searchMessage);
-        query.append("category", category);
-        query.append("type", selectedJobType);
-        const result = await axios.get(`http://localhost:3000/api/findthatjob?${query.toString()}`)
-        setJob(result.data.job.data);
-    } catch (error) {
-
-    }
-    ;
-};
-
-return (
-    getJobs
-)
+// import axios from "axios";
 // import { useState } from "react";
+
+// const useJobs = () => {
+//     const [job, setJob] = useState([])
+//     const getJobs = async (input) => {
+//         const { searchMessage, category, selectedJobType } = input;
+//         try {
+//             const query = new URLSearchquery();
+//             query.append("title", searchMessage);
+//             query.append("category", category);
+//             query.append("type", selectedJobType);
+//             const result = await axios.get(`http://localhost:3000/api/findthatjob?query=${query.toString()}`)
+//             setJob(result.data.job.data);
+//         } catch (error) {
+
+//         }
+//         ;
+//     };
+
+//     return {
+//         getJobs,
+//         job
+//     };
+// }
+
+// export default useJobs
+    // import { useState } from "react";
 // import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 
