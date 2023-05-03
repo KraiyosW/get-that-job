@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/authentication";
 import { createClient } from "@supabase/supabase-js";
 
 
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -22,7 +23,7 @@ function EditJobPost() {
   const [selectedJobType, setSelectedJobType] = useState("");
   const userEmail = recruiterState.email;
   const router = useRouter();
-  const id = router.query["jobid"]
+  const id = router.query["jobId"]
   console.log(id)
 
 
@@ -47,7 +48,7 @@ function EditJobPost() {
           
         const posts = await supabase
           .from("jobs_postings")
-          .select(`*, recruiters (*)`)
+          .select(`*, recruiters (*),`)
           .eq("job_post_id", Number(id))
           .single();
   

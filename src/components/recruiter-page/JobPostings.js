@@ -63,7 +63,7 @@ function JobPostings() {
   };
   
   useEffect(() => {
-    const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
+    const token = localStorage.getItem("sb:token"); 
     setIsAuthenticated(!!token); 
     AllJob();
   }, [jobStatus,isAuthenticated]);
@@ -82,6 +82,10 @@ function JobPostings() {
 
   const handleEdit = (id) =>{
     router.push(`edit-job-post/${id}`);
+  }
+
+  const handleShowCandidate = (id) =>{
+    router.push(`show-apply-job/${id}`);
   }
 
 
@@ -254,12 +258,14 @@ function JobPostings() {
                     </div>
                   </div>
                   <div className="max-[700px]:mt-[10px] max-[700px]:mb-[10px] flex flex-row items-center">
+                    <button onClick={()=>(handleShowCandidate(item.job_post_id))}>
                     <Image
                       src={show}
                       alt="Show"
                       className="w-[25px] h-[25px] mr-[5px]"
                     />
                     <div id="body2">SHOW</div>
+                    </button>
                   </div>
                   <div className="flex flex-row items-center">
                     <button onClick={() => handleStatus(item.job_post_id)} className={`flex flex-row mr-[6px] ${item.post_status ? 'button_pink_tertiary' : 'button_gray'}`}>

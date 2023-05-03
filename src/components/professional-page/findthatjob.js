@@ -109,12 +109,9 @@ const Findthatjob = () => {
     <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
     </div>);
 
-     
   }
 
     const filteredJobs = job.filter(item => item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) || item.job_category.includes(selectedOption));
-
-
 
     return (
         <main className="bg-[#F5F5F6] h-screen">
