@@ -18,7 +18,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 
 
-function Candidates() {
+function ShowCandidates() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [post,setPost] = useState({})
   const router = useRouter();
@@ -250,4 +250,4 @@ function Candidates() {
     );
   }
 
-export default Candidates
+export default ShowCandidates

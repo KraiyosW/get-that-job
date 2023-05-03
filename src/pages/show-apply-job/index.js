@@ -1,8 +1,8 @@
 import React from "react";
-import SideBarRecruiter from "@/components/SidebarRecruiter";
+import SideBarRecruiter from "@/components/SidebarRecruiter.js";
 import Candidates from "@/components/recruiter-page/Candidates.js";
 
-const CandidateShow = () => {
+const ShowCandidates = () => {
   return (
     <>
       <div>
@@ -13,4 +13,4 @@ const CandidateShow = () => {
   );
 };
 
-export default CandidateShow;
+export default ShowCandidates;
