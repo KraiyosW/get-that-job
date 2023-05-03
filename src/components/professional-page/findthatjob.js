@@ -98,79 +98,27 @@ const Findthatjob = () => {
         return text;
     }
 
-}
-function handleSalaryMin(event) {
-    setSalaryMin(event.target.value);
-}
 
-function handleSalaryMax(event) {
-    setSalaryMax(event.target.value);
-}
+    function handleSalaryMin(event) {
+        setSalaryMin(event.target.value);
+    }
 
-useEffect(() => {
-    const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
-    setIsAuthenticated(!!token);
-    getJobs({ searchMessage, selectedOption, selectedJobType });
-}, [searchMessage, selectedOption, selectedJobType]);
+    function handleSalaryMax(event) {
+        setSalaryMax(event.target.value);
+    }
 
-if (!isAuthenticated) {
-    return (<div className="max-w-full max-h-screen flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] ">
-        <h2 className="mt-[3rem] text-center text-pink-primary" id="heading2">!!! Please log in before accessing this page !!!</h2>
-        <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
-    </div>);
+    useEffect(() => {
+        const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
+        setIsAuthenticated(!!token);
+        getJobs({ searchMessage, category, selectedJobType });
+    }, [searchMessage, category, selectedJobType]);
 
-
-
-
-    // const filterJobs = job.filter((jobs) => {
-    //     if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-    //         return (
-    //             (jobs.job_category.includes(category) &&
-    //                 jobs.job_title.toLowerCase().includes(searchMessage) &&
-    //                 jobs.job_type.includes(selectedJobType) &&
-    //                 jobs.salary_min_range >= salaryMin &&
-    //                 jobs.salary_max_range <= salaryMax) ||
-    //             (jobs.job_category.includes(category) &&
-    //                 jobs.job_description.toLowerCase().includes(searchMessage) &&
-    //                 jobs.job_type.includes(selectedJobType) &&
-    //                 jobs.salary_min_range >= salaryMin &&
-    //                 jobs.salary_max_range <= salaryMax)
-    //         );
-    //     } else if (category !== "Select or create a category" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-    //         return jobs.job_category.includes(category) && jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
-    //     } else if (searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-    //         return (
-    //             jobs.job_title.toLowerCase().includes(searchMessage) ||
-    //             jobs.job_description.toLowerCase().includes(searchMessage)) &&
-    //             jobs.job_type.includes(selectedJobType) &&
-    //             jobs.salary_min_range >= salaryMin &&
-    //             jobs.salary_max_range <= salaryMax;
-    //     } else if (category !== "Select or create a category" && salaryMin !== "" && salaryMax !== "") {
-    //         return jobs.job_category.includes(category) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
-    //     } else if (searchMessage.toLowerCase() !== "" && salaryMin !== "" && salaryMax !== "") {
-    //         return (
-    //             jobs.job_title.toLowerCase().includes(searchMessage) ||
-    //             jobs.job_description.toLowerCase().includes(searchMessage)) &&
-    //             jobs.salary_min_range >= salaryMin &&
-    //             jobs.salary_max_range <= salaryMax;
-    //     } else if (selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-    //         return jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
-    //     } else if (category !== "Select or create a category") {
-    //         return jobs.job_category.includes(category);
-    //     } else if (searchMessage.toLowerCase() !== "") {
-    //         return (
-    //             jobs.job_title.toLowerCase().includes(searchMessage) ||
-    //             jobs.job_description.toLowerCase
-    //                 ().includes(searchMessage)
-    //         );
-    //     } else if (selectedJobType !== "Select a type") {
-    //         return jobs.job_type.includes(selectedJobType);
-    //     } else {
-    //         return jobs;
-    //     }
-    // });
-    console.log(salaryMin);
-
+    if (!isAuthenticated) {
+        return (<div className="max-w-full max-h-screen flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] ">
+            <h2 className="mt-[3rem] text-center text-pink-primary" id="heading2">!!! Please log in before accessing this page !!!</h2>
+            <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
+        </div>);
+    }
 
     return (
         <main className="bg-[#F5F5F6] h-screen">
@@ -349,6 +297,7 @@ if (!isAuthenticated) {
         </main>
     );
 };
+
 
 export default Findthatjob
 
