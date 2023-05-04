@@ -37,6 +37,7 @@ const ProfessionalLogin = () => {
     try {
       const data = { email, password };
       await professionalLogin(data);
+
       router.push("/find-that-job");
     } catch (error) {
       console.error("Error:", error);
@@ -70,7 +71,9 @@ const ProfessionalLogin = () => {
         className="flex flex-col gap-[20px] mt-[20px] z-10"
       >
         <div>
-          <div className="mb-[4px]" id="overline">EMAIL</div>
+          <div className="mb-[4px]" id="overline">
+            EMAIL
+          </div>
           <input
             className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
             name="email"
@@ -79,10 +82,16 @@ const ProfessionalLogin = () => {
             value={email}
             onChange={handleEmailChange}
           />
-          {errorMessage && <div className="text-rose-500" id="p-text">{errorMessage}</div>}
+          {errorMessage && (
+            <div className="text-rose-500" id="p-text">
+              {errorMessage}
+            </div>
+          )}
         </div>
         <div>
-          <div className="mb-[4px]" id="overline">PASSWORD</div>
+          <div className="mb-[4px]" id="overline">
+            PASSWORD
+          </div>
           <div className="relative ">
             <input
               className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
@@ -99,8 +108,16 @@ const ProfessionalLogin = () => {
               className="w-[20px] absolute top-[8px] right-[10px] opacity-25 cursor-pointer"
             />
           </div>
-          {errorPassword && <div className="text-rose-500" id="p-text">{errorPassword}</div>}
-          {authMessage && <div className="text-rose-500" id="p-text">{authMessage}</div>}
+          {errorPassword && (
+            <div className="text-rose-500" id="p-text">
+              {errorPassword}
+            </div>
+          )}
+          {authMessage && (
+            <div className="text-rose-500" id="p-text">
+              {authMessage}
+            </div>
+          )}
         </div>
         <div className="flex max-[767px]:items-center items-start justify-end">
           <button className="button_pink mt-[16px]">
