@@ -5,14 +5,9 @@ import { useRouter } from "next/router";
 import SidebarProfessional from "@/components/SidebarProfessional";
 import Image from "next/image";
 import applyIcon from "@/image/icon-apply.png";
-import iconClock from "@/image/icon-clock.png";
-import calendarIcon from "@/image/icon-calendar.png";
-import dollarIcon from "@/image/icon-dollar.png";
-import followingIcon from "@/image/icon-following.png";
-import manuIcon from "@/image/icon-manu.png";
 import backIcon from "@/image/icon-back.png";
-import companyLogo from "@/image/logo-web-works.png";
 import { createClient } from "@supabase/supabase-js";
+import logoMockup from "../../image/logo-mockup.png";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -37,6 +32,7 @@ function JobDetails() {
           .eq("job_post_id", Number(id))
           .single();
         setPost(posts.data);
+        console.log(posts.data);
         setLoading(false);
         // Calculate time ago
         const createdDate = new Date(post.created_at);
@@ -54,6 +50,10 @@ function JobDetails() {
 
   const handleGoBack = () => {
     router.push("/find-that-job");
+  };
+
+  const handleApply = () => {
+    router.push(`/applications/${id}`);
   };
 
   return (
@@ -87,7 +87,13 @@ function JobDetails() {
                     <div className="image">
                       <Image
                         className="w-[75px] h-[75px] drop-shadow-xl mr-[19px]"
-                        src={companyLogo}
+                        src={
+                          post.recruiters.logo === null
+                            ? logoMockup
+                            : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${post.recruiters.logo}`
+                        }
+                        width={74}
+                        height={74}
                         alt="work logo"
                       />
                     </div>
@@ -138,7 +144,10 @@ function JobDetails() {
                     </div>
                   </div>
                   <div className="btn">
-                    <button class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white">
+                    <button
+                      class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
+                      onClick={handleApply}
+                    >
                       <Image
                         className="w-[20px] h-[20px] mr-[10px]"
                         src={applyIcon}
@@ -286,7 +295,10 @@ function JobDetails() {
                       <p className="mb-[16px]">{post.optional_requirement}</p>
                     </div>
                     <div className="btn flex justify-center">
-                      <button class="apply-button bg-pink-primary rounded-[16px] text-white w-[173px] h-[56px] py-[16px] pr-[24px] text-right font-medium relative">
+                      <button
+                        class="apply-button bg-pink-primary rounded-[16px] text-white w-[173px] h-[56px] py-[16px] pr-[24px] text-right font-medium relative"
+                        onClick={handleApply}
+                      >
                         <Image
                           className="w-[20px] h-[20px] absolute left-[27px]"
                           src={applyIcon}

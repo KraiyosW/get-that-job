@@ -3,6 +3,11 @@ import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
 import { useState } from "react";
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 const StepOne = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,6 +23,22 @@ const StepOne = (props) => {
   async function handleSubmit(event) {
     event.preventDefault();
     let isValid = true;
+
+    const { data, error } = await supabase
+      .from("professional")
+      .select("*")
+      .eq("email", email);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (data || data.length !== 0) {
+      setErrorMessage("This email is already registered");
+      isValid = false;
+    } else {
+      setErrorMessage("");
+    }
 
     if (!email) {
       setErrorMessage("Please enter your email address");
@@ -213,7 +234,9 @@ const StepOne = (props) => {
             {/* css maybe use position for push in same div with password input */}
 
             <div className="w-full">
-              <div className="mb-[4px]" id="overline">PASSWORD CONFIRMATION</div>
+              <div className="mb-[4px]" id="overline">
+                PASSWORD CONFIRMATION
+              </div>
               <div className="relative ">
                 <input
                   className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
