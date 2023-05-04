@@ -138,6 +138,7 @@ const StepThree = (props) => {
 
   function handleFileUpload(event) {
     setFile(event.target.files[0]);
+    console.log(file);
     const uploadedFileName = event.target.files[0].name;
     fileNameField.current.textContent = uploadedFileName;
   }

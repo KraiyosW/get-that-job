@@ -19,8 +19,15 @@ function JobApply() {
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
   const [timeAgo, setTimeAgo] = useState("");
-  const [selectedOption, setSelectedOption] = useState("all");
+  const [selectedOption, setSelectedOption] = useState("Use current CV");
+
+  const [file, setFile] = useState(null);
+  const [experience, setExperience] = useState(null);
+  const [interested, setInterested] = useState(null);
+
   const [errorCv, setErrorCv] = useState(null);
+  const [errorExp, setErrorExp] = useState(null);
+  const [errorInterested, setErrorInterested] = useState(null);
 
   const router = useRouter();
   const id = router.query["jobId"];
@@ -53,6 +60,47 @@ function JobApply() {
     if (id) fetchPost();
   });
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let isValid = true;
+
+    if (file === null) {
+      setErrorCv("Please select your CV file.");
+      isValid = false;
+    } else if (file.size > 5 * 1024 * 1024) {
+      setErrorCv("File size should be less than or equal to 5MB.");
+      isValid = false;
+    } else {
+      setErrorCv("");
+    }
+
+    if (!experience || experience < 0) {
+      setErrorExp("Please enter your professional experience.");
+      isValid = false;
+    } else if (experience.length < 300 || experience.length > 2000) {
+      setErrorExp(
+        "Professional experience must be between 300 and 2000 characters."
+      );
+      isValid = false;
+    } else {
+      setErrorExp("");
+    }
+
+    if (!interested || interested < 0) {
+      setErrorInterested(
+        "Please enter your interested in working at the company"
+      );
+      isValid = false;
+    } else if (experience.length < 50 || experience.length > 2000) {
+      setErrorInterested(
+        "Interested in working at the company must be between 50 and 2000 characters."
+      );
+      isValid = false;
+    } else {
+      setErrorInterested("");
+    }
+  };
+
   const handleGoBack = () => {
     router.push("/find-that-job");
   };
@@ -77,10 +125,10 @@ function JobApply() {
       {loading ? (
         <></>
       ) : post ? (
-        <div className="job-detail-app">
+        <div className="application-app">
           {/* Header Section */}
-          <main className="bg-[#F5F5F6] h-screen">
-            <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
+          <main className="bg-[#F5F5F6] h-screen ">
+            <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px] relative">
               <div className="flex flex-col flex-wrap">
                 <div className="box-0 flex items-center mb-[18px]">
                   <button
@@ -276,14 +324,17 @@ function JobApply() {
                       >
                         Send your cv updated
                       </p>
-                      <form className="flex max-[700px]:flex-col flex-col flex-wrap gap-[12px]">
+                      <form
+                        className="flex max-[700px]:flex-col flex-col flex-wrap gap-[12px]"
+                        onSubmit={handleSubmit}
+                      >
                         <div className="flex max-[700px]:flex-col flex-row flex-wrap gap-[12px]">
                           <div>
                             <label>
                               <input
                                 type="radio"
                                 value="all"
-                                checked={selectedOption === "all"}
+                                checked={selectedOption === "Use current CV"}
                                 onChange={handleOptionChange}
                                 className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
                                 id="my-radio"
@@ -296,7 +347,7 @@ function JobApply() {
                               <input
                                 type="radio"
                                 value="waiting"
-                                checked={selectedOption === "waiting"}
+                                checked={selectedOption === "Upload new CV"}
                                 onChange={handleOptionChange}
                                 className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
                               />
@@ -350,6 +401,9 @@ function JobApply() {
                               style={{ resize: "none" }}
                             />
                           </div>
+                          {errorExp && (
+                            <p className="text-rose-500">{errorExp}</p>
+                          )}
                         </div>
 
                         {/* css maybe use position for push in same div with password input */}
@@ -368,6 +422,9 @@ function JobApply() {
                             />
                           </div>
                           <p id="overline">Between 50 and 2000 characters</p>
+                          {errorInterested && (
+                            <p className="text-rose-500">{errorInterested}</p>
+                          )}
                         </div>
                         <div className="btn flex justify-center">
                           <button class="apply-button bg-pink-primary rounded-[16px] text-white w-[173px] h-[56px] py-[16px] pr-[24px] text-right font-medium relative">

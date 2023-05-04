@@ -37,6 +37,7 @@ function JobDetails() {
           .eq("job_post_id", Number(id))
           .single();
         setPost(posts.data);
+        console.log(posts.data);
         setLoading(false);
         // Calculate time ago
         const createdDate = new Date(post.created_at);
@@ -54,6 +55,10 @@ function JobDetails() {
 
   const handleGoBack = () => {
     router.push("/find-that-job");
+  };
+
+  const handleApply = () => {
+    router.push(`/applications/${id}`);
   };
 
   return (
@@ -138,7 +143,10 @@ function JobDetails() {
                     </div>
                   </div>
                   <div className="btn">
-                    <button class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white">
+                    <button
+                      class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
+                      onClick={handleApply}
+                    >
                       <Image
                         className="w-[20px] h-[20px] mr-[10px]"
                         src={applyIcon}
@@ -286,7 +294,10 @@ function JobDetails() {
                       <p className="mb-[16px]">{post.optional_requirement}</p>
                     </div>
                     <div className="btn flex justify-center">
-                      <button class="apply-button bg-pink-primary rounded-[16px] text-white w-[173px] h-[56px] py-[16px] pr-[24px] text-right font-medium relative">
+                      <button
+                        class="apply-button bg-pink-primary rounded-[16px] text-white w-[173px] h-[56px] py-[16px] pr-[24px] text-right font-medium relative"
+                        onClick={handleApply}
+                      >
                         <Image
                           className="w-[20px] h-[20px] absolute left-[27px]"
                           src={applyIcon}
