@@ -1,14 +1,14 @@
 import React from "react";
 import SidebarProfessional from "@/components/SidebarProfessional";
-import Findthatjob from "@/components/professional-page/findthatjob";
+import Following from "@/components/professional-page/Following";
 
-const FindThatJob = () => {
+const following = () => {
   return (
     <div>
       <SidebarProfessional />
-      <Findthatjob />
+      <Following />
     </div>
   );
 };
 
-export default FindThatJob;
+export default following;
