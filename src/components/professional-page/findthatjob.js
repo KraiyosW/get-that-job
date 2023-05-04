@@ -13,6 +13,7 @@ import Link from "next/link";
 import jwtDecode from "jwt-decode";
 
 const Findthatjob = () => {
+
   const [job, setJob] = useState([]);
   const [searchMessage, setSearchMessage] = useState("");
   const [category, setCategory] = useState("");
@@ -53,6 +54,7 @@ const Findthatjob = () => {
       [event.target.name]: event.target.value,
       job_category: category,
       job_type: selectedJobType,
+
     });
   };
 
@@ -85,6 +87,7 @@ const Findthatjob = () => {
     setSalaryMax(event.target.value);
   }
 
+
   useEffect(() => {
     const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
     setIsAuthenticated(!!token);
@@ -102,6 +105,7 @@ const Findthatjob = () => {
       [id]: !followStatus[id],
     });
   };
+
 
   const filterJobs = job.filter((jobs) => {
     if (
@@ -364,6 +368,7 @@ const Findthatjob = () => {
                         </div>
                       </div>
                     </div>
+
                     <div className="flex flex-row justify-between items-center min-[701px]:gap-[75px]">
                       <div className="flex gap-2 p-1 items-center flex-row w-[200px]">
                         <div>
@@ -389,6 +394,7 @@ const Findthatjob = () => {
                           SEE MORE
                         </button>
                       </div>
+
                     </div>
                   </div>
                 );
