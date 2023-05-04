@@ -48,7 +48,7 @@ function EditJobPost() {
 
         const posts = await supabase
           .from("jobs_postings")
-          .select(`*, recruiters (*),`)
+          .select(`*, recruiters (*)`)
           .eq("job_post_id", Number(id))
           .single();
 
