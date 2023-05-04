@@ -140,7 +140,7 @@ const SidebarProfessional = () => {
             </div>
           </Link>
           <Link
-            href="/"
+            href="/professional-profile"
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
