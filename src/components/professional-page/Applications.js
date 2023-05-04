@@ -28,30 +28,39 @@ function Applications() {
   const [jobStatus, setJobStatus] = useState([]);
   const [selectedOption, setSelectedOption] = useState("all");
   const {professionalState} = useAuth();
-  const userEmail = professionalState.email
+  
   const router = useRouter();
   const AllJob = async () => {
+    const userEmail = String(professionalState.email);
     try {
-      const { data, error } = await supabase.rpc('get_professional_apply_jobs', {
-        user_email: userEmail,
-        limit: 20,
-        order: { column: 'created_at', ascending: true },
-      })
+      const result = await supabase
+        .from("professional_apply_jobs")
+        .select(`*, professional (*), jobs_postings (*, recruiters (*))`)
+        .limit(20)
+        .order("created_at", { ascending: true });
   
-      if (error) {
-        console.error(error)
-        return
-      }
+      console.log(result.data.map((item)=> item.professional.email === userEmail));
   
-      console.log(data)
-      
-      const formattedJobs = data.map((job) => ({
+      const filteredResult = result.data.filter((item) => {
+        if (item.professional.email === userEmail) {
+          return true;
+        }
+        return false;
+      });
+
+      console.log(filteredResult);
+  
+      const formattedJobs = filteredResult.map((job) => ({
         ...job,
         pro_created_at: moment(job.created_at).fromNow(),
         created_at: moment(job.jobs_postings.created_at).fromNow(),
         company_name: job.jobs_postings.recruiters.company_name,
-        salary_min_range: numeral(job.jobs_postings.salary_min_range).format('0a'),
-        salary_max_range: numeral(job.jobs_postings.salary_max_range).format('0a'),
+        salary_min_range: numeral(job.jobs_postings.salary_min_range).format(
+          "0a"
+        ),
+        salary_max_range: numeral(job.jobs_postings.salary_max_range).format(
+          "0a"
+        ),
         job_title: job.jobs_postings.job_title,
         job_category: job.jobs_postings.job_category,
         job_type: job.jobs_postings.job_type,
@@ -59,13 +68,12 @@ function Applications() {
         requirement: job.jobs_postings.requirement,
         optional_requirement: job.jobs_postings.optional_requirement,
         company_logo: job.jobs_postings.recruiters.logo,
-      }))
-      
-      setJob(formattedJobs)
+      }));
+      setJob(formattedJobs);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
   useEffect(() => {
     AllJob();
   }, [jobStatus]);
