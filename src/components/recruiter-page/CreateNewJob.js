@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import  { useRecruiterPost } from "@/hooks/recruiterPost.js";
+import { useRecruiterPost } from "@/hooks/recruiterPost.js";
 import { useRouter } from "next/router";
 
 function CreateNewJob() {
@@ -31,7 +31,7 @@ function CreateNewJob() {
       ...formData,
       [event.target.name]: event.target.value,
       job_category: selectedOption,
-      job_type : selectedJobType,
+      job_type: selectedJobType,
     });
   };
 
@@ -45,18 +45,18 @@ function CreateNewJob() {
     setSelectedJobType(event.target.value);
   };
 
- 
+
 
   // ฟังก์ชั่นสำหรับการ submit form
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const authToken = JSON.stringify(localStorage.getItem('sb:token'));
-      const response = await createPost(formData,authToken);
+      const response = await createPost(formData, authToken);
       router.push('/jobPostings')
-     
+
       console.log(response);
-    
+
       setSelectedJobType("")
       setSelectedOption("")
       setFormData({
@@ -98,17 +98,17 @@ function CreateNewJob() {
               JOB CATEGORY
             </div>
             <select
-                className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
-                id="category"
-                name="job_category"
-                value={selectedOption}
-                onChange={(event)=>{handleSelectOption(event)}}
-              >
-                <option value="" disabled>Select or create a category</option>
-                <option value="Software-Developer" >Software Developer</option>
-                <option value="Sales" >Sales</option>
-                <option value="Graphic-Designer" >Graphic Designer</option>
-                <option value="Digital-Marketing" >Digital Marketing</option>
+              className="border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
+              id="category"
+              name="job_category"
+              value={selectedOption}
+              onChange={(event) => { handleSelectOption(event) }}
+            >
+              <option value="" disabled>Select or create a category</option>
+              <option value="Software-Developer" >Software Developer</option>
+              <option value="Sales" >Sales</option>
+              <option value="Graphic-Designer" >Graphic Designer</option>
+              <option value="Digital-Marketing" >Digital Marketing</option>
             </select>
             <div className="mt-[8px] mb-[4px]" id="overline">
               TYPE
@@ -118,14 +118,14 @@ function CreateNewJob() {
               id="type"
               name="job_type"
               value={selectedJobType}
-              onChange={(event)=>{handleSelectJobType(event)}}
-              
+              onChange={(event) => { handleSelectJobType(event) }}
+
             >
               <option value="" disabled selected>
                 Select a type
               </option>
               <option value="Full-Time" >Full Time</option>
-              <option value="Past-Time" >Past Time</option>
+              <option value="Part-Time" >Part Time</option>
             </select>
             <div className="mt-[8px] mb-[4px]" id="overline">
               SALARY RANGE
