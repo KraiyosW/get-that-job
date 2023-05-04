@@ -150,9 +150,9 @@ const Following = () => {
               </div>
             </div>
 
-            <div className="flex flex-col flex-wrap w-full items-center">
+            <div className="flex flex-col flex-wrap w-full items-start">
               <h6 className="max-[700px]:text-center mb-4 mt-4">
-                You are follwing {filterJobs.length} jobs.
+                You are following {filterJobs.length} jobs.
               </h6>
               <div className="flex felx-row flex-wrap gap-[15px]">
                 {filterJobs.map((item, index) => {

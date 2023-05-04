@@ -64,7 +64,7 @@ const SidebarProfessional = () => {
       <div className="box-all">
         <div className="box-1 max-[700px]:h-auto h-[82vh] max-[700px]:flex max-[700px]:flex-row max-[700px]:w-full max-[700px]:justify-between">
           <Link
-            href="/"
+            href="/find-that-job"
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
@@ -115,11 +115,8 @@ const SidebarProfessional = () => {
             </div>
           </Link>
           <Link
-            href="/"
+            href="/following"
             className="max-[700px]:flex max-[700px]:justify-center"
-            onClick={() => {
-              router.push("/following");
-            }}
           >
             <div
               className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[7px]"
