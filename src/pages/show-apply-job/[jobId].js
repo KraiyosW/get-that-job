@@ -38,10 +38,7 @@ function ShowCandidates() {
   const id = router.query["jobId"];
   const [jobStatus, setJobStatus] = useState([]);
   const [isUpdating, setIsUpdating] = useState(false);
-  const countId = [];
-
-  //push id ใน countId เพื่อจะได้นับจำนวน candidates
-  countId.push(id);
+  const [isLoading, setIsLoading] = useState(true);
 
 
   useEffect(() => {
@@ -51,13 +48,14 @@ function ShowCandidates() {
         const posts = await supabase
           .from("professional_apply_jobs")
           .select(
-            `*, professional (*), recruiters_status (*), jobs_postings (*)`
+            `*, professional (*), jobs_postings (*)`
           )
           .eq("job_post_id", Number(id));
 
         if (!posts.data) return;
 
         setPost(posts.data);
+        setIsLoading(false);
         console.log(posts.data)
         console.log(posts)
         console.log(posts.data[0].recruiters_status[0].status_stage)
@@ -159,7 +157,7 @@ function ShowCandidates() {
         <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
           <button
             className="flex flex-row items-center mb-[16px]"
-            onClick={() => handleGoBack(post.jobs_postings.job_post_id)}
+            onClick={() => handleGoBack(post.jobs_postings)}
           >
             <Image
               className="w-[10px] h-[12px] mr-[13px]"
@@ -174,7 +172,7 @@ function ShowCandidates() {
             Show Job Posting
           </h4>
 
-
+         
           {post[0] && (
             <div className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[100%] mb-[20px] h-auto ">
               <div className="flex flex-col" id="box-job-all">
@@ -247,7 +245,7 @@ function ShowCandidates() {
                           className="mr-[6px]"
                         />
                         <div className="max-[700px]:mr-[5px]" id="caption">
-                          {countId.length}
+                          {post.length}
                         </div>
                       </div>
                       <div id="caption">Total</div>
@@ -277,10 +275,11 @@ function ShowCandidates() {
                       onClick={() =>
                         handleStatus(post[0].jobs_postings.job_post_id)
                       }
-                      className={`flex flex-row mr-[6px] ${post[0].jobs_postings.post_status
-                        ? "button_pink_tertiary"
-                        : "button_gray"
-                        }`}
+                      className={`flex flex-row mr-[6px] ${
+                        post[0].jobs_postings.post_status
+                          ? "button_pink_tertiary"
+                          : "button_gray"
+                      }`}
                     >
                       <Image
                         src={post[0].jobs_postings.post_status ? close : closed}
@@ -392,74 +391,80 @@ function ShowCandidates() {
             className="max-[700px]:text-center mt-[20px] mb-[8px]"
             id="heading6"
           >
-            {countId.length} candidates found
+             {isLoading ? ( // Conditionally render based on isLoading
+        <p></p>
+      ) : post.length !== 0 ? (
+        <p>{post.length} candidates found</p>
+      ) : (
+        <p>There are no candidates found.</p>
+      )}
           </h6>
           <div className="flex flex-col">
-            {post.map((item, index) => {
-              return (
-                <div key={index} className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[100%] mb-[20px] h-auto ">
-                  <div className="flex flex-col" id="box-job-all">
-                    <div
-                      className="max-[700px]:text-center flex flex-row flex-wrap justify-between w-[100%]"
-                      id="job-head-row"
-                    >
-                      <div id="job-title flex flex-col">
-                        <h6 className="mb-[4px]" id="heading6">
-                          {item.professional.name}
-                        </h6>
-                        <div className="max-[700px]:mb-[15px] flex flex-row">
-                          <section className="flex flex-row mr-[9px] items-center">
-                            <Image
-                              src={linkin}
-                              alt="job position"
-                              className="w-[15px] h-[15px] mr-[6px]"
-                            />
-                            <div className="text-grey-primary" id="body2">
-                              {item.jobs_postings.job_title}
-                            </div>
-                          </section>
-                        </div>
+          {post.map((item, index) => {
+          return (
+              <div key={index} className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[100%] mb-[20px] h-auto ">
+                <div className="flex flex-col" id="box-job-all">
+                  <div
+                    className="max-[700px]:text-center flex flex-row flex-wrap justify-between w-[100%]"
+                    id="job-head-row"
+                  >
+                    <div id="job-title flex flex-col">
+                      <h6 className="mb-[4px]" id="heading6">
+                        {item.professional.name}
+                      </h6>
+                       <div className="max-[700px]:mb-[15px] flex flex-row">
+                         <section className="flex flex-row mr-[9px] items-center">
+                           <Image
+                            src={linkin}
+                            alt="job position"
+                            className="w-[15px] h-[15px] mr-[6px]"
+                          />
+                          <div className="text-grey-primary" id="body2">
+                            {item.jobs_postings.job_title}
+                          </div>
+                        </section>
                       </div>
-                      <div className="max-[700px]:flex-col flex flex-row">
-                        <div className="max-[700px]:flex-row mr-[20px] flex flex-col items-start justify-center">
-                          <div className="flex flex-row mb-[4px]">
-                            <Image
-                              src={JobDate}
-                              alt="Email Candidate"
-                              className="max-[700px]:mr-[10px] mr-[6px]"
-                            />
-                            <div
-                              className="max-[700px]:mr-[5px] text-grey-secondary"
-                              id="caption"
-                            >
-                              {item.professional.email}
-                            </div>
-                          </div>
-                          <div className="flex flex-row">
-                            <Image
-                              src={phone}
-                              alt="Phone Candidate"
-                              className="max-[700px]:mr-[10px] mr-[6px]"
-                            />
-                            <div
-                              className="max-[700px]:mr-[5px] text-grey-secondary"
-                              id="caption"
-                            >
-                              {item.professional.phone_number}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="max-[700px]:mt-[5px] max-[700px]:mb-[5px] max-[700px]:flex-row max-[700px]:justify-start mr-[20px] flex flex-col items-center justify-center">
+                    </div>
+                    <div className="max-[700px]:flex-col flex flex-row">
+                      <div className="max-[700px]:flex-row mr-[20px] flex flex-col items-start justify-center">
+                        <div className="flex flex-row mb-[4px]">
                           <Image
                             src={JobDate}
-                            alt="Email Candidate Date"
-                            className="mr-[6px]"
+                            alt="Email Candidate"
+                            className="max-[700px]:mr-[10px] mr-[6px]"
                           />
-                          <div className="text-grey-primary" id="caption">
-                            {moment(item.created_at).fromNow()}
+                          <div
+                            className="max-[700px]:mr-[5px] text-grey-secondary"
+                            id="caption"
+                          >
+                            {item.professional.email}
                           </div>
                         </div>
-                        {/* {item.recruiters_status[index].status_stage ===
+                        <div className="flex flex-row">
+                          <Image
+                            src={phone}
+                            alt="Phone Candidate"
+                            className="max-[700px]:mr-[10px] mr-[6px]"
+                          />
+                          <div
+                            className="max-[700px]:mr-[5px] text-grey-secondary"
+                            id="caption"
+                          >
+                            {item.professional.phone_number}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="max-[700px]:mt-[5px] max-[700px]:mb-[5px] max-[700px]:flex-row max-[700px]:justify-start mr-[20px] flex flex-col items-center justify-center">
+                        <Image
+                          src={JobDate}
+                          alt="Email Candidate Date"
+                          className="mr-[6px]"
+                        />
+                        <div className="text-grey-primary" id="caption">
+                          {moment(item.created_at).fromNow()}
+                        </div>
+                      </div>
+                      {/* {item.recruiters_status[index].status_stage ===
                       "Review in progress" ? (
                         <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center">
                           <Image
@@ -504,9 +509,9 @@ function ShowCandidates() {
                           </div>
                         </div>
                       )} */}
-                      </div>
-                      <div className="flex flex-row items-center">
-                        {/* {item.recruiters_status[index]?.status_stage}
+                    </div>
+                    <div className="flex flex-row items-center">
+                      {/* {item.recruiters_status[index]?.status_stage}
                       {item.recruiters_status[index]?.status_stage === "Waiting for review" ? (
                         <button
                           // onClick={() =>
@@ -531,101 +536,101 @@ function ShowCandidates() {
                       ) : (
                         <button className="button_gray">FINISHED</button>
                       )} */}
-                        <button
-                          onClick={() =>
-                            toggleExpanded(item.professional_apply_job_id)
-                          }
-                          className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px] mt-[30px]"
-                        >
-                          <span className="ml-1">
-                            {isExpanded === item.professional_apply_job_id ? (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 inline"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M5 15l7-7 7 7"
-                                />
-                              </svg>
-                            ) : (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 inline"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M19 9l-7 7-7-7"
-                                />
-                              </svg>
-                            )}
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    <div>
-                      {isExpanded === item.professional_apply_job_id && (
-                        <div className={`mt-1 mb-2`}>
-                          <div
-                            className="text-pink-tertiary mt-[10px] mb-[8px]"
-                            id="body1"
-                          >
-                            Professional experience
-                          </div>
-                          <div className="" id="body2">
-                            {item.professional_experience}
-                          </div>
-                          <div>
-                            <div
-                              className="text-pink-tertiary mt-[16px] mb-[8px]"
-                              id="body1"
+                      <button
+                        onClick={() =>
+                          toggleExpanded(item.professional_apply_job_id)
+                        }
+                        className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px] mt-[30px]"
+                      >
+                        <span className="ml-1">
+                          {isExpanded === item.professional_apply_job_id ? (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 inline"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
                             >
-                              Why are you interested in working at The company
-                            </div>
-                            <div className="" id="body2">
-                              {item.interested}
-                            </div>
-                          </div>
-                          <div className="flex justify-center mt-[25px]">
-                            {item.professional.cv !== null ? (
-                              <Link
-                                href={`https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/professional_cv/${item.professional.name}/${item.professional.cv}`}
-                              >
-                                <button className="button_bg_white flex flex-row justify-center w-[200px]">
-                                  <Image
-                                    src={download}
-                                    alt="Download cv"
-                                    className="mr-[6px]"
-                                  />
-                                  Download cv
-                                </button>
-                              </Link>
-                            ) : (
-                              <div className="alert">
-                                CV is not available for download.
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 15l7-7 7 7"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 inline"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 9l-7 7-7-7"
+                              />
+                            </svg>
+                          )}
+                        </span>
+                      </button>
                     </div>
                   </div>
+                  <div>
+                    {isExpanded === item.professional_apply_job_id && (
+                      <div className={`mt-1 mb-2`}>
+                        <div
+                          className="text-pink-tertiary mt-[10px] mb-[8px]"
+                          id="body1"
+                        >
+                          Professional experience
+                        </div>
+                        <div className="" id="body2">
+                          {item.professional_experience}
+                        </div>
+                        <div>
+                          <div
+                            className="text-pink-tertiary mt-[16px] mb-[8px]"
+                            id="body1"
+                          >
+                            Why are you interested in working at The company
+                          </div>
+                          <div className="" id="body2">
+                            {item.interested}
+                          </div>
+                        </div>
+                        <div className="flex justify-center mt-[25px]">
+                          {item.professional.cv !== null ? (
+                            <Link
+                              href={`https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/professional_cv/${item.professional.name}/${item.professional.cv}`}
+                            >
+                              <button className="button_bg_white flex flex-row justify-center w-[200px]">
+                                <Image
+                                  src={download}
+                                  alt="Download cv"
+                                  className="mr-[6px]"
+                                />
+                                Download cv
+                              </button>
+                            </Link>
+                          ) : (
+                            <div className="alert">
+                              CV is not available for download.
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )
-            }
+              </div>
             )
-            }
-          </div>
+          }
+          )
+          }
+            </div>
         </div>
       </main>
     </>
