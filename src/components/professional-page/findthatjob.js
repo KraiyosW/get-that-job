@@ -8,7 +8,9 @@ import following from "../../image/following.png";
 import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
+import Warning from "../Warning";
 import Link from "next/link";
+import jwtDecode from "jwt-decode";
 
 
 const Findthatjob = () => {
@@ -20,6 +22,7 @@ const Findthatjob = () => {
     const [salaryMax, setSalaryMax] = useState("")
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+     const [followStatus, setFollowStatus] = useState[{}];
 
     const getJobs = async () => {
 
@@ -92,19 +95,22 @@ const Findthatjob = () => {
     }
 
     useEffect(() => {
-        const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
-        setIsAuthenticated(!!token);
-        getJobs();
-    }, [searchMessage, category, selectedJobType]);
+    const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
+    setIsAuthenticated(!!token);
+    getJobs();
+  }, [isAuthenticated]);
 
+  if (!isAuthenticated) {
+    return <Warning />;
+  }
 
-
-    if (!isAuthenticated) {
-        return (<div className="max-w-full max-h-screen flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] ">
-            <h2 className="mt-[3rem] text-center text-pink-primary" id="heading2">!!! Please log in before accessing this page !!!</h2>
-            <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
-        </div>);
-    }
+  const handleFollowClick = async (id) => {
+    console.log(id);
+    setFollowStatus({
+      ...followStatus,
+      [id]: !followStatus[id],
+    });
+  };
 
     const filterJobs = job.filter((jobs) => {
         if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type") {
@@ -332,14 +338,22 @@ const Findthatjob = () => {
 
                                         </div>
                                         <div className="flex flex-row justify-between items-center min-[701px]:gap-[75px]">
-                                            <div className="flex gap-2 p-1 items-center">
-                                                <Image
-                                                    alt="picture"
-                                                    src={following}
-                                                    className="w-[22px] h-[22px]"
-                                                />
-                                                <button>Follow</button>
-                                            </div>
+                                        <div className="flex gap-2 p-1 items-center flex-row w-[200px]">
+                        <div>
+                          <Image
+                            alt="picture"
+                            src={following}
+                            className="w-[22px] h-[22px] border-[#F48FB1]"
+                          />
+                        </div>
+                        <button
+                          onClick={() => handleFollowClick(item.job_post_id)}
+                        >
+                          {followStatus[item.job_post_id]
+                            ? "Following"
+                            : "Follow"}
+                        </button>
+                      </div>
                                             <div className="max-[768px]:flex max-[768px]:items-center">
                                                 <button
                                                     className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3"
@@ -363,7 +377,3 @@ const Findthatjob = () => {
 
 
 export default Findthatjob
-
-
-
-
