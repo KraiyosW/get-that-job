@@ -95,80 +95,80 @@ const Findthatjob = () => {
     return text;
   }
 
+  const [followStatus, setFollowStatus] = useState[{}];
 
-    useEffect(() => {
-        const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
-        setIsAuthenticated(!!token); 
-        AllJob();
-    }, [isAuthenticated]);
+  useEffect(() => {
+    const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
+    setIsAuthenticated(!!token);
+    AllJob();
+  }, [isAuthenticated]);
 
-    if (!isAuthenticated) {
-    return(
-        <Warning/>
-    ) ;
+  if (!isAuthenticated) {
+    return <Warning />;
   }
 
-    const filteredJobs = job.filter(item => item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) || item.job_category.includes(selectedOption));
+  const handleFollowClick = async (id) => {
+    console.log(id);
+    setFollowStatus({
+      ...followStatus,
+      [id]: !followStatus[id],
+    });
+  };
 
-    return (
-        <main className="bg-[#F5F5F6] h-screen">
-            <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
-                <div className="flex flex-col">
-                    <div className="text-[#616161] w-[100%] h-[100%] flex-col grid mt-[10px]">
-                        <div className="flex flex-col flex-wrap">
-                            <h4 className="mb-[16px]" id="heading4">Find That Job</h4>
-                            <p className="mb-[4px] tracking-[1.5px]" id="overline">SEARCH BY JOB TITLE OR COMPANY NAME</p>
-                            <input
-                                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[360px] h-[36px]"
-                                placeholder="manufacturing, sales, swim"
-                                type="text"
-                                id="input-glasses"
-                                value={searchMessage}
-                                onChange={(e) => {
-                                    setSearchMessage(e.target.value);
-                                }}
-                            />
-                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">
-                              {item.job_type}
-                            </p>
-                          </div>
-                          <div className="flex gap-1 items-center">
-                            <Image alt="picture" src={dollar} />
-                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${item.salary_min_range} - ${item.salary_max_range}`}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-row justify-between items-center min-[701px]:gap-[75px]">
-                      <div className="flex gap-2 p-1 items-center flex-row w-[200px]">
-                        <div>
-                          <Image
-                            alt="picture"
-                            src={following}
-                            className="w-[22px] h-[22px] border-[#F48FB1]"
-                          />
-                        </div>
-                        <button
-                          onClick={() => handleFollowClick(item.job_post_id)}
-                        >
-                          {followStatus[item.job_post_id]
-                            ? "Following"
-                            : "Follow"}
-                        </button>
+  const filteredJobs = job.filter(
+    (item) =>
+      item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) ||
+      item.job_category.includes(selectedOption)
+  );
 
-                        {/* <button
-                          className={`bg-white border border-pink-primary rounded-md font-bold text-pink-primary py-1 px-3 hover:bg-pink-primary hover:text-white transition-colors duration-300 ${
-                            followStatus
-                              ? "bg-pink-primary text-white ring-2 ring-pink-primary"
-                              : ""
-                          }`}
-                          onClick={() => setFollowStatus(!followStatus)}
-                        >
-                          {followStatus ? "Following" : "Follow"}
-                        </button> */}
-                      </div>
+  return (
+    <main className="bg-[#F5F5F6] h-screen">
+      <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
+        <div className="flex flex-col">
+          <div className="text-[#616161] w-[100%] h-[100%] flex-col grid mt-[10px]">
+            <div className="flex flex-col flex-wrap">
+              <h4 className="mb-[16px]" id="heading4">
+                Find That Job
+              </h4>
+              <p className="mb-[4px] tracking-[1.5px]" id="overline">
+                SEARCH BY JOB TITLE OR COMPANY NAME
+              </p>
+              <input
+                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[360px] h-[36px]"
+                placeholder="manufacturing, sales, swim"
+                type="text"
+                id="input-glasses"
+                value={searchMessage}
+                onChange={(e) => {
+                  setSearchMessage(e.target.value);
+                }}
+              />
+              <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">
+                {item.job_type}
+              </p>
+            </div>
+            <div className="flex gap-1 items-center">
+              <Image alt="picture" src={dollar} />
+              <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${item.salary_min_range} - ${item.salary_max_range}`}</p>
+            </div>
+          </div>
+        </div>
 
-                      {/* <div className="flex gap-2 p-1 items-center">
+        <div className="flex flex-row justify-between items-center min-[701px]:gap-[75px]">
+          <div className="flex gap-2 p-1 items-center flex-row w-[200px]">
+            <div>
+              <Image
+                alt="picture"
+                src={following}
+                className="w-[22px] h-[22px] border-[#F48FB1]"
+              />
+            </div>
+            <button onClick={() => handleFollowClick(item.job_post_id)}>
+              {followStatus[item.job_post_id] ? "Following" : "Follow"}
+            </button>
+          </div>
+
+          {/* <div className="flex gap-2 p-1 items-center">
                         <Image
                           alt="picture"
                           src={following}
@@ -176,19 +176,13 @@ const Findthatjob = () => {
                         />
                         <button>Follow</button>
                       </div> */}
-                      <div className="max-[768px]:flex max-[768px]:items-center w-[160px]">
-                        <button
-                          className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3"
-                          onClick={() => handleSeeMore(item.job_post_id)}
-                        >
-                          SEE MORE
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+          <div className="max-[768px]:flex max-[768px]:items-center w-[160px]">
+            <button
+              className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3"
+              onClick={() => handleSeeMore(item.job_post_id)}
+            >
+              SEE MORE
+            </button>
           </div>
         </div>
       </div>
