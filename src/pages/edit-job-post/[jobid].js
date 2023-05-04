@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/authentication";
 import { createClient } from "@supabase/supabase-js";
 
 
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -47,7 +48,7 @@ function EditJobPost() {
           
         const posts = await supabase
           .from("jobs_postings")
-          .select(`*, recruiters (*)`)
+          .select(`*, recruiters (*),`)
           .eq("job_post_id", Number(id))
           .single();
   
@@ -119,7 +120,7 @@ const handleSelectJobType = (event) => {
       const authToken = JSON.stringify(localStorage.getItem('sb:token'));
       const response = await editJobPost(formData,authToken);
       console.log(response);
-      router.push('/jobPostings')
+      router.push('/job-postings')
     } catch (error) {
       console.error(error);
     }

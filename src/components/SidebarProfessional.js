@@ -114,7 +114,6 @@ const SidebarProfessional = () => {
               />
             </div>
           </Link>
-
           <Link
             href="/"
             className="max-[700px]:flex max-[700px]:justify-center"
@@ -143,7 +142,6 @@ const SidebarProfessional = () => {
               />
             </div>
           </Link>
-
           <Link
             href="/"
             className="max-[700px]:flex max-[700px]:justify-center"

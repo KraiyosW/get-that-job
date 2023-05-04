@@ -8,6 +8,7 @@ import following from "../../image/following.png";
 import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
+import Warning from "../Warning";
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import jwtDecode from "jwt-decode";
@@ -94,206 +95,38 @@ const Findthatjob = () => {
     return text;
   }
 
-  const [followStatus, setFollowStatus] = useState({});
 
-  useEffect(() => {
-    const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
-    setIsAuthenticated(!!token);
-    
-    AllJob();
-  }, [isAuthenticated]);
-  console.log(isAuthenticated);
-  if (!isAuthenticated) {
-    return (
-      <div className="max-w-full max-h-screen flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] ">
-        <h2 className="mt-[3rem] text-center text-pink-primary" id="heading2">
-          !!! Please log in before accessing this page !!!
-        </h2>
-        <Link
-          href="/login"
-          className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] "
-        >
-          Login page.....
-        </Link>
-      </div>
-    );
+    useEffect(() => {
+        const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
+        setIsAuthenticated(!!token); 
+        AllJob();
+    }, [isAuthenticated]);
+
+    if (!isAuthenticated) {
+    return(
+        <Warning/>
+    ) ;
   }
 
-  const filteredJobs = job.filter(
-    (item) =>
-      item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) ||
-      item.job_category.includes(selectedOption)
-  );
+    const filteredJobs = job.filter(item => item.job_title.toLowerCase().includes(searchMessage.toLowerCase()) || item.job_category.includes(selectedOption));
 
-  //Following Job
-
-  const handleFollowClick = async (id) => {
-    console.log(id);
-    // await axios.post("/api/following"), data
-    setFollowStatus({
-      ...followStatus,
-      [id]: !followStatus[id],
-    });
-  };
-
-  return (
-    <main className="bg-[#F5F5F6] h-screen">
-      <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
-        <div className="flex flex-col">
-          <div className="text-[#616161] w-[100%] h-[100%] flex-col grid mt-[10px]">
-            <div className="flex flex-col flex-wrap">
-              <h4 className="mb-[16px]" id="heading4">
-                Find That Job
-              </h4>
-              <p className="mb-[4px] tracking-[1.5px]" id="overline">
-                SEARCH BY JOB TITLE OR COMPANY NAME
-              </p>
-              <input
-                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[360px] h-[36px]"
-                placeholder="manufacturing, sales, swim"
-                type="text"
-                id="input-glasses"
-                value={searchMessage}
-                onChange={(e) => {
-                  setSearchMessage(e.target.value);
-                }}
-              />
-              <div className="flex flex-row flex-wrap gap-[20px] mt-[7px]  text-[#616161]">
-                <div>
-                  <p
-                    className="text-[#616161] mb-[4px] tracking-[1.5px]"
-                    id="overline"
-                  >
-                    CATEGORY
-                  </p>
-                  <select
-                    className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
-                    id="category"
-                    name="job_category"
-                    value={selectedOption}
-                    onChange={(event) => {
-                      handleSelectOption(event);
-                    }}
-                  >
-                    <option
-                      className="text-[#616161]/75"
-                      value="Select or create a category"
-                    >
-                      Select or create a category
-                    </option>
-                    <option value="Software-Developer">
-                      Software Developer
-                    </option>
-                    <option value="Sales">Sales</option>
-                    <option value="Graphic-Designer">Graphic Designer</option>
-                    <option value="Digital-Marketing">Digital Marketing</option>
-                  </select>
-                </div>
-                <div>
-                  <p
-                    className="text-[#616161] mb-[4px] tracking-[1.5px]"
-                    id="overline"
-                  >
-                    TYPE
-                  </p>
-                  <select
-                    className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
-                    id="type"
-                    name="job_type"
-                    value={selectedJobType}
-                    onChange={(event) => {
-                      handleSelectJobType(event);
-                    }}
-                  >
-                    <option className="text-[#616161]/75" value="Select a type">
-                      Select a type
-                    </option>
-                    <option value="Full-Time">Full Time</option>
-                    <option value="Past-Time">Past Time</option>
-                  </select>
-                </div>
-                <div>
-                  <p
-                    className="text-[#616161] mb-[4px] tracking-[1.5px]"
-                    id="overline"
-                  >
-                    SALARY RANGE
-                  </p>
-                  <div className="flex flex-row items-center max-[700px]:justify-center">
-                    <input
-                      className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[90px] w-[102px] h-[36px] mr-[8px]"
-                      name="salary_min_range"
-                      placeholder="min"
-                      type="text"
-                      id="input-range"
-                      value={formData.salary_min_range}
-                      onChange={handleChange}
-                    />
-                    <svg
-                      width="11"
-                      height="2"
-                      viewBox="0 0 11 2"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <line
-                        x1="1"
-                        y1="1"
-                        x2="10"
-                        y2="1"
-                        stroke="#8E8E8E"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                      />
-                    </svg>
-                    <input
-                      className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[90px] w-[102px] h-[36px] ml-[8px]"
-                      name="salary_max_range"
-                      placeholder="max"
-                      type="text"
-                      id="input-range"
-                      value={formData.salary_max_range}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col flex-wrap w-full items-center">
-            <h6 className="max-[700px]:text-center mb-4 mt-4">
-              {filteredJobs.length} jobs for you
-            </h6>
-            <div className="flex felx-row flex-wrap gap-[15px]">
-              {filteredJobs.map((item, index) => {
-                return (
-                  <div
-                    key={index}
-                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[320px] h-[190px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div>
-                        <Image alt="picture" src={babyswim} />
-                      </div>
-
-                      <div className="flex flex-col">
-                        <div className="flex gap-1 items-center">
-                          <Image alt="picture" src={categorypic} />
-                          <p id="caption">{item.job_category}</p>
-                        </div>
-                        <h6 id="heading6">{item.job_title}</h6>
-
-                        <p className="max-[700px]:hidden mb-[4px]" id="caption">
-                          {shortenText(item.job_description, 15)}
-                        </p>
-
-                        <div className="flex gap-4 ">
-                          <div className="flex gap-1 items-center">
-                            <Image
-                              alt="picture"
-                              src={calendar}
-                              className="h-[12.5px] w-[12.5px]"
+    return (
+        <main className="bg-[#F5F5F6] h-screen">
+            <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
+                <div className="flex flex-col">
+                    <div className="text-[#616161] w-[100%] h-[100%] flex-col grid mt-[10px]">
+                        <div className="flex flex-col flex-wrap">
+                            <h4 className="mb-[16px]" id="heading4">Find That Job</h4>
+                            <p className="mb-[4px] tracking-[1.5px]" id="overline">SEARCH BY JOB TITLE OR COMPANY NAME</p>
+                            <input
+                                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[360px] h-[36px]"
+                                placeholder="manufacturing, sales, swim"
+                                type="text"
+                                id="input-glasses"
+                                value={searchMessage}
+                                onChange={(e) => {
+                                    setSearchMessage(e.target.value);
+                                }}
                             />
                             <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">
                               {item.job_type}
