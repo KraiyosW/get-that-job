@@ -12,6 +12,7 @@ import salary from "../../image/salary.png";
 import time from "../../image/time.png";
 import letter from "../../image/letter.png";
 import waiting from "../../image/waiting.png";
+import { useAuth } from "@/contexts/authentication";
 // import review from "../../image/review.png";
 // import finished from "../../image/finished.png";
 // import declined from "../../image/declined.png";
@@ -26,15 +27,30 @@ function Applications() {
   const [job, setJob] = useState([]);
   const [jobStatus, setJobStatus] = useState([]);
   const [selectedOption, setSelectedOption] = useState("all");
+  const {professionalState} = useAuth();
+  
   const router = useRouter();
   const AllJob = async () => {
+    const userEmail = String(professionalState.email);
     try {
       const result = await supabase
         .from("professional_apply_jobs")
         .select(`*, professional (*), jobs_postings (*, recruiters (*))`)
         .limit(20)
         .order("created_at", { ascending: true });
-      const formattedJobs = result.data.map((job) => ({
+  
+      console.log(result.data.map((item)=> item.professional.email === userEmail));
+  
+      const filteredResult = result.data.filter((item) => {
+        if (item.professional.email === userEmail) {
+          return true;
+        }
+        return false;
+      });
+
+      console.log(filteredResult);
+  
+      const formattedJobs = filteredResult.map((job) => ({
         ...job,
         pro_created_at: moment(job.created_at).fromNow(),
         created_at: moment(job.jobs_postings.created_at).fromNow(),
@@ -54,8 +70,8 @@ function Applications() {
         company_logo: job.jobs_postings.recruiters.logo,
       }));
       setJob(formattedJobs);
-    } catch {
-      console.error();
+    } catch (error) {
+      console.error(error);
     }
   };
   useEffect(() => {

@@ -35,13 +35,13 @@ function AuthProvider(props) {
     loading: true,
     error: null,
     user: null,
-    email: null,
+    email: "",
   });
   const [recruiterState, setRecruiterState] = useState({
     loading: true,
     error: null,
     user: null,
-    email: null,
+    email: "",
   });
 
   const professionalRegister = async (data) => {
