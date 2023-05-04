@@ -7,9 +7,9 @@ import Applications from '@/components/professional-page/Applications';
 function applications() {
   return (
     <>
-    <Head/>
-    <SideBarProfessional/>
-    <Applications/>
+      <Head />
+      <SideBarProfessional />
+      <Applications />
     </>
   )
 }
