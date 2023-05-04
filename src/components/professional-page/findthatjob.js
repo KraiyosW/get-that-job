@@ -10,7 +10,14 @@ import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
 import Warning from "../Warning";
 import Link from "next/link";
-import jwtDecode from "jwt-decode";
+import { createClient } from "@supabase/supabase-js";
+import { useAuth } from "@/contexts/authentication.js";
+
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Findthatjob = () => {
 
@@ -23,6 +30,8 @@ const Findthatjob = () => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [followStatus, setFollowStatus] = useState({});
+  const {professionalState} = useAuth();
+  const userEmail = professionalState.email
 
   const getJobs = async () => {
     try {
@@ -100,11 +109,43 @@ const Findthatjob = () => {
 
   const handleFollowClick = async (id) => {
     console.log(id);
-    setFollowStatus({
-      ...followStatus,
-      [id]: !followStatus[id],
-    });
+    try {
+      const { data: professionalData, error: professionalError } = await supabase
+        .from('professional')
+        .select('*')
+        .eq('email', userEmail)
+        .single();
+      if (professionalError) {
+        throw professionalError;
+      }
+      if (!professionalData) {
+        throw new Error('Professional not found');
+      }
+      console.log(professionalData)
+      const { data, error } = await supabase
+        .from('professional_follow_jobs')
+        .update({
+          professional_id :  professionalData.professional_id,
+          follow_status: true,
+          followed_at: new Date().toISOString(),
+        })
+        .eq('job_post_id', id)
+        .eq('professional_id', professionalData.professional_id);
+      if (error) {
+        throw error;
+      }
+      console.log(data);
+      setFollowStatus({
+        ...followStatus,
+        [id]: !followStatus[id],
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
+  
+  
 
 
   const filterJobs = job.filter((jobs) => {

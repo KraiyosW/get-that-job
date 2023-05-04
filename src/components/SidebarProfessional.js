@@ -90,7 +90,7 @@ const SidebarProfessional = () => {
           </Link>
 
           <Link
-            href="/"
+            href="/applications"
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div

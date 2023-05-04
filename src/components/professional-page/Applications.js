@@ -12,6 +12,7 @@ import salary from "../../image/salary.png";
 import time from "../../image/time.png";
 import letter from "../../image/letter.png";
 import waiting from "../../image/waiting.png";
+import { useAuth } from "@/contexts/authentication";
 // import review from "../../image/review.png";
 // import finished from "../../image/finished.png";
 // import declined from "../../image/declined.png";
@@ -26,25 +27,31 @@ function Applications() {
   const [job, setJob] = useState([]);
   const [jobStatus, setJobStatus] = useState([]);
   const [selectedOption, setSelectedOption] = useState("all");
+  const {professionalState} = useAuth();
+  const userEmail = professionalState.email
   const router = useRouter();
   const AllJob = async () => {
     try {
-      const result = await supabase
-        .from("professional_apply_jobs")
-        .select(`*, professional (*), jobs_postings (*, recruiters (*))`)
-        .limit(20)
-        .order("created_at", { ascending: true });
-      const formattedJobs = result.data.map((job) => ({
+      const { data, error } = await supabase.rpc('get_professional_apply_jobs', {
+        user_email: userEmail,
+        limit: 20,
+        order: { column: 'created_at', ascending: true },
+      })
+  
+      if (error) {
+        console.error(error)
+        return
+      }
+  
+      console.log(data)
+      
+      const formattedJobs = data.map((job) => ({
         ...job,
         pro_created_at: moment(job.created_at).fromNow(),
         created_at: moment(job.jobs_postings.created_at).fromNow(),
         company_name: job.jobs_postings.recruiters.company_name,
-        salary_min_range: numeral(job.jobs_postings.salary_min_range).format(
-          "0a"
-        ),
-        salary_max_range: numeral(job.jobs_postings.salary_max_range).format(
-          "0a"
-        ),
+        salary_min_range: numeral(job.jobs_postings.salary_min_range).format('0a'),
+        salary_max_range: numeral(job.jobs_postings.salary_max_range).format('0a'),
         job_title: job.jobs_postings.job_title,
         job_category: job.jobs_postings.job_category,
         job_type: job.jobs_postings.job_type,
@@ -52,12 +59,13 @@ function Applications() {
         requirement: job.jobs_postings.requirement,
         optional_requirement: job.jobs_postings.optional_requirement,
         company_logo: job.jobs_postings.recruiters.logo,
-      }));
-      setJob(formattedJobs);
-    } catch {
-      console.error();
+      }))
+      
+      setJob(formattedJobs)
+    } catch (error) {
+      console.error(error)
     }
-  };
+  }
   useEffect(() => {
     AllJob();
   }, [jobStatus]);
