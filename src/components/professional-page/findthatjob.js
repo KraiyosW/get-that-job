@@ -22,7 +22,7 @@ const Findthatjob = () => {
     const [salaryMax, setSalaryMax] = useState("")
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-     const [followStatus, setFollowStatus] = useState[{}];
+    const [followStatus, setFollowStatus] = useState({});
 
     const getJobs = async () => {
 
@@ -95,22 +95,22 @@ const Findthatjob = () => {
     }
 
     useEffect(() => {
-    const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
-    setIsAuthenticated(!!token);
-    getJobs();
-  }, [isAuthenticated]);
+        const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
+        setIsAuthenticated(!!token);
+        getJobs();
+    }, [isAuthenticated]);
 
-  if (!isAuthenticated) {
-    return <Warning />;
-  }
+    if (!isAuthenticated) {
+        return <Warning />;
+    }
 
-  const handleFollowClick = async (id) => {
-    console.log(id);
-    setFollowStatus({
-      ...followStatus,
-      [id]: !followStatus[id],
-    });
-  };
+    const handleFollowClick = async (id) => {
+        console.log(id);
+        setFollowStatus({
+            ...followStatus,
+            [id]: !followStatus[id],
+        });
+    };
 
     const filterJobs = job.filter((jobs) => {
         if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type") {
@@ -338,22 +338,22 @@ const Findthatjob = () => {
 
                                         </div>
                                         <div className="flex flex-row justify-between items-center min-[701px]:gap-[75px]">
-                                        <div className="flex gap-2 p-1 items-center flex-row w-[200px]">
-                        <div>
-                          <Image
-                            alt="picture"
-                            src={following}
-                            className="w-[22px] h-[22px] border-[#F48FB1]"
-                          />
-                        </div>
-                        <button
-                          onClick={() => handleFollowClick(item.job_post_id)}
-                        >
-                          {followStatus[item.job_post_id]
-                            ? "Following"
-                            : "Follow"}
-                        </button>
-                      </div>
+                                            <div className="flex gap-2 p-1 items-center flex-row w-[200px]">
+                                                <div>
+                                                    <Image
+                                                        alt="picture"
+                                                        src={following}
+                                                        className="w-[22px] h-[22px] border-[#F48FB1]"
+                                                    />
+                                                </div>
+                                                <button
+                                                    onClick={() => handleFollowClick(item.job_post_id)}
+                                                >
+                                                    {followStatus[item.job_post_id]
+                                                        ? "Following"
+                                                        : "Follow"}
+                                                </button>
+                                            </div>
                                             <div className="max-[768px]:flex max-[768px]:items-center">
                                                 <button
                                                     className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3"
