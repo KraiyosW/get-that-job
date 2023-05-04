@@ -133,7 +133,7 @@ const SideBarRecruiter = () => {
           </Link>
 
           <Link
-            href="/profile"
+            href="/recruiter-profile"
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
