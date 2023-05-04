@@ -68,7 +68,7 @@ const SidebarProfessional = () => {
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px]"
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px]  ${router.pathname.startsWith('/find-that-job') ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
               id="sidebar-menu"
             >
               <Image
@@ -80,21 +80,15 @@ const SidebarProfessional = () => {
                 Find that job
               </div>
             </div>
-            <div className="py-[8px]">
-              <Image
-                src={Line}
-                alt="Line"
-                className="min-[701px]:hidden h-full w-[3px] rounded-[10px]"
-              />
-            </div>
+
           </Link>
 
           <Link
-            href="/"
+            href="/applications"
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px]"
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px] ${router.pathname.startsWith('/applications') ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
               id="sidebar-menu"
             >
               <Image
@@ -106,20 +100,14 @@ const SidebarProfessional = () => {
                 Your applications
               </div>
             </div>
-            <div className="py-[8px]">
-              <Image
-                src={Line}
-                alt="Line"
-                className="min-[701px]:hidden h-full w-[3px] rounded-[10px]"
-              />
-            </div>
+
           </Link>
           <Link
             href="/following"
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[7px]"
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[7px] py-[17px] ${router.pathname.startsWith('/following') ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
               id="sidebar-menu"
             >
               <Image
@@ -131,20 +119,14 @@ const SidebarProfessional = () => {
                 Following
               </div>
             </div>
-            <div className="py-[8px]">
-              <Image
-                src={Line}
-                alt="Line"
-                className="min-[701px]:hidden h-full w-[3px] rounded-[10px]"
-              />
-            </div>
+
           </Link>
           <Link
-            href="/"
+            href="/professional-profile"
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px]"
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px] ${router.pathname === '/professional-profile' ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
               id="sidebar-menu"
             >
               <Image
@@ -156,22 +138,16 @@ const SidebarProfessional = () => {
                 Profile
               </div>
             </div>
-            <div className="py-[8px]">
-              <Image
-                src={Line}
-                alt="Line"
-                className="min-[701px]:hidden h-full w-[3px] rounded-[10px]"
-              />
-            </div>
+
           </Link>
 
           <div
-            className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] cursor-pointer"
+            className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] cursor-pointer py-[17px]"
             onClick={handleLogout}
             id="sidebar-menu"
           >
             <Image src={logout} alt="Log out" className="max-[700px]:hidden" />
-            <div className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal">
+            <div className="max-[700px]:text-[10px] max-[700px]:leading-[17px] max-[700px]:w-[70px] max-[700px]:text-center max-[700px]:flex max-[700px]:justify-center max-[700px]:items-center text-[1rem] leading-[1.5rem] font-normal ">
               Log out
             </div>
           </div>

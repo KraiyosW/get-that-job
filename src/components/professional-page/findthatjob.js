@@ -9,6 +9,8 @@ import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
 import Warning from "../Warning";
+import smallFollowing from "../../image/small-following.png";
+import numeral from "numeral";
 import Link from "next/link";
 import jwtDecode from "jwt-decode";
 
@@ -344,7 +346,7 @@ const Findthatjob = () => {
                           <Image alt="picture" src={categorypic} />
                           <p id="caption">{item.job_category}</p>
                         </div>
-                        <h6 id="heading6">{item.job_title}</h6>
+                        <h6 id="heading6">{shortenText(item.job_title, 19)}</h6>
 
                         <p className="max-[700px]:hidden mb-[4px]" id="caption">
                           {shortenText(item.job_description, 15)}
@@ -363,28 +365,49 @@ const Findthatjob = () => {
                           </div>
                           <div className="flex gap-1 items-center">
                             <Image alt="picture" src={dollar} />
-                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${item.salary_min_range} - ${item.salary_max_range}`}</p>
+                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{numeral(item.salary_min_range).format("0a")}-{numeral(item.salary_max_range).format("0a")}</p>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex flex-row justify-between items-center min-[701px]:gap-[75px]">
-                      <div className="flex gap-2 p-1 items-center flex-row w-[200px]">
-                        <div>
+                    <div className="flex flex-row justify-between items-center">
+                      <div className="flex gap-2 p-1 items-center flex-row">
+                        {/* <div>
                           <Image
                             alt="picture"
                             src={following}
                             className="w-[22px] h-[22px] border-[#F48FB1]"
                           />
-                        </div>
-                        <button
+                        </div> <button
                           onClick={() => handleFollowClick(item.job_post_id)}
                         >
                           {followStatus[item.job_post_id]
                             ? "Following"
                             : "Follow"}
-                        </button>
+                        </button> */}
+
+<button className="flex flex-row mr-[10px]"
+  onClick={() => handleFollowClick(item.job_post_id)}
+  style={{ position: "relative" }}
+>
+  {followStatus[item.job_post_id] && (
+    <Image
+    alt="picture"
+    src={smallFollowing}
+    className="w-[22px] h-[22px] mr-[13px]"
+  />
+    
+  )}
+  {!followStatus[item.job_post_id] && (
+  <Image
+  alt="picture"
+  src={following}
+  className="w-[22px] h-[22px] mr-[13px]"
+/>
+  )}
+  {followStatus[item.job_post_id] ? "FOLLOWING" : "FOLLOW"}
+</button>
                       </div>
                       <div className="max-[768px]:flex max-[768px]:items-center">
                         <button

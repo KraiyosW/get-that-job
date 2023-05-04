@@ -17,6 +17,7 @@ const SideBarRecruiter = () => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+
   useEffect(() => {
     const token = localStorage.getItem("sb:token");
     setIsAuthenticated(!!token);
@@ -59,7 +60,7 @@ const SideBarRecruiter = () => {
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px]"
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px]  ${router.pathname === '/job-postings' ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
               id="sidebar-menu"
             >
               <Image
@@ -71,13 +72,6 @@ const SideBarRecruiter = () => {
                 Job Postings
               </div>
             </div>
-            <div className="py-[8px]">
-              <Image
-                src={Line}
-                alt="Line"
-                className="min-[701px]:hidden h-full w-[3px] rounded-[10px]"
-              />
-            </div>
           </Link>
 
           <Link
@@ -85,7 +79,7 @@ const SideBarRecruiter = () => {
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px]"
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px] ${router.pathname === '/create-new-job' ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
               id="sidebar-menu"
             >
               <Image
@@ -97,13 +91,6 @@ const SideBarRecruiter = () => {
                 Create New Job
               </div>
             </div>
-            <div className="py-[8px]">
-              <Image
-                src={Line}
-                alt="Line"
-                className="min-[701px]:hidden h-full w-[3px] rounded-[10px]"
-              />
-            </div>
           </Link>
 
           <Link
@@ -111,7 +98,7 @@ const SideBarRecruiter = () => {
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[7px]"
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[7px] py-[17px] ${router.pathname.startsWith('/edit-job-post') ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
               id="sidebar-menu"
             >
               <Image
@@ -123,21 +110,14 @@ const SideBarRecruiter = () => {
                 Edit Job
               </div>
             </div>
-            <div className="py-[8px]">
-              <Image
-                src={Line}
-                alt="Line"
-                className="min-[701px]:hidden h-full w-[3px] rounded-[10px]"
-              />
-            </div>
           </Link>
 
           <Link
-            href="/profile"
+            href="/recruiter-profile"
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px]"
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px] ${router.pathname === '/recruiter-profile' ? 'bg-white-secondary' : 'bg-white-tertiary'} `}
               id="sidebar-menu"
             >
               <Image
@@ -149,17 +129,10 @@ const SideBarRecruiter = () => {
                 Profile
               </div>
             </div>
-            <div className="py-[8px]">
-              <Image
-                src={Line}
-                alt="Line"
-                className="min-[701px]:hidden h-full w-[3px] rounded-[10px]"
-              />
-            </div>
           </Link>
 
           <div
-            className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] cursor-pointer"
+            className="hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] cursor-pointer py-[17px] "
             onClick={handleLogout}
             id="sidebar-menu"
           >
