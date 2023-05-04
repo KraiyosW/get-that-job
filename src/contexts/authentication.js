@@ -24,7 +24,6 @@ supabase.auth.onAuthStateChange((event, session) => {
 const AuthContext = React.createContext();
 
 function AuthProvider(props) {
-
   const [state, setState] = useState({
     loading: true,
     error: null,
@@ -36,7 +35,7 @@ function AuthProvider(props) {
     loading: true,
     error: null,
     user: null,
-    email: null
+    email: null,
   });
   const [recruiterState, setRecruiterState] = useState({
     loading: true,
@@ -88,10 +87,27 @@ function AuthProvider(props) {
           withCredentials: true,
         }
       );
+      const { data: professional, error: professionalError } = await supabase
+        .from("professional")
+        .select("*")
+        .eq("email", response.data.user.user.email)
+        .eq("role", "professional");
+
+      if (professionalError) {
+        console.log(professionalError);
+        throw new Error(professionalError.message);
+      }
+
+      localStorage.setItem("professional_id", professional[0].professtional_id);
       localStorage.setItem("sb:token", response.data.token);
       localStorage.setItem("email", response.data.user.user.email);
-      setProfessionalState({...professionalState , user: response.data.user.user , email : response.data.user.user.email})
+      setProfessionalState({
+        ...professionalState,
+        user: response.data.user.user,
+        email: response.data.user.user.email,
+      });
       console.log(response);
+
       return response;
     } catch (error) {
       console.error("Error:", error);
@@ -114,7 +130,11 @@ function AuthProvider(props) {
       );
       localStorage.setItem("sb:token", response.data.token);
       localStorage.setItem("email", response.data.user.user.email);
-      setRecruiterState({...recruiterState , user: response.data.user.user , email : response.data.user.user.email})
+      setRecruiterState({
+        ...recruiterState,
+        user: response.data.user.user,
+        email: response.data.user.user.email,
+      });
       console.log(response);
       return response;
     } catch (error) {
@@ -129,6 +149,7 @@ function AuthProvider(props) {
       localStorage.removeItem("sb:token");
       localStorage.removeItem("user");
       localStorage.removeItem("email");
+      localStorage.removeItem("professional_id");
       sessionStorage.removeItem("sb:token");
       setState({ ...state, user: null });
       setRecruiterState({ ...recruiterState, user: null, email: null });
@@ -139,12 +160,10 @@ function AuthProvider(props) {
   };
 
   let token = null;
-if (typeof globalThis !== "undefined" && globalThis.localStorage) {
-  token = globalThis.localStorage.getItem("sb:token");
-}
-const isAuthenticated = token !== "";
-
-
+  if (typeof globalThis !== "undefined" && globalThis.localStorage) {
+    token = globalThis.localStorage.getItem("sb:token");
+  }
+  const isAuthenticated = token !== "";
 
   return (
     <AuthContext.Provider
