@@ -9,11 +9,23 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default async function FindthatJob(req, res) {
 
-    const searchMessage = req.query.title || "";
-    const category = req.query.category || "";
-    const selectedJobType = req.query.type || "";
+    try {
+        const job = await supabase.from('jobs_postings').select('*')
+        res.statusCode = 200
+        res.json({ job })
 
-    console.log(category);
+    } catch (error) {
+        res.statusCode = 500
+        res.json({ error: error.message })
+    }
+
+}
+
+    // const searchMessage = req.query.title || "";
+    // const category = req.query.category || "";
+    // const selectedJobType = req.query.type || "";
+
+    // console.log(category);
 
     // let query = supabase.from("jobs_postings").select();
 
@@ -36,7 +48,7 @@ export default async function FindthatJob(req, res) {
     // } else {
     //     res.status(200).json({ jobs: data });
     // }
-}
+
 
     // const searchMessage = req.query.title || "";
     // const category = req.query.category || "";

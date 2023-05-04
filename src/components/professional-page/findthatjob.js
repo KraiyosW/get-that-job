@@ -19,45 +19,29 @@ const Findthatjob = () => {
     const [salaryMin, setSalaryMin] = useState("")
     const [salaryMax, setSalaryMax] = useState("")
     const router = useRouter();
-
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    // const [followStatus, setFollowStatus] = useState({});
-    // const [applicationStatus, setApplicationStatus] = useState({});
 
-    const getJobs = async (input) => {
+    const getJobs = async () => {
 
-        const { searchMessage, category, selectedJobType } = input;
         try {
-            const query = new URLSearchquery();
-            query.append("title", searchMessage);
-            query.append("category", category);
-            query.append("type", selectedJobType);
-            const result = await axios.get(`http://localhost:3000/api/findthatjob?query=${query.toString()}`)
+            const result = await axios.get(
+
+                'http://localhost:3000/api/findthatjob')
             setJob(result.data.job.data);
         } catch (error) {
 
         }
         ;
     };
+    // const { searchMessage, category, selectedJobType } = input;
+    // try {
+    //     const query = new URLSearchquery();
+    //     query.append("title", searchMessage);
+    //     query.append("category", category);
+    //     query.append("type", selectedJobType);
+    //     const result = await axios.get(`http://localhost:3000/api/findthatjob?query=${query.toString()}`)
 
-    // const result = await axios.get(
-    //     'http://localhost:3000/api/findthatjob'
     // );
-    // const result = await supabase.from("jobs_postings").find('*')
-
-    // const handleFollowClick = (id) => {
-    //     setFollowStatus({
-    //         ...followStatus,
-    //         [id]: !followStatus[id],
-    //     });
-    // };
-
-    // const handleApplyClick = (id) => {
-    //     setApplicationStatus({
-    //         ...applicationStatus,
-    //         [id]: !applicationStatus[id],
-    //     });
-    // };
 
     const [formData, setFormData] = useState({
         job_category: "",
@@ -110,8 +94,10 @@ const Findthatjob = () => {
     useEffect(() => {
         const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
         setIsAuthenticated(!!token);
-        getJobs({ searchMessage, category, selectedJobType });
+        getJobs();
     }, [searchMessage, category, selectedJobType]);
+
+
 
     if (!isAuthenticated) {
         return (<div className="max-w-full max-h-screen flex flex-col flex-warp items-center px-[50px] min-[768px]:px-[120px] ">
@@ -119,6 +105,54 @@ const Findthatjob = () => {
             <Link href='/login' className="mt-[2rem] underline underline-offset-[10px] hover:text-pink-primary text-[2rem] ">Login page.....</Link>
         </div>);
     }
+
+    const filterJobs = job.filter((jobs) => {
+        if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+            return (
+                (jobs.job_category.includes(category) &&
+                    jobs.job_title.toLowerCase().includes(searchMessage) &&
+                    jobs.job_type.includes(selectedJobType) &&
+                    jobs.salary_min_range >= salaryMin &&
+                    jobs.salary_max_range <= salaryMax) ||
+                (jobs.job_category.includes(category) &&
+                    jobs.job_description.toLowerCase().includes(searchMessage) &&
+                    jobs.job_type.includes(selectedJobType) &&
+                    jobs.salary_min_range >= salaryMin &&
+                    jobs.salary_max_range <= salaryMax)
+            );
+        } else if (category !== "Select or create a category" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+            return jobs.job_category.includes(category) && jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+        } else if (searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+            return (
+                jobs.job_title.toLowerCase().includes(searchMessage) ||
+                jobs.job_description.toLowerCase().includes(searchMessage)) &&
+                jobs.job_type.includes(selectedJobType) &&
+                jobs.salary_min_range >= salaryMin &&
+                jobs.salary_max_range <= salaryMax;
+        } else if (category !== "Select or create a category" && salaryMin !== "" && salaryMax !== "") {
+            return jobs.job_category.includes(category) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+        } else if (searchMessage.toLowerCase() !== "" && salaryMin !== "" && salaryMax !== "") {
+            return (
+                jobs.job_title.toLowerCase().includes(searchMessage) ||
+                jobs.job_description.toLowerCase().includes(searchMessage)) &&
+                jobs.salary_min_range >= salaryMin &&
+                jobs.salary_max_range <= salaryMax;
+        } else if (selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
+            return jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
+        } else if (category !== "Select or create a category") {
+            return jobs.job_category.includes(category);
+        } else if (searchMessage.toLowerCase() !== "") {
+            return (
+                jobs.job_title.toLowerCase().includes(searchMessage) ||
+                jobs.job_description.toLowerCase
+                    ().includes(searchMessage)
+            );
+        } else if (selectedJobType !== "Select a type") {
+            return jobs.job_type.includes(selectedJobType);
+        } else {
+            return jobs;
+        }
+    });
 
     return (
         <main className="bg-[#F5F5F6] h-screen">
@@ -226,10 +260,10 @@ const Findthatjob = () => {
 
 
                     <div className="flex flex-col flex-wrap w-full items-center">
-                        <h6 className="max-[700px]:text-center mb-4 mt-4">{job ? job.length : 0} jobs for you</h6>
+                        <h6 className="max-[700px]:text-center mb-4 mt-4">{filterJobs.length} jobs for you</h6>
                         <div className="flex felx-row flex-wrap gap-[15px]">
 
-                            {job && job.map((item, index) => {
+                            {filterJobs.map((item, index) => {
                                 return (
                                     <div
                                         key={index}
@@ -331,50 +365,3 @@ export default Findthatjob
     //     }
     // });
 
-    // const filterJobs = job.filter((jobs) => {
-    //     if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-    //         return (
-    //             (jobs.job_category.includes(category) &&
-    //                 jobs.job_title.toLowerCase().includes(searchMessage) &&
-    //                 jobs.job_type.includes(selectedJobType) &&
-    //                 jobs.salary_min_range >= salaryMin &&
-    //                 jobs.salary_max_range <= salaryMax) ||
-    //             (jobs.job_category.includes(category) &&
-    //                 jobs.job_description.toLowerCase().includes(searchMessage) &&
-    //                 jobs.job_type.includes(selectedJobType) &&
-    //                 jobs.salary_min_range >= salaryMin &&
-    //                 jobs.salary_max_range <= salaryMax)
-    //         );
-    //     } else if (category !== "Select or create a category" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-    //         return jobs.job_category.includes(category) && jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
-    //     } else if (searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-    //         return (
-    //             jobs.job_title.toLowerCase().includes(searchMessage) ||
-    //             jobs.job_description.toLowerCase().includes(searchMessage)) &&
-    //             jobs.job_type.includes(selectedJobType) &&
-    //             jobs.salary_min_range >= salaryMin &&
-    //             jobs.salary_max_range <= salaryMax;
-    //     } else if (category !== "Select or create a category" && salaryMin !== "" && salaryMax !== "") {
-    //         return jobs.job_category.includes(category) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
-    //     } else if (searchMessage.toLowerCase() !== "" && salaryMin !== "" && salaryMax !== "") {
-    //         return (
-    //             jobs.job_title.toLowerCase().includes(searchMessage) ||
-    //             jobs.job_description.toLowerCase().includes(searchMessage)) &&
-    //             jobs.salary_min_range >= salaryMin &&
-    //             jobs.salary_max_range <= salaryMax;
-    //     } else if (selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-    //         return jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
-    //     } else if (category !== "Select or create a category") {
-    //         return jobs.job_category.includes(category);
-    //     } else if (searchMessage.toLowerCase() !== "") {
-    //         return (
-    //             jobs.job_title.toLowerCase().includes(searchMessage) ||
-    //             jobs.job_description.toLowerCase
-    //                 ().includes(searchMessage)
-    //         );
-    //     } else if (selectedJobType !== "Select a type") {
-    //         return jobs.job_type.includes(selectedJobType);
-    //     } else {
-    //         return jobs;
-    //     }
-    // });
