@@ -9,7 +9,7 @@ import backIcon from "@/image/icon-back.png";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
 import following from "../../image/following.png";
-import smallfollowing from "../../image/small-following.png";
+import smallfollowing from "../../image/smallfollowing.png";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

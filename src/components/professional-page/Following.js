@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import babyswim from "../../image/babyswim.png";
 import following from "../../image/following.png";
-import smallfollowing from "../../image/small-following.png";
+import smallfollowing from "../../image/smallfollowing.png";
 import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
