@@ -9,7 +9,11 @@ function CreateNewJob() {
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { createPost, isLoading, isError } = useRecruiterPost();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+<<<<<<< HEAD
   const userEmail = localStorage.getItem('email');
+=======
+  const userEmail = myState;
+>>>>>>> 7afe7cdf421dc9ceb636e9f44347446acbb7f7d1
   const router = useRouter();
 
   useEffect(() => {
