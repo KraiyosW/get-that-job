@@ -25,21 +25,21 @@ const StepOne = (props) => {
     event.preventDefault();
     let isValid = true;
 
-    const { data, error } = await supabase
-      .from("professional")
-      .select("*")
-      .eq("email", email);
+    // const { data, error } = await supabase
+    //   .from("professional")
+    //   .select("*")
+    //   .eq("email", email);
 
-    if (error) {
-      throw new Error(error.message);
-    }
+    // if (error) {
+    //   throw new Error(error.message);
+    // }
 
-    if (data || data.length !== 0) {
-      setErrorMessage("This email is already registered");
-      isValid = false;
-    } else {
-      setErrorMessage("");
-    }
+    // if (data || data.length !== 0) {
+    //   setErrorMessage("This email is already registered");
+    //   isValid = false;
+    // } else {
+    //   setErrorMessage("");
+    // }
 
     if (!email) {
       setErrorMessage("Please enter your email address");
