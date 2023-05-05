@@ -5,6 +5,12 @@ import React from "react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/authentication";
 import RecruiterFormPage2 from "../register-page/RecruiterFormPage2";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const RecruiterForm = (props) => {
   const [email, setEmail] = useState("");
@@ -31,8 +37,28 @@ const RecruiterForm = (props) => {
     if (!company) {
       setErrorCompany("Please fill a company name");
     }
+
+    // const { data, error } = await supabase
+    //   .from("recruiters")
+    //   .select("*")
+    //   .eq("email", email);
+
+    // if (error) {
+    //   throw new Error(error.message);
+    // }
+
+    // if (data || data.length !== 0) {
+    //   setErrorMessage("This email is already registered");
+    //   return;
+    // }
+
+    if (!email) {
+      setErrorMessage("Please enter your email address");
+      return;
+    }
+
     if (!email.match(/^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)) {
-      setErrorMessage("Invalid email address.");
+      setErrorMessage("Please enter a valid email address.");
       return;
     }
 
@@ -151,7 +177,9 @@ const RecruiterForm = (props) => {
           className="flex flex-col gap-[20px] mt-[20px] z-10"
         >
           <div>
-            <p className="mb-[4px]" id="overline">COMPANY</p>
+            <p className="mb-[4px]" id="overline">
+              COMPANY
+            </p>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
               name="company"
@@ -163,7 +191,9 @@ const RecruiterForm = (props) => {
             {errorCompany && <p className="text-rose-500">{errorCompany}</p>}
           </div>
           <div>
-            <p className="mb-[4px]" id="overline">EMAIL</p>
+            <p className="mb-[4px]" id="overline">
+              EMAIL
+            </p>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
               name="email"
@@ -175,7 +205,9 @@ const RecruiterForm = (props) => {
             {errorMessage && <p className="text-rose-500">{errorMessage}</p>}
           </div>
           <div>
-            <p className="mb-[4px]" id="overline">PASSWORD</p>
+            <p className="mb-[4px]" id="overline">
+              PASSWORD
+            </p>
             <div className="relative">
               <input
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
@@ -198,7 +230,9 @@ const RecruiterForm = (props) => {
 
           {/* css maybe use position for push in same div with password input */}
           <div>
-            <p className="mb-[4px]" id="overline">PASSWORD CONFIRMATION</p>
+            <p className="mb-[4px]" id="overline">
+              PASSWORD CONFIRMATION
+            </p>
             <div className="relative">
               <input
                 className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[360px] h-[36px]"
@@ -231,7 +265,6 @@ const RecruiterForm = (props) => {
           {/* <input className="button_pink mt-[16px]" type="submit" name="NEXT" value="NEXT" /> */}
         </form>
       </div>
-
     </div>
   );
 };
