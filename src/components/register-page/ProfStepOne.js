@@ -1,6 +1,7 @@
 import Image from "next/image";
 import invisibility from "../../image/invisibility.png";
 import visibility from "../../image/visibility.png";
+import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
