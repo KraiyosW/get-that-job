@@ -9,15 +9,9 @@ import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
 import Warning from "../Warning";
-import Link from "next/link";
-import jwtDecode from "jwt-decode";
 import { createClient } from "@supabase/supabase-js";
 
 const Findthatjob = () => {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
   const [job, setJob] = useState([]);
   const [searchMessage, setSearchMessage] = useState("");
@@ -39,16 +33,6 @@ const Findthatjob = () => {
       console.log(error);
     }
   };
-
-  // const { searchMessage, category, selectedJobType } = input;
-  // try {
-  //     const query = new URLSearchquery();
-  //     query.append("title", searchMessage);
-  //     query.append("category", category);
-  //     query.append("type", selectedJobType);
-  //     const result = await axios.get(`http://localhost:3000/api/findthatjob?query=${query.toString()}`)
-
-  // );
 
   const [formData, setFormData] = useState({
     job_category: "",
@@ -100,12 +84,7 @@ const Findthatjob = () => {
     const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
     setIsAuthenticated(!!token);
     getJobs();
-  }, [isAuthenticated]);
-
-  useEffect(() => {
-    getJobs();
-  }, [followStatus]);
-
+  }, [isAuthenticated, followStatus]);
   console.log(job);
 
   if (!isAuthenticated) {
