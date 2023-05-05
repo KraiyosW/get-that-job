@@ -12,7 +12,7 @@ export default async function FollowingPage(req, res) {
     const job = await supabase
       .from("professional_follow_jobs")
       .select(
-        "*, jobs_postings (job_post_id,recruiter_id,job_title,job_category,job_type,salary_min_range,salary_max_range,job_description,requirement,optional_requirement)"
+        "*, jobs_postings (*, recruiters (*))"
       )
 
       .eq("professional_id", profid)

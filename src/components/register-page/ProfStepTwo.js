@@ -234,7 +234,7 @@ const StepTwo = (props) => {
                 onChange={handlePhoneChange}
               />
             </div>
-            <p id="overline">+[country code][number]</p>
+
             {errorPhone && <p className="text-rose-500">{errorPhone}</p>}
           </div>
 

@@ -92,7 +92,7 @@ const Findthatjob = () => {
   const handleSeeMore = (id) => {
     router.push(`find-that-job/${id}`);
   };
-  //ตัด job_description ให้สั้น
+  //ตัด recruiters.about_company ให้สั้น
   function shortenText(text, maxLength) {
     if (text !== null && text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
@@ -139,15 +139,19 @@ const Findthatjob = () => {
   };
 
   const filterJobs = job.filter((jobs) => {
+    const lowercaseSearchMessage = searchMessage.toLowerCase();
+    const lowercaseJobTitle = jobs.job_title.toLowerCase();
+    const lowercaseAboutCompany = jobs.recruiters.about_company.toLowerCase();
+
     if (
       category !== "Select or create a category" &&
-      searchMessage.toLowerCase() !== "" &&
+      lowercaseSearchMessage !== "" &&
       selectedJobType !== "Select a type"
     ) {
       return (
         jobs.job_category.includes(category) &&
-        (jobs.job_title.toLowerCase().includes(searchMessage) ||
-          jobs.job_description.toLowerCase().includes(searchMessage)) &&
+        (lowercaseJobTitle.includes(lowercaseSearchMessage) ||
+          lowercaseAboutCompany.includes(lowercaseSearchMessage)) &&
         jobs.job_type.includes(selectedJobType)
       );
     } else if (
@@ -159,20 +163,20 @@ const Findthatjob = () => {
         jobs.job_type.includes(selectedJobType)
       );
     } else if (
-      searchMessage.toLowerCase() !== "" &&
+      lowercaseSearchMessage !== "" &&
       selectedJobType !== "Select a type"
     ) {
       return (
-        (jobs.job_title.toLowerCase().includes(searchMessage) ||
-          jobs.job_description.toLowerCase().includes(searchMessage)) &&
+        (lowercaseJobTitle.includes(lowercaseSearchMessage) ||
+          lowercaseAboutCompany.includes(lowercaseSearchMessage)) &&
         jobs.job_type.includes(selectedJobType)
       );
     } else if (category !== "Select or create a category") {
       return jobs.job_category.includes(category);
-    } else if (searchMessage.toLowerCase() !== "") {
+    } else if (lowercaseSearchMessage !== "") {
       return (
-        jobs.job_title.toLowerCase().includes(searchMessage) ||
-        jobs.job_description.toLowerCase().includes(searchMessage)
+        lowercaseJobTitle.includes(lowercaseSearchMessage) ||
+        lowercaseAboutCompany.includes(lowercaseSearchMessage)
       );
     } else if (selectedJobType !== "Select a type") {
       return jobs.job_type.includes(selectedJobType);
@@ -191,7 +195,7 @@ const Findthatjob = () => {
     <main className="bg-[#F5F5F6] h-screen">
       <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
         <div className="flex flex-col">
-          <div className="text-grey-primary w-[100%] h-[100%] flex-col grid mt-[10px]">
+          <div className="text-[#616161] w-[100%] h-[100%] flex-col grid mt-[10px]">
             <div className="flex flex-col flex-wrap">
               <h4 className="mb-[16px]" id="heading4">
                 Find That Job
@@ -200,7 +204,7 @@ const Findthatjob = () => {
                 SEARCH BY JOB TITLE OR COMPANY NAME
               </p>
               <input
-                className="border-solid border border-pink-primary rounded-[8px] gap-[8px] p-[8px] w-full max-w-[360px] h-[36px]"
+                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[360px] h-[36px]"
                 placeholder="manufacturing, sales, swim"
                 type="text"
                 id="input-glasses"
@@ -209,16 +213,16 @@ const Findthatjob = () => {
                   setSearchMessage(e.target.value);
                 }}
               />
-              <div className="flex flex-row flex-wrap gap-[20px] mt-[7px]  text-grey-primary">
+              <div className="flex flex-row flex-wrap gap-[20px] mt-[7px]  text-[#616161]">
                 <div>
                   <p
-                    className="text-grey-primary mb-[4px] tracking-[1.5px]"
+                    className="text-[#616161] mb-[4px] tracking-[1.5px]"
                     id="overline"
                   >
                     CATEGORY
                   </p>
                   <select
-                    className="text-grey-primary border-solid border border-pink-primary rounded-[8px] w-full max-w-[360px] h-[36px]"
+                    className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
                     id="category"
                     name="job_category"
                     value={category}
@@ -227,7 +231,7 @@ const Findthatjob = () => {
                     }}
                   >
                     <option
-                      className="text-grey-primary/75"
+                      className="text-[#616161]/75"
                       value="Select or create a category"
                     >
                       Select or create a category
@@ -242,13 +246,13 @@ const Findthatjob = () => {
                 </div>
                 <div>
                   <p
-                    className="text-grey-primary mb-[4px] tracking-[1.5px]"
+                    className="text-[#616161] mb-[4px] tracking-[1.5px]"
                     id="overline"
                   >
                     TYPE
                   </p>
                   <select
-                    className="text-grey-primary border-solid border border-pink-primary rounded-[8px] w-full max-w-[360px] h-[36px]"
+                    className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
                     id="type"
                     name="job_type"
                     value={selectedJobType}
@@ -256,7 +260,7 @@ const Findthatjob = () => {
                       handleSelectJobType(event);
                     }}
                   >
-                    <option className="text-grey-primary/75" value="Select a type">
+                    <option className="text-[#616161]/75" value="Select a type">
                       Select a type
                     </option>
                     <option value="Full-Time">Full Time</option>
@@ -266,7 +270,7 @@ const Findthatjob = () => {
 
                 <div>
                   <p
-                    className="text-grey-primary mb-[4px] tracking-[1.5px]"
+                    className="text-[#616161] mb-[4px] tracking-[1.5px]"
                     id="overline"
                   >
                     SALARY RANGE
@@ -274,14 +278,14 @@ const Findthatjob = () => {
                   <div className="flex flex-row items-center max-[700px]:justify-center">
 
                     <button
-                      className={`bg-white border-solid border border-pink-primary rounded-[8px] px-[4px] mr-[15px] h-[36px] ${isAscendingClicked && sortAscending ? "text-[pink]" : ""
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] ${isAscendingClicked && sortAscending ? "text-[pink]" : ""
                         }`}
                       onClick={handleSortAscending}
                     >
                       Low to High
                     </button>
                     <button
-                      className={`bg-white border-solid border border-pink-primary rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "text-[pink]" : ""
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "text-[pink]" : ""
                         }`}
                       onClick={handleSortDescending}
                     >
@@ -322,7 +326,7 @@ const Findthatjob = () => {
                         <h6 id="heading6">{item.job_title}</h6>
 
                         <p className="max-[700px]:hidden mb-[4px]" id="caption">
-                          {shortenText(item.job_description, 15)}
+                          {shortenText(item.recruiters.about_company, 15)}
                         </p>
 
                         <div className="flex gap-4 ">
@@ -351,14 +355,14 @@ const Findthatjob = () => {
                             <Image
                               alt="picture"
                               src={following}
-                              className="w-[22px] h-[22px] border-pink-primary"
+                              className="w-[22px] h-[22px] border-[#F48FB1]"
                             />
                           )}
                           {item.professional_follow_jobs[0]?.follow_status && (
                             <Image
                               alt="picture"
                               src={smallfollowing}
-                              className="w-[40px] h-[40px] border-pink-primary"
+                              className="w-[40px] h-[40px] border-[#F48FB1]"
                             />
                           )}
                           {item.professional_follow_jobs[0] !== undefined &&
@@ -366,17 +370,17 @@ const Findthatjob = () => {
                               <Image
                                 alt="followIcon"
                                 src={following}
-                                className="w-[22px] h-[22px] border-pink-primary"
+                                className="w-[22px] h-[22px] border-[#F48FB1]"
                               />
                             )}
                           {/* <Image
                             alt="picture"
                             {
                               item.professional_follow_jobs[0] === undefined
-                                ? src={following} className="w-[22px] h-[22px] border-pink-primary"
+                                ? src={following} className="w-[22px] h-[22px] border-[#F48FB1]"
                                 : item.professional_follow_jobs[0].follow_status
-                                ? src={smallfollowing} className="w-[40px] h-[40px] border-pink-primary"
-                                : src={following} className="w-[22px] h-[22px] border-pink-primary"
+                                ? src={smallfollowing} className="w-[40px] h-[40px] border-[#F48FB1]"
+                                : src={following} className="w-[22px] h-[22px] border-[#F48FB1]"
                             }
                             
                           /> */}
