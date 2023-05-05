@@ -10,6 +10,7 @@ import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
 import following from "../../image/following.png";
 import smallfollowing from "../../image/smallfollowing.png";
+import Warning from "@/components/Warning";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -20,12 +21,15 @@ function JobDetails() {
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
   const [timeAgo, setTimeAgo] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const router = useRouter();
   const id = router.query["jobId"];
 
   useEffect(() => {
     let isMounted = true;
+    const token = localStorage.getItem("sb:token"); 
+    setIsAuthenticated(!!token); 
     const fetchPost = async () => {
       try {
         const posts = await supabase
@@ -61,7 +65,7 @@ function JobDetails() {
     return () => {
       isMounted = false;
     };
-  }, [id]);
+  }, [id,isAuthenticated]);
 
   const handleGoBack = () => {
     router.push("/find-that-job");
@@ -70,6 +74,10 @@ function JobDetails() {
   const handleApply = () => {
     router.push(`/applications/${id}`);
   };
+
+  if(!isAuthenticated){
+    return(<Warning/>)
+  }
 
   return (
     <>

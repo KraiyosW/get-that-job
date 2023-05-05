@@ -67,6 +67,10 @@ function CreateNewJob() {
     setSelectedJobType(event.target.value);
   };
 
+  if(!isAuthenticated){
+    return (<Warning/>)
+  }
+
 
 
   // ฟังก์ชั่นสำหรับการ submit form

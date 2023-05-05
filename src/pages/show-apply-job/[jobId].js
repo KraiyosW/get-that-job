@@ -25,6 +25,7 @@ import numeral from "numeral";
 import SideBarRecruiter from "@/components/SidebarRecruiter.js";
 import moment from "moment";
 import Link from "next/link";
+import Warning from "@/components/Warning";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -39,6 +40,7 @@ function ShowCandidates() {
   const [jobStatus, setJobStatus] = useState([]);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -57,6 +59,8 @@ function ShowCandidates() {
     }
   };
   useEffect(() => {
+    const token = localStorage.getItem("sb:token"); 
+    setIsAuthenticated(!!token); 
     fetchData();
   }, [id, jobStatus, isUpdating]);
 
@@ -134,6 +138,10 @@ function ShowCandidates() {
   const countInProgress = Array.from(post).filter(
     (item) => item.recruiter_status === 2
   ).length;
+
+  if(!isAuthenticated){
+    return (<Warning/>)
+  }
 
 
   return (
