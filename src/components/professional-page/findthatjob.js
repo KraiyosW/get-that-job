@@ -12,6 +12,7 @@ import Warning from "../Warning";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
 
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -23,11 +24,11 @@ const Findthatjob = () => {
   const [searchMessage, setSearchMessage] = useState("");
   const [category, setCategory] = useState("");
   const [selectedJobType, setSelectedJobType] = useState("");
-  const [salaryMin, setSalaryMin] = useState("");
-  const [salaryMax, setSalaryMax] = useState("");
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [followStatus, setFollowStatus] = useState({});
+  const [sortAscending, setSortAscending] = useState(false);
+  const [sortDescending, setSortDescending] = useState(false);
 
   const getJobs = async () => {
     try {
@@ -38,6 +39,16 @@ const Findthatjob = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleSortAscending = () => {
+    setSortAscending(true);
+    setSortDescending(false);
+  };
+
+  const handleSortDescending = () => {
+    setSortDescending(true);
+    setSortAscending(false);
   };
 
   const [formData, setFormData] = useState({
@@ -78,18 +89,11 @@ const Findthatjob = () => {
     return text;
   }
 
-  function handleSalaryMin(event) {
-    setSalaryMin(event.target.value);
-  }
-
-  function handleSalaryMax(event) {
-    setSalaryMax(event.target.value);
-  }
-
   useEffect(() => {
     const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
     setIsAuthenticated(!!token);
     getJobs();
+
   }, [isAuthenticated, followStatus]);
   console.log(job);
 
@@ -163,53 +167,11 @@ const Findthatjob = () => {
     }
   });
 
-  // const filterJobs = job.filter((jobs) => {
-  //     if (category !== "Select or create a category" && searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-  //         return (
-  //             (jobs.job_category.includes(category) &&
-  //                 jobs.job_title.toLowerCase().includes(searchMessage) &&
-  //                 jobs.job_type.includes(selectedJobType) &&
-  //                 jobs.salary_min_range >= salaryMin &&
-  //                 jobs.salary_max_range <= salaryMax) ||
-  //             (jobs.job_category.includes(category) &&
-  //                 jobs.job_description.toLowerCase().includes(searchMessage) &&
-  //                 jobs.job_type.includes(selectedJobType) &&
-  //                 jobs.salary_min_range >= salaryMin &&
-  //                 jobs.salary_max_range <= salaryMax)
-  //         );
-  //     } else if (category !== "Select or create a category" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-  //         return jobs.job_category.includes(category) && jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
-  //     } else if (searchMessage.toLowerCase() !== "" && selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-  //         return (
-  //             jobs.job_title.toLowerCase().includes(searchMessage) ||
-  //             jobs.job_description.toLowerCase().includes(searchMessage)) &&
-  //             jobs.job_type.includes(selectedJobType) &&
-  //             jobs.salary_min_range >= salaryMin &&
-  //             jobs.salary_max_range <= salaryMax;
-  //     } else if (category !== "Select or create a category" && salaryMin !== "" && salaryMax !== "") {
-  //         return jobs.job_category.includes(category) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
-  //     } else if (searchMessage.toLowerCase() !== "" && salaryMin !== "" && salaryMax !== "") {
-  //         return (
-  //             jobs.job_title.toLowerCase().includes(searchMessage) ||
-  //             jobs.job_description.toLowerCase().includes(searchMessage)) &&
-  //             jobs.salary_min_range >= salaryMin &&
-  //             jobs.salary_max_range <= salaryMax;
-  //     } else if (selectedJobType !== "Select a type" && salaryMin !== "" && salaryMax !== "") {
-  //         return jobs.job_type.includes(selectedJobType) && jobs.salary_min_range >= salaryMin && jobs.salary_max_range <= salaryMax;
-  //     } else if (category !== "Select or create a category") {
-  //         return jobs.job_category.includes(category);
-  //     } else if (searchMessage.toLowerCase() !== "") {
-  //         return (
-  //             jobs.job_title.toLowerCase().includes(searchMessage) ||
-  //             jobs.job_description.toLowerCase
-  //                 ().includes(searchMessage)
-  //         );
-  //     } else if (selectedJobType !== "Select a type") {
-  //         return jobs.job_type.includes(selectedJobType);
-  //     } else {
-  //         return jobs;
-  //     }
-  // });
+  if (sortAscending) {
+    filterJobs.sort((a, b) => a.salary_min_range - b.salary_min_range);
+  } else if (sortDescending) {
+    filterJobs.sort((a, b) => b.salary_min_range - a.salary_min_range);
+  }
 
   return (
     <main className="bg-[#F5F5F6] h-screen">
@@ -287,6 +249,7 @@ const Findthatjob = () => {
                     <option value="Part-Time">Part Time</option>
                   </select>
                 </div>
+
                 <div>
                   <p
                     className="text-[#616161] mb-[4px] tracking-[1.5px]"
@@ -295,41 +258,20 @@ const Findthatjob = () => {
                     SALARY RANGE
                   </p>
                   <div className="flex flex-row items-center max-[700px]:justify-center">
-                    <input
-                      className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[90px] w-[102px] h-[36px] mr-[8px]"
-                      name="salary_min_range"
-                      placeholder="min"
-                      type="text"
-                      id="input-range"
-                      value={salaryMin}
-                      onChange={handleSalaryMin}
-                    />
-                    <svg
-                      width="11"
-                      height="2"
-                      viewBox="0 0 11 2"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+
+                    <button
+                      className="bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[8px] mr-[15px] h-[36px]"
+                      onClick={handleSortAscending}
                     >
-                      <line
-                        x1="1"
-                        y1="1"
-                        x2="10"
-                        y2="1"
-                        stroke="#8E8E8E"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                      />
-                    </svg>
-                    <input
-                      className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[90px] w-[102px] h-[36px] ml-[8px]"
-                      name="salary_max_range"
-                      placeholder="max"
-                      type="text"
-                      id="input-range"
-                      value={salaryMax}
-                      onChange={handleSalaryMax}
-                    />
+                      Low to High
+                    </button>
+                    <button
+                      className="bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[8px] h-[36px]"
+                      onClick={handleSortDescending}
+                    >
+                      High to Low
+                    </button>
+
                   </div>
                 </div>
               </div>
