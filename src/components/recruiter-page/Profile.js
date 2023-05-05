@@ -26,9 +26,12 @@ function Profile() {
     company_name: "",
     company_website: "",
     about_company: "",
+    logo: null,
     email: userEmail,
 
+
   });
+  console.log(formData.logo);
 
 
   const handleSubmit = async (event) => {
@@ -55,6 +58,11 @@ function Profile() {
     const file = event.target.files[0];
     setSelectedFile(file);
 
+    setFormData({
+      ...formData,
+      logo: file
+    });
+
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
@@ -62,6 +70,7 @@ function Profile() {
       setImagePreview(reader.result);
     };
   }
+
   const handleUpdateProfile = async (event) => {
     event.preventDefault();
 
@@ -146,6 +155,7 @@ function Profile() {
                   type="file"
                   id="fileInput"
                   accept="image/*"
+                  name="logo"
                   onChange={handleFileInputChange}
                 />
                 <div className="icon-file">
