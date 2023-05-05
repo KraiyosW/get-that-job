@@ -137,7 +137,7 @@ input#upload {
   display: none;
 }
 
-input#upload+label {
+input#upload + label {
   background-color: #f48fb1;
   padding: 8px 16px 8px 16px;
   border-radius: 8px;
@@ -184,10 +184,10 @@ button.button_pink_tertiary {
   color: white;
 }
 button.button_gray {
-  background-color: #E1E2E1;
+  background-color: #e1e2e1;
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
-  color: #8E8E8E;
+  color: #8e8e8e;
 }
 button.button_previous {
   width: 131px;
@@ -206,7 +206,7 @@ button.button_white {
 }
 
 button.button_pink_file {
-  background-color: #F48FB1;
+  background-color: #f48fb1;
   padding: 8px 16px 8px 16px;
   border-radius: 8px;
   color: white;
@@ -217,7 +217,7 @@ button.button_pink_file {
 
 button.button_white {
   background-color: white;
-  border: #F48FB1 solid 1px;
+  border: #f48fb1 solid 1px;
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
   color: black;
@@ -235,7 +235,6 @@ button.button_white {
   height: 14px;
   background-image: url("data:image/svg+xml,%3Csvg width='8' height='14' viewBox='0 0 8 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.17217 6.99999L0.222168 2.04999L1.63617 0.635986L8.00017 6.99999L1.63617 13.364L0.222168 11.95L5.17217 6.99999Z' fill='white'/%3E%3C/svg%3E");
 }
-
 
 #arrow-top {
   position: absolute;
@@ -282,25 +281,12 @@ input#input-range:focus {
   box-shadow: 0px 2px 2px #ccc;
 }
 
-.calendar {
-  cursor: pointer;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  display: none;
-}
-
-.open-button button {
-  border: none;
-  background: transparent;
-}
-
 input#fileInput::-webkit-file-upload-button {
   visibility: hidden;
 }
 
 input#fileInput::before {
-  content: 'Choose a file';
+  content: "Choose a file";
   display: inline-block;
   border-radius: 8px;
   padding: 8px;
@@ -308,7 +294,7 @@ input#fileInput::before {
   -webkit-user-select: none;
   cursor: pointer;
   margin-right: -102px;
-  background: #F48FB1;
+  background: #f48fb1;
   color: white;
   padding-left: 40px;
   padding-right: 12px;
@@ -332,6 +318,11 @@ input#input-glasses {
 input#input-glasses:focus {
   background-image: none;
   text-indent: 0px;
+}
+button#btn-white,
+button#btn-gray
+{
+  width: 200px;
 }
 
 /* h1 {

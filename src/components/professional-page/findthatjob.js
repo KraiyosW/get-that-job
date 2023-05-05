@@ -9,10 +9,18 @@ import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
 import Warning from "../Warning";
+import { createClient } from "@supabase/supabase-js";
+import logoMockup from "../../image/logo-mockup.png";
+
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Findthatjob = () => {
-
   const [job, setJob] = useState([]);
+
   const [searchMessage, setSearchMessage] = useState("");
   const [category, setCategory] = useState("");
   const [selectedJobType, setSelectedJobType] = useState("");
@@ -336,8 +344,8 @@ const Findthatjob = () => {
                           {item.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : item.professional_follow_jobs[0].follow_status
-                              ? "Following"
-                              : "Follow"}
+                            ? "Following"
+                            : "Follow"}
                           {/* {followStatus[item.job_post_id]
                             ? "Following"
                             : "Follow"} */}
