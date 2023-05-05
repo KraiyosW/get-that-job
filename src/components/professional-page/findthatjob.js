@@ -20,10 +20,6 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const Findthatjob = () => {
   const [job, setJob] = useState([]);
 
-  // state สำหรับ query job โดยใช้ supabase built-in function
-  const [post, setPost] = useState(null);
-  const [timeAgo, setTimeAgo] = useState("");
-
   const [searchMessage, setSearchMessage] = useState("");
   const [category, setCategory] = useState("");
   const [selectedJobType, setSelectedJobType] = useState("");
@@ -43,44 +39,6 @@ const Findthatjob = () => {
       console.log(error);
     }
   };
-
-  // query โดยใช้ supabase built-in function
-  useEffect(() => {
-    let isMounted = true;
-    const fetchPost = async () => {
-      try {
-        const posts = await supabase
-          .from("jobs_postings")
-          .select(`*, recruiters (*)`)
-          .eq("job_post_id", Number(id))
-          .single();
-        if (isMounted) {
-          setPost(posts.data);
-          setLoading(false);
-          // Calculate time ago
-          const createdDate = new Date(posts.data.created_at);
-          const currentDate = new Date();
-          const diffTime = Math.abs(currentDate - createdDate);
-          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-          setTimeAgo(`${diffDays}`);
-        }
-      } catch (error) {
-        console.error(error);
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    if (id) {
-      setLoading(true);
-      fetchPost();
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [id]);
 
   const [formData, setFormData] = useState({
     job_category: "",
