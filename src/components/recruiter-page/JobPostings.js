@@ -29,11 +29,22 @@ function JobPostings() {
   const [jobStatus, setJobStatus] = useState([])
   const [isUpdating, setIsUpdating] = useState(false)
   const [selectedOption, setSelectedOption] = useState("all");
-  const {recruiterState} = useAuth();
+  const [myState,setMyState] = useState("")
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const router= useRouter()
-  const userEmail = String(localStorage.getItem('email'))
+  const userEmail = String(myState);
+
+  useEffect(() => {
+    const storedState = localStorage.getItem("email");
+    if (storedState) {
+      setMyState(storedState);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("email", myState);
+  }, [myState]);
 
 
   const AllJob = async () => {
@@ -68,7 +79,7 @@ function JobPostings() {
     const token = localStorage.getItem("sb:token"); 
     setIsAuthenticated(!!token); 
     AllJob();
-  }, [jobStatus,isAuthenticated]);
+  }, [jobStatus,isAuthenticated,userEmail]);
 
   
   if (!isAuthenticated) {

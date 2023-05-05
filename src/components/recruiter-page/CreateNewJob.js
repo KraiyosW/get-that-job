@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import { useRecruiterPost } from "@/hooks/recruiterPost.js";
 import { useRouter } from "next/router";
 
 function CreateNewJob() {
+  const [myState, setMyState] = useState("");
+
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { createPost, isLoading, isError } = useRecruiterPost();
-  const userEmail = localStorage.getItem("email");
+  const userEmail = myState;
   const router = useRouter();
+
+  useEffect(() => {
+    const storedState = localStorage.getItem("email");
+    if (storedState) {
+      setMyState(storedState);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("myState", myState);
+  }, [myState]);
+
 
   // สร้าง state สำหรับเก็บข้อมูลจากฟอร์ม
   const [formData, setFormData] = useState({
