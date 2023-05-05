@@ -25,11 +25,8 @@ const Findthatjob = () => {
   const [followIcon, setFollowIcon] = useState(following);
   const [sortAscending, setSortAscending] = useState(false);
   const [sortDescending, setSortDescending] = useState(false);
-  
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  const [isAscendingClicked, setIsAscendingClicked] = useState(false);
+  const [isDescendingClicked, setIsDescendingClicked] = useState(false);
 
 
   const getJobs = async () => {
@@ -38,20 +35,32 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
         `http://localhost:3000/api/findthatjob?profid=${profId}`
       );
       setJob(result.data.job.data);
+      console.log(result.data.job.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleSortAscending = () => {
-    setSortAscending(true);
-    setSortDescending(false);
+    if (!isAscendingClicked) {
+      // First click, enable ascending sort and set the clicked state
+      setSortAscending(true);
+      setSortDescending(false);
+      setIsAscendingClicked(true);
+      setIsDescendingClicked(false);
+    }
   };
 
   const handleSortDescending = () => {
-    setSortDescending(true);
-    setSortAscending(false);
+    if (!isDescendingClicked) {
+      // First click, enable descending sort and set the clicked state
+      setSortDescending(true);
+      setSortAscending(false);
+      setIsDescendingClicked(true);
+      setIsAscendingClicked(false);
+    }
   };
+
 
   const [formData, setFormData] = useState({
     job_category: "",
@@ -182,7 +191,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
     <main className="bg-[#F5F5F6] h-screen">
       <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
         <div className="flex flex-col">
-          <div className="text-[#616161] w-[100%] h-[100%] flex-col grid mt-[10px]">
+          <div className="text-grey-primary w-[100%] h-[100%] flex-col grid mt-[10px]">
             <div className="flex flex-col flex-wrap">
               <h4 className="mb-[16px]" id="heading4">
                 Find That Job
@@ -191,7 +200,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                 SEARCH BY JOB TITLE OR COMPANY NAME
               </p>
               <input
-                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[360px] h-[36px]"
+                className="border-solid border border-pink-primary rounded-[8px] gap-[8px] p-[8px] w-full max-w-[360px] h-[36px]"
                 placeholder="manufacturing, sales, swim"
                 type="text"
                 id="input-glasses"
@@ -200,16 +209,16 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                   setSearchMessage(e.target.value);
                 }}
               />
-              <div className="flex flex-row flex-wrap gap-[20px] mt-[7px]  text-[#616161]">
+              <div className="flex flex-row flex-wrap gap-[20px] mt-[7px]  text-grey-primary">
                 <div>
                   <p
-                    className="text-[#616161] mb-[4px] tracking-[1.5px]"
+                    className="text-grey-primary mb-[4px] tracking-[1.5px]"
                     id="overline"
                   >
                     CATEGORY
                   </p>
                   <select
-                    className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
+                    className="text-grey-primary border-solid border border-pink-primary rounded-[8px] w-full max-w-[360px] h-[36px]"
                     id="category"
                     name="job_category"
                     value={category}
@@ -218,7 +227,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                     }}
                   >
                     <option
-                      className="text-[#616161]/75"
+                      className="text-grey-primary/75"
                       value="Select or create a category"
                     >
                       Select or create a category
@@ -233,13 +242,13 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                 </div>
                 <div>
                   <p
-                    className="text-[#616161] mb-[4px] tracking-[1.5px]"
+                    className="text-grey-primary mb-[4px] tracking-[1.5px]"
                     id="overline"
                   >
                     TYPE
                   </p>
                   <select
-                    className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
+                    className="text-grey-primary border-solid border border-pink-primary rounded-[8px] w-full max-w-[360px] h-[36px]"
                     id="type"
                     name="job_type"
                     value={selectedJobType}
@@ -247,7 +256,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                       handleSelectJobType(event);
                     }}
                   >
-                    <option className="text-[#616161]/75" value="Select a type">
+                    <option className="text-grey-primary/75" value="Select a type">
                       Select a type
                     </option>
                     <option value="Full-Time">Full Time</option>
@@ -257,7 +266,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
                 <div>
                   <p
-                    className="text-[#616161] mb-[4px] tracking-[1.5px]"
+                    className="text-grey-primary mb-[4px] tracking-[1.5px]"
                     id="overline"
                   >
                     SALARY RANGE
@@ -265,13 +274,15 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                   <div className="flex flex-row items-center max-[700px]:justify-center">
 
                     <button
-                      className="bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[8px] mr-[15px] h-[36px]"
+                      className={`bg-white border-solid border border-pink-primary rounded-[8px] px-[4px] mr-[15px] h-[36px] ${isAscendingClicked && sortAscending ? "text-[pink]" : ""
+                        }`}
                       onClick={handleSortAscending}
                     >
                       Low to High
                     </button>
                     <button
-                      className="bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[8px] h-[36px]"
+                      className={`bg-white border-solid border border-pink-primary rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "text-[pink]" : ""
+                        }`}
                       onClick={handleSortDescending}
                     >
                       High to Low
@@ -296,7 +307,11 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                   >
                     <div className="flex items-center gap-4">
                       <div>
-                        <Image alt="picture" src={babyswim} />
+                        <Image alt="picture" width={100} height={100} src={
+                          item.recruiters.logo === null
+                            ? logoMockup
+                            : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${item.recruiters.logo}`
+                        } />
                       </div>
 
                       <div className="flex flex-col">
@@ -336,14 +351,14 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                             <Image
                               alt="picture"
                               src={following}
-                              className="w-[22px] h-[22px] border-[#F48FB1]"
+                              className="w-[22px] h-[22px] border-pink-primary"
                             />
                           )}
                           {item.professional_follow_jobs[0]?.follow_status && (
                             <Image
                               alt="picture"
                               src={smallfollowing}
-                              className="w-[40px] h-[40px] border-[#F48FB1]"
+                              className="w-[40px] h-[40px] border-pink-primary"
                             />
                           )}
                           {item.professional_follow_jobs[0] !== undefined &&
@@ -351,17 +366,17 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                               <Image
                                 alt="followIcon"
                                 src={following}
-                                className="w-[22px] h-[22px] border-[#F48FB1]"
+                                className="w-[22px] h-[22px] border-pink-primary"
                               />
                             )}
                           {/* <Image
                             alt="picture"
                             {
                               item.professional_follow_jobs[0] === undefined
-                                ? src={following} className="w-[22px] h-[22px] border-[#F48FB1]"
+                                ? src={following} className="w-[22px] h-[22px] border-pink-primary"
                                 : item.professional_follow_jobs[0].follow_status
-                                ? src={smallfollowing} className="w-[40px] h-[40px] border-[#F48FB1]"
-                                : src={following} className="w-[22px] h-[22px] border-[#F48FB1]"
+                                ? src={smallfollowing} className="w-[40px] h-[40px] border-pink-primary"
+                                : src={following} className="w-[22px] h-[22px] border-pink-primary"
                             }
                             
                           /> */}
@@ -377,8 +392,8 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                           {item.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : item.professional_follow_jobs[0].follow_status
-                            ? "Following"
-                            : "Follow"}
+                              ? "Following"
+                              : "Follow"}
                           {/* {followStatus[item.job_post_id]
                             ? "Following"
                             : "Follow"} */}

@@ -1,20 +1,14 @@
 import React from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import LogoMockup from "../../image/logo-mockup.png";
 import Warning from "../Warning";
-<<<<<<< HEAD
-=======
-const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
->>>>>>> 7afe7cdf421dc9ceb636e9f44347446acbb7f7d1
 
 
 function ProfessionalProfile() {
-<<<<<<< HEAD
   const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   const supabase = createClient(
@@ -133,56 +127,6 @@ function ProfessionalProfile() {
   }, []);
 
 
-=======
-    const supabase = createClient(
-        supabaseURL,
-        supabaseAnonKey
-      );
-      const [selectedFile, setSelectedFile] = useState(null);
-      const [imagePreview, setImagePreview] = useState(null);
-      const [isAuthenticated, setIsAuthenticated] = useState(false);
-    
-      function handleFileInputChange(event) {
-        const file = event.target.files[0];
-        setSelectedFile(file);
-    
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-    
-        reader.onloadend = () => {
-          setImagePreview(reader.result);
-        };
-      }
-      const handleUpdateProfile = async (event) => {
-        event.preventDefault();
-    
-        const fileInput = document.getElementById("fileInput");
-        const file = fileInput.files[0];
-    
-        if (!file) {
-          alert("Please select a file to upload.");
-          return;
-        }
-    
-        const { data, error } = await supabase.storage
-          .from("profiles/professional")
-          .upload(`user-${Date.now()}`, file);
-    
-          if (error) {
-          alert("Error uploading file: ", error.message);
-        } else {
-          alert("File uploaded successfully!");
-        }
-      };
-      useEffect(() => {
-        const token = localStorage.getItem("sb:token"); 
-        setIsAuthenticated(!!token); 
-      }, [isAuthenticated]);
-
-      if(!isAuthenticated){
-        return(<Warning/>)
-      }
->>>>>>> 7afe7cdf421dc9ceb636e9f44347446acbb7f7d1
 
   return (
     <>
