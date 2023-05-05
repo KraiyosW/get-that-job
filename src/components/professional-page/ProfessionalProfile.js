@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useAuth } from "@/contexts/authentication";
-import SidebarProfessional from "../SidebarProfessional";
 import { useRouter } from "next/router";
 
 function ProfessionalProfile() {
@@ -101,7 +100,7 @@ function ProfessionalProfile() {
         .eq("email", userEmail)
         .single();
       setData(result.data);
-
+      console.log(result);
       setFormData({
         ...formData,
         email: result.data.email,
@@ -114,7 +113,7 @@ function ProfessionalProfile() {
         education: result.data.education,
       });
 
-      console.log(result);
+
     } catch (error) {
       console.log(error);
     }
@@ -127,7 +126,6 @@ function ProfessionalProfile() {
 
   return (
     <>
-      <SidebarProfessional />
       <main className="bg-white-secondary h-screen">
         <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px] max-[700px]:items-center max-[700px]:text-center">
           <h4 className="mb-[24px]" id="heading4">
