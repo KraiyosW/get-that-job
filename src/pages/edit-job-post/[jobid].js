@@ -5,6 +5,8 @@ import SideBarRecruiter from "@/components/SidebarRecruiter.js";
 import { useAuth } from "@/contexts/authentication";
 import { createClient } from "@supabase/supabase-js";
 import Warning from "@/components/Warning";
+import { useToast, Box } from '@chakra-ui/react'
+
 
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -25,6 +27,7 @@ function EditJobPost() {
   const [myState, setMyState] = useState("");
   const userEmail = recruiterState.email;
   const router = useRouter();
+  const toast = useToast();
   const id = router.query["jobid"]
   console.log(id)
 
@@ -78,12 +81,12 @@ function EditJobPost() {
         console.log(error);
       }
     };
-    const token = localStorage.getItem("sb:token"); 
+    const token = localStorage.getItem("sb:token");
     setIsAuthenticated(!!token);
 
 
     fetchData();
-  }, [id, userEmail,isAuthenticated]);
+  }, [id, userEmail, isAuthenticated]);
 
   console.log(post)
 
@@ -116,8 +119,8 @@ function EditJobPost() {
     });
   };
 
-  if(!isAuthenticated){
-    return(<Warning/>)
+  if (!isAuthenticated) {
+    return (<Warning />)
   }
 
 
@@ -129,9 +132,43 @@ function EditJobPost() {
       const authToken = JSON.stringify(localStorage.getItem('sb:token'));
       const response = await editJobPost(formData, authToken);
       console.log(response);
+      toast({
+        position: "top",
+        render: () => (
+          <Box
+            className="bg-pink-primary flex flex-col justify-center text-center"
+            p={3}
+            color="white"
+            borderRadius="md"
+            boxShadow="md"
+          >
+            <div>Job Edited .</div>
+            <div>Your job has been successfully edited.</div>
+          </Box>
+        ),
+        duration: 3000,
+        isClosable: true,
+      });
       router.push('/job-postings')
     } catch (error) {
       console.error(error);
+      toast({
+        position: "top",
+        render: () => (
+          <Box
+            className="bg-red-500 flex flex-col justify-center text-center"
+            p={3}
+            color="white"
+            borderRadius="md"
+            boxShadow="md"
+          >
+            <div>Error editing job.</div>
+            <div>Please try again later.</div>
+          </Box>
+        ),
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -237,7 +274,7 @@ function EditJobPost() {
                 ABOUT THE JOB POSITION
               </div>
               <textarea
-                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[76px]"
+                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[200px]"
                 name="job_description"
                 placeholder="Describe the main functions and characteristics of your job position"
                 value={formData.job_description}
@@ -247,7 +284,7 @@ function EditJobPost() {
                 MANDATORY REQUIREMENTS
               </div>
               <textarea
-                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[76px]"
+                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[200px]"
                 name="requirement"
                 placeholder="List each mandatory requirement in a new line"
                 value={formData.requirement}
@@ -257,7 +294,7 @@ function EditJobPost() {
                 OPTIONAL REQUIREMENTS
               </div>
               <textarea
-                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[76px]"
+                className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[200px]"
                 name="optional_requirement"
                 placeholder="List each optional requirement in a new line"
                 value={formData.optional_requirement}
@@ -265,7 +302,7 @@ function EditJobPost() {
               ></textarea>
             </div>
             <br />
-            <button type="submit" className="button_pink_new mt-[24px]">
+            <button type="submit" className="button_pink_new mt-[24px] active:opacity-[70%]">
               EDIT THIS JOB
             </button>
           </form>

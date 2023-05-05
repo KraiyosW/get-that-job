@@ -179,8 +179,8 @@ function JobDetails() {
                         {post.professional_follow_jobs[0] === undefined
                           ? "Follow"
                           : post.professional_follow_jobs[0].follow_status
-                          ? "Following"
-                          : "Follow"}
+                            ? "Following"
+                            : "Follow"}
                       </button>
                     </div>
                   </div>

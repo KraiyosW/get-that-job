@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuth } from "@/contexts/authentication";
 import { createClient } from "@supabase/supabase-js";
+import { useToast, Box } from '@chakra-ui/react'
 
 const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -23,6 +24,7 @@ const RecruiterFormPage2 = (props) => {
   const userData = props.userData;
   const { recruiterRegister } = useAuth();
   const router = useRouter();
+  const toast = useToast();
 
   //user information
   const [companyWebsite, setCompanyWebsite] = useState("");
@@ -128,10 +130,43 @@ const RecruiterFormPage2 = (props) => {
           } else if (aboutCompany === true) {
             setErrorMessage("File uploaded successfully!");
           }
-
+          toast({
+            position: "top",
+            render: () => (
+              <Box
+                className="bg-pink-primary flex flex-col justify-center text-center"
+                p={3}
+                color="white"
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <div>Register successfully .</div>
+                <div>Please confirm your email .</div>
+              </Box>
+            ),
+            duration: 5000,
+            isClosable: true,
+          });
           router.push("/login");
         } catch (error) {
           setErrorMessage(`Error uploading file: ${error.message}`);
+          toast({
+            position: "top",
+            render: () => (
+              <Box
+                className="bg-red-500 flex flex-col justify-center text-center"
+                p={3}
+                color="white"
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <div>Register failed .</div>
+                <div>Please try again .</div>
+              </Box>
+            ),
+            duration: 3000,
+            isClosable: true,
+          });
         } finally {
           setLoading(false);
         }

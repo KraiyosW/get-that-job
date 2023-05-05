@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/authentication";
 import Image from "next/image";
 import upload from "@/image/upload.png";
 import { createClient } from "@supabase/supabase-js";
+import { useToast, Box } from '@chakra-ui/react'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -14,6 +15,7 @@ const StepThree = (props) => {
   const userData = props.userData;
   const { professionalRegister } = useAuth();
   const router = useRouter();
+  const toast = useToast();
 
   const inputFile = useRef(null);
   const fileNameField = useRef(null);
@@ -114,9 +116,42 @@ const StepThree = (props) => {
             throw uploadError;
           }
           // Redirect to login
+          toast({
+            position: "top",
+            render: () => (
+              <Box
+                className="bg-pink-primary flex flex-col justify-center text-center"
+                p={3}
+                color="white"
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <div>Register successfully .</div>
+                <div>Please confirm your email .</div>
+              </Box>
+            ),
+            duration: 5000,
+            isClosable: true,
+          });
           router.push("/login");
         } catch (error) {
-          alert(error.message);
+          toast({
+            position: "top",
+            render: () => (
+              <Box
+                className="bg-red-500 flex flex-col justify-center text-center"
+                p={3}
+                color="white"
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <div>Register failed .</div>
+                <div>Please try again .</div>
+              </Box>
+            ),
+            duration: 3000,
+            isClosable: true,
+          });
         } finally {
           setLoading(false);
         }

@@ -11,6 +11,7 @@ import companyLogo from "@/image/logo-web-works.png";
 import upload from "@/image/upload.png";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
+import { useToast, Box, Button } from '@chakra-ui/react'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -37,6 +38,8 @@ function JobApply() {
 
   const inputFile = useRef(null);
   const fileNameField = useRef(null);
+  const toast = useToast();
+
 
   const userInformation = async () => {
     const userEmail = String(localStorage.email);
@@ -146,10 +149,44 @@ function JobApply() {
             console.log(data);
           }
 
+
+          toast({
+            position: "top",
+            render: () => (
+              <Box
+                className="bg-pink-primary flex flex-col justify-center text-center"
+                p={3}
+                color="white"
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <div>Application Submitted.</div>
+                <div>Your application has been successfully submitted.</div>
+              </Box>
+            ),
+            duration: 3000,
+            isClosable: true,
+          });
           router.push("/applications");
-          alert("Apply job completed!");
+
         } catch (error) {
-          alert("Sorry, something went wrong, please try again!");
+          toast({
+            position: "top",
+            render: () => (
+              <Box
+                className="bg-red-500 flex flex-col justify-center text-center"
+                p={3}
+                color="white"
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <div>Error submitting application.</div>
+                <div>Please try again later.</div>
+              </Box>
+            ),
+            duration: 3000,
+            isClosable: true,
+          });
         }
       } else if (isCurrentCv === "false") {
         if (file === null) {
@@ -195,13 +232,48 @@ function JobApply() {
             console.log(data);
           }
 
+
+          toast({
+            position: "top",
+            render: () => (
+              <Box
+                className="bg-pink-primary flex flex-col justify-center text-center"
+                p={3}
+                color="white"
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <div>Application Submitted.</div>
+                <div>Your application has been successfully submitted.</div>
+              </Box>
+            ),
+            duration: 3000,
+            isClosable: true,
+          });
           router.push("/applications");
-          alert("Apply job completed!");
+
         } catch (error) {
-          alert("Sorry, something went wrong, please try again");
+          toast({
+            position: "top",
+            render: () => (
+              <Box
+                className="bg-red-500 flex flex-col justify-center text-center"
+                p={3}
+                color="white"
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <div>Error submitting application.</div>
+                <div>Please try again later.</div>
+              </Box>
+            ),
+            duration: 3000,
+            isClosable: true,
+          });
         }
       }
     }
+
   };
 
   const handleExpChange = (event) => {
@@ -317,14 +389,19 @@ function JobApply() {
                       </div>
                     </div>
                     <div className="btn">
-                      <button class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white">
+                      <Button
+                        class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
+                        variant="unstyled"
+                        type="submit"
+                      >
                         <Image
                           className="w-[20px] h-[18px] mr-[10px]"
                           src={mailIcon}
                           alt="apply icon"
                         />
                         SEND APPLICATION
-                      </button>
+                      </Button>
+
                     </div>
                   </div>
                   <div className="box-2 text-center">
@@ -549,14 +626,18 @@ function JobApply() {
                             )}
                           </div>
                           <div className="btn flex flex-row justify-center">
-                            <button class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white">
+                            <Button
+                              class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
+                              variant="unstyled"
+                              type="submit"
+                            >
                               <Image
                                 className="w-[20px] h-[18px] mr-[10px]"
                                 src={mailIcon}
                                 alt="apply icon"
                               />
                               SEND APPLICATION
-                            </button>
+                            </Button>
                           </div>
                         </div>
                       </div>
