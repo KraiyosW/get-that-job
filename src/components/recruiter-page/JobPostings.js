@@ -40,10 +40,10 @@ function JobPostings() {
     if (storedState) {
       setMyState(storedState);
     }
-  }, []);
+  }, [myState]);
 
   useEffect(() => {
-    localStorage.setItem("email", myState);
+    localStorage.setItem("myState", myState);
   }, [myState]);
 
 

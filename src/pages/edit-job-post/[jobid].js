@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import SideBarRecruiter from "@/components/SidebarRecruiter.js";
 import { useAuth } from "@/contexts/authentication";
 import { createClient } from "@supabase/supabase-js";
-import Sidebarbar from '@/components/sidebarbar.js';
+import Warning from "@/components/Warning";
 
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -21,6 +21,8 @@ function EditJobPost() {
   // สร้าง state สำหรับเก็บข้อมูล option ที่เลือก
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedJobType, setSelectedJobType] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [myState, setMyState] = useState("");
   const userEmail = recruiterState.email;
   const router = useRouter();
   const id = router.query["jobid"]
@@ -76,9 +78,12 @@ function EditJobPost() {
         console.log(error);
       }
     };
+    const token = localStorage.getItem("sb:token"); 
+    setIsAuthenticated(!!token);
+
 
     fetchData();
-  }, [id, userEmail]);
+  }, [id, userEmail,isAuthenticated]);
 
   console.log(post)
 
@@ -110,6 +115,10 @@ function EditJobPost() {
       job_type: event.target.value,
     });
   };
+
+  if(!isAuthenticated){
+    return(<Warning/>)
+  }
 
 
 

@@ -1,10 +1,12 @@
 import React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
 import LogoMockup from "../../image/logo-mockup.png";
+import Warning from "../Warning";
 const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
 
 function ProfessionalProfile() {
     const supabase = createClient(
@@ -13,6 +15,7 @@ function ProfessionalProfile() {
       );
       const [selectedFile, setSelectedFile] = useState(null);
       const [imagePreview, setImagePreview] = useState(null);
+      const [isAuthenticated, setIsAuthenticated] = useState(false);
     
       function handleFileInputChange(event) {
         const file = event.target.files[0];
@@ -46,6 +49,15 @@ function ProfessionalProfile() {
           alert("File uploaded successfully!");
         }
       };
+      useEffect(() => {
+        const token = localStorage.getItem("sb:token"); 
+        setIsAuthenticated(!!token); 
+      }, [isAuthenticated]);
+
+      if(!isAuthenticated){
+        return(<Warning/>)
+      }
+
   return (
     <>
       <main className="bg-white-secondary h-screen">

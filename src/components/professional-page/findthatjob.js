@@ -9,8 +9,6 @@ import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
 import Warning from "../Warning";
-import Link from "next/link";
-import jwtDecode from "jwt-decode";
 import { createClient } from "@supabase/supabase-js";
 
 const Findthatjob = () => {
