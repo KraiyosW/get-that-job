@@ -171,6 +171,7 @@ function AuthProvider(props) {
       localStorage.removeItem("email");
       localStorage.removeItem("professional_id");
       localStorage.removeItem("recruiter_id");
+      localStorage.removeItem("myState");
       sessionStorage.removeItem("user");
       sessionStorage.removeItem("email");
       sessionStorage.removeItem("recruiter_id");
