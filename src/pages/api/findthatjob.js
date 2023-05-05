@@ -6,22 +6,24 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default async function FindthatJob(req, res) {
-  const { profid } = req.query;
+    const { profid } = req.query;
 
-  try {
-    const job = await supabase
-      .from("jobs_postings")
-      .select(
-        "*, professional_follow_jobs ( professional_id,job_post_id, follow_status )"
-      )
-      .eq("professional_follow_jobs.professional_id", profid);
+    try {
+        const job = await supabase
+            .from("jobs_postings")
+            .select(
+                "*, professional_follow_jobs ( professional_id,job_post_id, follow_status )"
+            )
+            .eq("professional_follow_jobs.professional_id", profid)
+            .eq('post_status', true)
 
-    res.statusCode = 200;
-    res.json({ job });
-  } catch (error) {
-    res.statusCode = 500;
-    res.json({ error: error.message });
-  }
+
+        res.statusCode = 200;
+        res.json({ job });
+    } catch (error) {
+        res.statusCode = 500;
+        res.json({ error: error.message });
+    }
 }
 
 // const searchMessage = req.query.title || "";

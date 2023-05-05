@@ -1,60 +1,138 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
-import Image from "next/image";
-import LogoMockup from "../../image/logo-mockup.png";
-const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+import { useAuth } from "@/contexts/authentication";
+import { useRouter } from "next/router";
 
 function ProfessionalProfile() {
-    const supabase = createClient(
-        supabaseURL,
-        supabaseAnonKey
-      );
-      const [selectedFile, setSelectedFile] = useState(null);
-      const [imagePreview, setImagePreview] = useState(null);
-    
-      function handleFileInputChange(event) {
-        const file = event.target.files[0];
-        setSelectedFile(file);
-    
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-    
-        reader.onloadend = () => {
-          setImagePreview(reader.result);
-        };
+  const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const supabase = createClient(
+    supabaseURL,
+    supabaseAnonKey
+  );
+  const { professionalState } = useAuth();
+  const userEmail = professionalState.email;
+  const [data, setData] = useState({})
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const router = useRouter()
+
+  const [formData, setFormData] = useState({
+    email: "",
+    name: "",
+    phone_number: "",
+    date_of_birth: "",
+    linkedin_url: "",
+    job_title: "",
+    experience: "",
+    education: "",
+    email: userEmail,
+  });
+
+  function handleFileInputChange(event) {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+  }
+  const handleUpdateProfile = async (event) => {
+    event.preventDefault();
+
+    const fileInput = document.getElementById("fileInput");
+    const file = fileInput.files[0];
+
+    if (!file) {
+      alert("Please select a file to upload.");
+      return;
+    }
+
+    const { data, error } = await supabase.storage
+      .from("profiles/professional")
+      .upload(`user-${Date.now()}`, file);
+
+    if (error) {
+      alert("Error uploading file: ", error.message);
+    } else {
+      alert("File uploaded successfully!");
+    }
+  };
+
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value
+    })
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const { data, error } = await supabase
+        .from('professional')
+        .update(formData)
+        .eq('email', userEmail);
+
+      if (error) {
+        console.error(error);
+        return;
       }
-      const handleUpdateProfile = async (event) => {
-        event.preventDefault();
-    
-        const fileInput = document.getElementById("fileInput");
-        const file = fileInput.files[0];
-    
-        if (!file) {
-          alert("Please select a file to upload.");
-          return;
-        }
-    
-        const { data, error } = await supabase.storage
-          .from("profiles/professional")
-          .upload(`user-${Date.now()}`, file);
-    
-          if (error) {
-          alert("Error uploading file: ", error.message);
-        } else {
-          alert("File uploaded successfully!");
-        }
-      };
+
+      console.log(data);
+      router.push('/find-that-job');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  const fetchData = async () => {
+    try {
+
+      const result = await supabase
+        .from("professional")
+        .select('*')
+        .eq("email", userEmail)
+        .single();
+      setData(result.data);
+      console.log(result);
+      setFormData({
+        ...formData,
+        email: result.data.email,
+        name: result.data.name,
+        phone_number: result.data.phone_number,
+        date_of_birth: result.data.date_of_birth,
+        linkedin_url: result.data.linkedin_url,
+        job_title: result.data.job_title,
+        experience: result.data.experience,
+        education: result.data.education,
+      });
+
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+
   return (
     <>
       <main className="bg-white-secondary h-screen">
         <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px] max-[700px]:items-center max-[700px]:text-center">
           <h4 className="mb-[24px]" id="heading4">
-            Profile
+            Main information
           </h4>
           <h5 id="heading5">Personal information</h5>
-          <div
+          <form
             className="flex flex-col max-[700px]:items-center"
             id="file-form"
           >
@@ -63,79 +141,95 @@ function ProfessionalProfile() {
             </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[380px] h-[36px]"
-              name="Email"
+              name="email"
               placeholder="ramon.valdes@vecindad.com"
               type="text"
+              value={formData.email}
+              onChange={handleChange}
             />
             <div className="mb-[4px] mt-[8px]" id="overline">
               NAME
             </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[380px] h-[36px]"
-              name="Name"
+              name="name"
               placeholder="Ramón Valdés"
               type="text"
+              value={formData.name}
+              onChange={handleChange}
             />
             <div className="mb-[4px] mt-[8px]" id="overline">
-            PHONE
+              PHONE
             </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[380px] h-[36px]"
-              name="phone"
+              name="phone_number"
               placeholder="+524831212891"
               type="text"
+              value={formData.phone_number}
+              onChange={handleChange}
             />
             <p className="text-[#8E8E8E] mt-[4px]" id="overline">+[COUNTRY CODE][NUMBER]</p>
             <div className="mb-[4px] mt-[8px]" id="overline">
-            BIRTHDATE
+              BIRTHDATE
             </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[380px] h-[36px]"
-              name="Birthdate"
+              name="date_of_birth"
               placeholder="07/02/1971"
               type="text"
+              value={formData.date_of_birth}
+              onChange={handleChange}
             />
-             <div className="mb-[4px] mt-[8px]" id="overline">
-             LINKEDIN URL
+            <div className="mb-[4px] mt-[8px]" id="overline">
+              LINKEDIN URL
             </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[380px] h-[36px]"
-              name="Linkedin Url"
+              name="linkedin_url"
               placeholder="https://www.linkedin.com/in/donramon"
               type="text"
+              value={formData.linkedin_url}
+              onChange={handleChange}
             />
             <h5 className="mt-[32px] mb-[8px]" id="heading5">Personal information</h5>
             <p className="text-[#616161] mb-[8px]" id="overline">Changes made here will be reflected in your future applications</p>
             <div className="mb-[4px] mt-[8px]" id="overline">
-            TITLE
+              TITLE
             </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[380px] h-[36px]"
-              name="title"
+              name="job_title"
               placeholder="Professional Multiservice"
               type="text"
+              value={formData.job_title}
+              onChange={handleChange}
             />
             <div className="mb-[4px] mt-[8px]" id="overline">
-            PROFESSIONAL EXPERIENCE
+              PROFESSIONAL EXPERIENCE
             </div>
             <textarea
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[310px]"
-              name="Professional Experience"
+              name="experience"
+              value={formData.experience}
+              onChange={handleChange}
               placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In feugiat quam ut tempor maximus. Sed neque arcu, rhoncus elementum sodales a, tristique sed quam. Aliquam nibh velit, pharetra ac faucibus in, ornare eu tortor. Vestibulum lacus ligula, elementum sit amet purus ut, sagittis molestie ex. In hendrerit orci tellus. Integer pharetra porttitor nulla, nec fringilla dolor ultricies et. Integer accumsan feugiat urna, eu hendrerit dui varius sit amet. Mauris eget tristique turpis. Curabitur eget hendrerit turpis. Etiam rutrum dolor eu posuere vehicula.
-              Pellentesque ut mauris neque. Maecenas posuere sit amet erat at placerat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Donec tempor lobortis nisl. Maecenas sit amet massa in tortor pulvinar sollicitudin. Fusce vitae feugiat felis, ut malesuada purus. Curabitur felis velit, interdum vitae viverra quis, sagittis ac nulla. Quisque tempus pharetra ornare. In sed nulla eget risus cursus facilisis vel quis nibh. Praesent euismod lectus a."
+          Pellentesque ut mauris neque. Maecenas posuere sit amet erat at placerat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Donec tempor lobortis nisl. Maecenas sit amet massa in tortor pulvinar sollicitudin. Fusce vitae feugiat felis, ut malesuada purus. Curabitur felis velit, interdum vitae viverra quis, sagittis ac nulla. Quisque tempus pharetra ornare. In sed nulla eget risus cursus facilisis vel quis nibh. Praesent euismod lectus a."
             ></textarea>
-             <div className="mb-[4px] mt-[8px]" id="overline">
-             EDUCATION
+            <div className="mb-[4px] mt-[8px]" id="overline">
+              EDUCATION
             </div>
             <textarea
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[165px]"
-              name="Education"
+              name="education"
+              value={formData.education}
+              onChange={handleChange}
               placeholder="Pellentesque ut mauris neque. Maecenas posuere sit amet erat at placerat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Donec tempor lobortis nisl. Maecenas sit amet massa in tortor pulvinar sollicitudin. Fusce vitae feugiat felis, ut malesuada purus. Curabitur felis velit, interdum vitae viverra quis, sagittis ac nulla. Quisque tempus pharetra ornare. In sed nulla eget risus cursus facilisis vel quis nibh. Praesent euismod lectus a."
             ></textarea>
-                        <div className="flex flex-col">
+            <div className="flex flex-col">
               <div>
                 <div className="mt-[8px] mb-[4px]" id="overline">
-                UPLOAD/UPDATE YOUR CV
+                  UPLOAD/UPDATE YOUR CV
                 </div>
               </div>
               <label
@@ -146,7 +240,7 @@ function ProfessionalProfile() {
                   type="file"
                   id="fileInput"
                   accept="pdf/*"
-                  onChange={handleFileInputChange}
+
                 />
                 <div className="icon-file">
                   <svg
@@ -165,17 +259,19 @@ function ProfessionalProfile() {
               </label>
               <div>
                 <div className="text-grey-secondary mt-[4px]" id="caption">
-                Only PDF. Max size 5MB
+                  Only PDF. Max size 5MB
                 </div>
               </div>
             </div>
+
             <button
               className="button_pink_new mt-[24px] w-[170px]"
-              onClick={handleUpdateProfile}
+              onClick={handleSubmit}
             >
               SAVE CHANGES
             </button>
-          </div>
+
+          </form>
         </div>
       </main>
     </>
