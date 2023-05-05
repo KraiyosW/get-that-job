@@ -2,6 +2,7 @@ import React, { useState ,useEffect } from "react";
 import { useRecruiterPost } from "@/hooks/recruiterPost.js";
 import { useRouter } from "next/router";
 import Warning from "../Warning";
+import { useAuth } from "@/contexts/authentication";
 
 function CreateNewJob() {
   const [myState, setMyState] = useState("");
@@ -9,11 +10,10 @@ function CreateNewJob() {
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { createPost, isLoading, isError } = useRecruiterPost();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-<<<<<<< HEAD
-  const userEmail = localStorage.getItem('email');
-=======
-  const userEmail = myState;
->>>>>>> 7afe7cdf421dc9ceb636e9f44347446acbb7f7d1
+  const {recruiterState} = useAuth();
+
+  const userEmail = localStorage.getItem('email')  
+
   const router = useRouter();
 
   useEffect(() => {
@@ -28,11 +28,6 @@ function CreateNewJob() {
   useEffect(() => {
     localStorage.setItem("email", myState);
   }, [myState]);
-
-  useEffect(() => {
-    const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
-    setIsAuthenticated(!!token);
-  }, [isAuthenticated]);
 
 
   // สร้าง state สำหรับเก็บข้อมูลจากฟอร์ม
