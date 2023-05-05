@@ -1,11 +1,11 @@
 import React from "react";
 import { useState,useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { useAuth } from "@/contexts/authentication";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import LogoMockup from "../../image/logo-mockup.png";
 import Warning from "../Warning";
-const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 function ProfessionalProfile() {
   const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
