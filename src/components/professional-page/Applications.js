@@ -39,10 +39,10 @@ function Applications() {
         .limit(20)
         .order("created_at", { ascending: true });
   
-      console.log(result.data.map((item)=> item.professional.email === userEmail));
+      console.log(result.data.map((item)=> item.professional?.email === userEmail)); /// add dot notaion prevent email undefinde
   
       const filteredResult = result.data.filter((item) => {
-        if (item.professional.email === userEmail) {
+        if (item.professional?.email === userEmail) {
           return true;
         }
         return false;
