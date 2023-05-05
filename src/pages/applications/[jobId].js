@@ -11,7 +11,6 @@ import companyLogo from "@/image/logo-web-works.png";
 import upload from "@/image/upload.png";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
-import { useAuth } from "@/contexts/authentication";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
