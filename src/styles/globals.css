@@ -319,6 +319,11 @@ input#input-glasses:focus {
   background-image: none;
   text-indent: 0px;
 }
+button#btn-white,
+button#btn-gray
+{
+  width: 200px;
+}
 
 /* h1 {
   font-size: 97px;
