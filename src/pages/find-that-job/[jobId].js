@@ -8,6 +8,8 @@ import applyIcon from "@/image/icon-apply.png";
 import backIcon from "@/image/icon-back.png";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
+import following from "../../image/following.png";
+import smallfollowing from "../../image/smallfollowing.png";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -28,7 +30,9 @@ function JobDetails() {
       try {
         const posts = await supabase
           .from("jobs_postings")
-          .select(`*, recruiters (*)`)
+          .select(
+            `*, recruiters (*),professional_follow_jobs ( professional_id,job_post_id, follow_status )`
+          )
           .eq("job_post_id", Number(id))
           .single();
         if (isMounted) {
@@ -118,7 +122,7 @@ function JobDetails() {
                         src={followingIcon}
                         alt="Apply Button Icon"
                       /> */}
-                        <svg
+                        {/* <svg
                           className="mr-[5px]"
                           width="40"
                           height="41"
@@ -149,8 +153,34 @@ function JobDetails() {
                               />
                             </clipPath>
                           </defs>
-                        </svg>
-                        Following
+                        </svg> */}
+                        {post.professional_follow_jobs[0] === undefined && (
+                          <Image
+                            alt="picture"
+                            src={following}
+                            className="w-[25px] h-[25px] border-[#F48FB1] mr-2"
+                          />
+                        )}
+                        {post.professional_follow_jobs[0]?.follow_status && (
+                          <Image
+                            alt="picture"
+                            src={smallfollowing}
+                            className="w-[40px] h-[40px] border-[#F48FB1] mr-2"
+                          />
+                        )}
+                        {post.professional_follow_jobs[0] !== undefined &&
+                          !post.professional_follow_jobs[0].follow_status && (
+                            <Image
+                              alt="followIcon"
+                              src={following}
+                              className="w-[25px] h-[25px] border-[#F48FB1] mr-2"
+                            />
+                          )}
+                        {post.professional_follow_jobs[0] === undefined
+                          ? "Follow"
+                          : post.professional_follow_jobs[0].follow_status
+                          ? "Following"
+                          : "Follow"}
                       </button>
                     </div>
                   </div>

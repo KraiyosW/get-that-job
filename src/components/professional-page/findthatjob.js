@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import babyswim from "../../image/babyswim.png";
 import following from "../../image/following.png";
+import smallfollowing from "@/image/smallfollowing.png";
+// import smallfollowing from "../../image/small-following.png";
 import categorypic from "../../image/categorypic.png";
 import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
@@ -12,23 +14,23 @@ import Warning from "../Warning";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
 
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 const Findthatjob = () => {
   const [job, setJob] = useState([]);
-
   const [searchMessage, setSearchMessage] = useState("");
   const [category, setCategory] = useState("");
   const [selectedJobType, setSelectedJobType] = useState("");
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [followStatus, setFollowStatus] = useState({});
+  const [followIcon, setFollowIcon] = useState(following);
   const [sortAscending, setSortAscending] = useState(false);
   const [sortDescending, setSortDescending] = useState(false);
+  
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 
   const getJobs = async () => {
     try {
@@ -114,10 +116,13 @@ const Findthatjob = () => {
     if (status) {
       if (status.follow_status === undefined) {
         newFollowStatus[id] = true;
+        setFollowIcon(smallfollowing);
       } else if (status.follow_status) {
         newFollowStatus[id] = false;
+        setFollowIcon(following);
       } else if (!status.follow_status) {
         newFollowStatus[id] = true;
+        setFollowIcon(smallfollowing);
       }
     }
 
@@ -327,11 +332,39 @@ const Findthatjob = () => {
                     <div className="flex flex-row justify-between items-center min-[701px]:gap-[75px]">
                       <div className="flex gap-2 p-1 items-center flex-row w-[200px]">
                         <div>
-                          <Image
+                          {item.professional_follow_jobs[0] === undefined && (
+                            <Image
+                              alt="picture"
+                              src={following}
+                              className="w-[22px] h-[22px] border-[#F48FB1]"
+                            />
+                          )}
+                          {item.professional_follow_jobs[0]?.follow_status && (
+                            <Image
+                              alt="picture"
+                              src={smallfollowing}
+                              className="w-[40px] h-[40px] border-[#F48FB1]"
+                            />
+                          )}
+                          {item.professional_follow_jobs[0] !== undefined &&
+                            !item.professional_follow_jobs[0].follow_status && (
+                              <Image
+                                alt="followIcon"
+                                src={following}
+                                className="w-[22px] h-[22px] border-[#F48FB1]"
+                              />
+                            )}
+                          {/* <Image
                             alt="picture"
-                            src={following}
-                            className="w-[22px] h-[22px] border-[#F48FB1]"
-                          />
+                            {
+                              item.professional_follow_jobs[0] === undefined
+                                ? src={following} className="w-[22px] h-[22px] border-[#F48FB1]"
+                                : item.professional_follow_jobs[0].follow_status
+                                ? src={smallfollowing} className="w-[40px] h-[40px] border-[#F48FB1]"
+                                : src={following} className="w-[22px] h-[22px] border-[#F48FB1]"
+                            }
+                            
+                          /> */}
                         </div>
                         <button
                           onClick={() =>

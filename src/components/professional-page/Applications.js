@@ -13,6 +13,7 @@ import time from "../../image/time.png";
 import letter from "../../image/letter.png";
 import waiting from "../../image/waiting.png";
 import { useAuth } from "@/contexts/authentication";
+import Warning from "../Warning";
 // import review from "../../image/review.png";
 // import finished from "../../image/finished.png";
 // import declined from "../../image/declined.png";
@@ -27,7 +28,8 @@ function Applications() {
   const [job, setJob] = useState([]);
   const [jobStatus, setJobStatus] = useState([]);
   const [selectedOption, setSelectedOption] = useState("all");
-  const {professionalState} = useAuth();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
   
   const router = useRouter();
   const AllJob = async () => {
@@ -75,8 +77,10 @@ function Applications() {
     }
   };
   useEffect(() => {
+    const token = localStorage.getItem("sb:token"); 
+    setIsAuthenticated(!!token); 
     AllJob();
-  }, [jobStatus]);
+  }, [jobStatus,isAuthenticated]);
 
   const toggleExpanded = (postId) => {
     setIsExpanded((prevId) => (prevId === postId ? null : postId));
@@ -84,6 +88,11 @@ function Applications() {
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
+  if(!isAuthenticated){
+    return(<Warning/>)
+  }
+
+
 
   return (
     <>

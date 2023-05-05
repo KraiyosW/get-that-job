@@ -104,6 +104,9 @@ function AuthProvider(props) {
       localStorage.setItem("professional_id", professional[0].professtional_id);
       localStorage.setItem("sb:token", response.data.token);
       localStorage.setItem("email", response.data.user.user.email);
+      sessionStorage.setItem("professional_id", professional[0].professtional_id);
+      sessionStorage.setItem("sb:token", response.data.token);
+      sessionStorage.setItem("email", response.data.user.user.email);
       setProfessionalState({
         ...professionalState,
         user: response.data.user.user,
@@ -131,8 +134,22 @@ function AuthProvider(props) {
           withCredentials: true,
         }
       );
+      const { data: recruiters, error: recruitersError } = await supabase
+      .from("recruiters")
+      .select("*")
+      .eq("email", response.data.user.user.email)
+      .eq("role", "recruiter");
+
+    if (recruitersError) {
+      console.log(recruitersError);
+      throw new Error(recruitersError.message);
+    }
+      localStorage.setItem("recruiter_id", recruiters[0].recruiter_id);
       localStorage.setItem("sb:token", response.data.token);
       localStorage.setItem("email", response.data.user.user.email);
+      sessionStorage.setItem("recruiter_id", recruiters[0].recruiter_id);
+      sessionStorage.setItem("sb:token", response.data.token);
+      sessionStorage.setItem("email", response.data.user.user.email);
       setRecruiterState({
         ...recruiterState,
         user: response.data.user.user,
@@ -153,7 +170,12 @@ function AuthProvider(props) {
       localStorage.removeItem("user");
       localStorage.removeItem("email");
       localStorage.removeItem("professional_id");
-      sessionStorage.removeItem("sb:token");
+      localStorage.removeItem("recruiter_id");
+      localStorage.removeItem("myState");
+      sessionStorage.removeItem("user");
+      sessionStorage.removeItem("email");
+      sessionStorage.removeItem("recruiter_id");
+      sessionStorage.removeItem("professional_id");
       setState({ ...state, user: null });
       setRecruiterState({ ...recruiterState, user: null, email: null });
       setProfessionalState({ ...professionalState, user: null, email: null });
