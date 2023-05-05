@@ -35,14 +35,17 @@ function AuthProvider(props) {
     loading: true,
     error: null,
     user: null,
-    email: "",
+    email: null,
+    professionalId: null,
   });
   const [recruiterState, setRecruiterState] = useState({
     loading: true,
     error: null,
     user: null,
-    email: "",
+    email: null,
   });
+
+  // const [professionalIdState, setProfessionalIdState] = useState("");
 
   const professionalRegister = async (data) => {
     try {
@@ -105,6 +108,7 @@ function AuthProvider(props) {
         ...professionalState,
         user: response.data.user.user,
         email: response.data.user.user.email,
+        professionalId: professional[0].professtional_id,
       });
       console.log(response);
 
@@ -114,7 +118,6 @@ function AuthProvider(props) {
       throw error;
     }
   };
-
   const recruiterLogin = async (data) => {
     try {
       const headers = {

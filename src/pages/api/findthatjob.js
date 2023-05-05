@@ -5,84 +5,85 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-
-
 export default async function FindthatJob(req, res) {
+  const { profid } = req.query;
 
-    try {
-        const job = await supabase.from('jobs_postings').select('*')
-        res.statusCode = 200
-        res.json({ job })
+  try {
+    const job = await supabase
+      .from("jobs_postings")
+      .select(
+        "*, professional_follow_jobs ( professional_id,job_post_id, follow_status )"
+      )
+      .eq("professional_follow_jobs.professional_id", profid);
 
-    } catch (error) {
-        res.statusCode = 500
-        res.json({ error: error.message })
-    }
-
+    res.statusCode = 200;
+    res.json({ job });
+  } catch (error) {
+    res.statusCode = 500;
+    res.json({ error: error.message });
+  }
 }
 
-    // const searchMessage = req.query.title || "";
-    // const category = req.query.category || "";
-    // const selectedJobType = req.query.type || "";
+// const searchMessage = req.query.title || "";
+// const category = req.query.category || "";
+// const selectedJobType = req.query.type || "";
 
-    // console.log(category);
+// console.log(category);
 
-    // let query = supabase.from("jobs_postings").select();
+// let query = supabase.from("jobs_postings").select();
 
-    // if (searchMessage) {
-    //     query = query.ilike("job_title", `%${searchMessage}%`);
-    // }
+// if (searchMessage) {
+//     query = query.ilike("job_title", `%${searchMessage}%`);
+// }
 
-    // if (category) {
-    //     query = query.eq("job_category", category);
-    // }
+// if (category) {
+//     query = query.eq("job_category", category);
+// }
 
-    // if (selectedJobType) {
-    //     query = query.eq("job_type", selectedJobType);
-    // }
+// if (selectedJobType) {
+//     query = query.eq("job_type", selectedJobType);
+// }
 
-    // const { data, error } = await query;
+// const { data, error } = await query;
 
-    // if (error) {
-    //     res.status(500).json({ error: "An error occurred while fetching jobs." });
-    // } else {
-    //     res.status(200).json({ jobs: data });
-    // }
+// if (error) {
+//     res.status(500).json({ error: "An error occurred while fetching jobs." });
+// } else {
+//     res.status(200).json({ jobs: data });
+// }
 
+// const searchMessage = req.query.title || "";
+// const category = req.query.category || "";
+// const selectedJobType = req.query.job_type || "";
+// const { data: result } = await supabase.from("jobs_postings").select().eq("job_category", category)
+// return (
+//     res.json(searchMessage)
+// )
+// return (
+//     res.json({ data: result })
+// )
 
-    // const searchMessage = req.query.title || "";
-    // const category = req.query.category || "";
-    // const selectedJobType = req.query.job_type || "";
-    // const { data: result } = await supabase.from("jobs_postings").select().eq("job_category", category)
-    // return (
-    //     res.json(searchMessage)
-    // )
-    // return (
-    //     res.json({ data: result })
-    // )
+// let query = supabase.from("jobs_postings").select("*");
 
-    // let query = supabase.from("jobs_postings").select("*");
+// if (searchMessage) {
+//     query = query.where("job_title", "ilike", `%${searchMessage}%`);
+// }
+// if (selectedOption) {
+//     query = query.where("job_category", selectedOption);
+// }
+// if (selectedJobType) {
+//     query = query.where("job_type", selectedJobType);
+// }
 
-    // if (searchMessage) {
-    //     query = query.where("job_title", "ilike", `%${searchMessage}%`);
-    // }
-    // if (selectedOption) {
-    //     query = query.where("job_category", selectedOption);
-    // }
-    // if (selectedJobType) {
-    //     query = query.where("job_type", selectedJobType);
-    // }
+// try {
+//     const { data } = await query.exec();
 
-    // try {
-    //     const { data } = await query.exec();
-
-    //     res.status(200).json({
-    //         data,
-    //     });
-    // } catch (error) {
-    //     res.status(500).json({ error: error.message });
-    // }
-
+//     res.status(200).json({
+//         data,
+//     });
+// } catch (error) {
+//     res.status(500).json({ error: error.message });
+// }
 
 // const searchMessage = req.query.job_title || "";
 // const selectedOption = req.query.job_category || "";

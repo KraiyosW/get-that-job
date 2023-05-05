@@ -10,16 +10,15 @@ import calendar from "../../image/calendar.png";
 import dollar from "../../image/dollar.png";
 import Warning from "../Warning";
 import Link from "next/link";
+import jwtDecode from "jwt-decode";
 import { createClient } from "@supabase/supabase-js";
-import { useAuth } from "@/contexts/authentication.js";
-
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Findthatjob = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
   const [job, setJob] = useState([]);
   const [searchMessage, setSearchMessage] = useState("");
   const [category, setCategory] = useState("");
@@ -29,15 +28,18 @@ const Findthatjob = () => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [followStatus, setFollowStatus] = useState({});
-  const {professionalState} = useAuth();
-  const userEmail = professionalState.email
 
   const getJobs = async () => {
     try {
-      const result = await axios.get("http://localhost:3000/api/findthatjob");
+      const result = await axios.get(
+        `http://localhost:3000/api/findthatjob?profid=${profId}`
+      );
       setJob(result.data.job.data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   // const { searchMessage, category, selectedJobType } = input;
   // try {
   //     const query = new URLSearchquery();
@@ -100,49 +102,38 @@ const Findthatjob = () => {
     getJobs();
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    getJobs();
+  }, [followStatus]);
+
+  console.log(job);
+
   if (!isAuthenticated) {
     return <Warning />;
   }
+  const profId = localStorage.getItem("professional_id");
 
-  const handleFollowClick = async (id) => {
+  const handleFollowClick = async (id, status) => {
     console.log(id);
-    try {
-      const { data: professionalData, error: professionalError } = await supabase
-        .from('professional')
-        .select('*')
-        .eq('email', userEmail)
-        .single();
-      if (professionalError) {
-        throw professionalError;
+    console.log(status);
+    await axios.post("/api/following", {
+      professional_id: profId,
+      job_post_id: id,
+    });
+
+    const newFollowStatus = { ...followStatus };
+    if (status) {
+      if (status.follow_status === undefined) {
+        newFollowStatus[id] = true;
+      } else if (status.follow_status) {
+        newFollowStatus[id] = false;
+      } else if (!status.follow_status) {
+        newFollowStatus[id] = true;
       }
-      if (!professionalData) {
-        throw new Error('Professional not found');
-      }
-      console.log(professionalData)
-      const { data, error } = await supabase
-        .from('professional_follow_jobs')
-        .update({
-          professional_id :  professionalData.professional_id,
-          follow_status: true,
-          followed_at: new Date().toISOString(),
-        })
-        .eq('job_post_id', id)
-        .eq('professional_id', professionalData.professional_id);
-      if (error) {
-        throw error;
-      }
-      console.log(data);
-      setFollowStatus({
-        ...followStatus,
-        [id]: !followStatus[id],
-      });
-    } catch (error) {
-      console.error(error);
     }
+
+    setFollowStatus(newFollowStatus);
   };
-  
-  
-  
 
   const filterJobs = job.filter((jobs) => {
     if (
@@ -416,11 +407,21 @@ const Findthatjob = () => {
                           />
                         </div>
                         <button
-                          onClick={() => handleFollowClick(item.job_post_id)}
+                          onClick={() =>
+                            handleFollowClick(
+                              item.job_post_id,
+                              item.professional_follow_jobs[0]
+                            )
+                          }
                         >
-                          {followStatus[item.job_post_id]
+                          {item.professional_follow_jobs[0] === undefined
+                            ? "Follow"
+                            : item.professional_follow_jobs[0].follow_status
                             ? "Following"
                             : "Follow"}
+                          {/* {followStatus[item.job_post_id]
+                            ? "Following"
+                            : "Follow"} */}
                         </button>
                       </div>
                       <div className="max-[768px]:flex max-[768px]:items-center">

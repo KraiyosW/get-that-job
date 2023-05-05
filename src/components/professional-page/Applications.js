@@ -31,7 +31,7 @@ function Applications() {
   
   const router = useRouter();
   const AllJob = async () => {
-    const userEmail = String(professionalState.email);
+    const userEmail = String(localStorage.getItem('email'));
     try {
       const result = await supabase
         .from("professional_apply_jobs")

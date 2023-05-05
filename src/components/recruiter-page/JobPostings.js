@@ -33,7 +33,7 @@ function JobPostings() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const router= useRouter()
-  const userEmail =  recruiterState.email
+  const userEmail = String(localStorage.getItem('email'))
 
 
   const AllJob = async () => {
