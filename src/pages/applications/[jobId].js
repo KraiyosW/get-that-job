@@ -5,12 +5,12 @@ import { useRouter } from "next/router";
 import SidebarProfessional from "@/components/SidebarProfessional";
 import Image from "next/image";
 import applyIcon from "@/image/icon-apply.png";
+import mailIcon from "@/image/icon-mail.png";
 import backIcon from "@/image/icon-back.png";
 import companyLogo from "@/image/logo-web-works.png";
 import upload from "@/image/upload.png";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
-import { useAuth } from "@/contexts/authentication";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -47,6 +47,7 @@ function JobApply() {
         .eq("email", userEmail)
         .single();
       setUser(result.data);
+      setExperience(result.data.experience);
     } catch (error) {
       console.error(error);
     }
@@ -57,7 +58,7 @@ function JobApply() {
   }, []);
 
   useEffect(() => {
-    // Fetch the specific post from Supabase based on the id parameter
+    let isMounted = true;
     const fetchPost = async () => {
       try {
         const posts = await supabase
@@ -65,20 +66,32 @@ function JobApply() {
           .select(`*, recruiters (*)`)
           .eq("job_post_id", Number(id))
           .single();
-        setPost(posts.data);
-        setLoading(false);
-        // Calculate time ago
-        const createdDate = new Date(post.created_at);
-        const currentDate = new Date();
-        const diffTime = Math.abs(currentDate - createdDate);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        setTimeAgo(`${diffDays}`);
+        if (isMounted) {
+          setPost(posts.data);
+          setLoading(false);
+          // Calculate time ago
+          const createdDate = new Date(posts.data.created_at);
+          const currentDate = new Date();
+          const diffTime = Math.abs(currentDate - createdDate);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          setTimeAgo(`${diffDays}`);
+        }
       } catch (error) {
         console.error(error);
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
-    if (id) fetchPost();
+
+    if (id) {
+      setLoading(true);
+      fetchPost();
+    }
+
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
   const handleSubmit = async (event) => {
@@ -306,11 +319,11 @@ function JobApply() {
                     <div className="btn">
                       <button class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white">
                         <Image
-                          className="w-[20px] h-[20px] mr-[10px]"
-                          src={applyIcon}
+                          className="w-[20px] h-[18px] mr-[10px]"
+                          src={mailIcon}
                           alt="apply icon"
                         />
-                        APPLY NOW
+                        SEND APPLICATION
                       </button>
                     </div>
                   </div>
@@ -505,7 +518,7 @@ function JobApply() {
                                 name="experience"
                                 placeholder="Worked 6 years in a bitcoin farm until I decided to change my life...."
                                 style={{ resize: "none" }}
-                                value={user.experience}
+                                value={experience}
                                 onChange={handleExpChange}
                               />
                             </div>
@@ -535,14 +548,14 @@ function JobApply() {
                               <p className="text-rose-500">{errorInterested}</p>
                             )}
                           </div>
-                          <div className="btn flex justify-center">
-                            <button class="apply-button bg-pink-primary rounded-[16px] text-white w-[173px] h-[56px] py-[16px] pr-[24px] text-right font-medium relative">
+                          <div className="btn flex flex-row justify-center">
+                            <button class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white">
                               <Image
-                                className="w-[20px] h-[20px] absolute left-[27px]"
-                                src={applyIcon}
+                                className="w-[20px] h-[18px] mr-[10px]"
+                                src={mailIcon}
                                 alt="apply icon"
                               />
-                              Apply Now
+                              SEND APPLICATION
                             </button>
                           </div>
                         </div>

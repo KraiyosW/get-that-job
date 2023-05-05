@@ -25,7 +25,7 @@ function JobDetails() {
   const id = router.query["jobId"];
 
   useEffect(() => {
-    // Fetch the specific post from Supabase based on the id parameter
+    let isMounted = true;
     const fetchPost = async () => {
       try {
         const posts = await supabase
@@ -35,22 +35,33 @@ function JobDetails() {
           )
           .eq("job_post_id", Number(id))
           .single();
-        setPost(posts.data);
-        console.log(posts.data);
-        setLoading(false);
-        // Calculate time ago
-        const createdDate = new Date(post.created_at);
-        const currentDate = new Date();
-        const diffTime = Math.abs(currentDate - createdDate);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        setTimeAgo(`${diffDays}`);
+        if (isMounted) {
+          setPost(posts.data);
+          setLoading(false);
+          // Calculate time ago
+          const createdDate = new Date(posts.data.created_at);
+          const currentDate = new Date();
+          const diffTime = Math.abs(currentDate - createdDate);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          setTimeAgo(`${diffDays}`);
+        }
       } catch (error) {
         console.error(error);
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
-    if (id) fetchPost();
-  });
+
+    if (id) {
+      setLoading(true);
+      fetchPost();
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
   const handleGoBack = () => {
     router.push("/find-that-job");
