@@ -28,7 +28,7 @@ const Findthatjob = () => {
     try {
       const result = await axios.get("http://localhost:3000/api/findthatjob");
       setJob(result.data.job.data);
-    } catch (error) {}
+    } catch (error) { }
   };
   // const { searchMessage, category, selectedJobType } = input;
   // try {

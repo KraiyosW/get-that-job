@@ -1,8 +1,10 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
 import LogoMockup from "../../image/logo-mockup.png";
+import { useAuth } from "@/contexts/authentication";
+import { useRouter } from "next/router";
 const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
@@ -13,6 +15,41 @@ function Profile() {
   );
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const { recruiterState } = useAuth();
+  const userEmail = recruiterState.email;
+  const [data, setData] = useState({})
+  const router = useRouter()
+
+
+  const [formData, setFormData] = useState({
+    email: "",
+    company_name: "",
+    company_website: "",
+    about_company: "",
+    email: userEmail,
+
+  });
+
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const { data, error } = await supabase
+        .from('recruiters')
+        .update(formData)
+        .eq('email', userEmail);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      console.log(data);
+      router.push('/job-postings');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   function handleFileInputChange(event) {
     const file = event.target.files[0];
@@ -40,12 +77,46 @@ function Profile() {
       .from("profiles/recruiter")
       .upload(`user-${Date.now()}`, file);
 
-      if (error) {
+    if (error) {
       alert("Error uploading file: ", error.message);
     } else {
       alert("File uploaded successfully!");
     }
   };
+
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value
+    })
+  }
+
+  const fetchData = async () => {
+    try {
+      const result = await supabase
+        .from("recruiters")
+        .select('*')
+        .eq("email", userEmail)
+        .single();
+      setData(result.data);
+      console.log(result);
+      setFormData({
+        ...formData,
+        email: result.data.email,
+        company_name: result.data.company_name,
+        company_website: result.data.company_website,
+        about_company: result.data.about_company,
+        email: userEmail,
+      });
+
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -108,39 +179,47 @@ function Profile() {
             </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[300px] h-[36px]"
-              name="companyEmail"
+              name="email"
               placeholder="web.works@mail.com"
               type="text"
+              value={formData.email}
+              onChange={handleChange}
             />
             <div className="mb-[4px] mt-[8px]" id="overline">
               COMPANY NAME
             </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[300px] h-[36px]"
-              name="companyName"
+              name="company_name"
               placeholder="The Web Works"
               type="text"
+              value={formData.company_name}
+              onChange={handleChange}
             />
             <div className="mb-[4px] mt-[8px]" id="overline">
               COMPANY WEBSITE
             </div>
             <input
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[300px] h-[36px]"
-              name="companyWebsite"
+              name="company_website"
               placeholder="www.webworks.com"
               type="text"
+              value={formData.company_website}
+              onChange={handleChange}
             />
             <div className="mb-[4px] mt-[8px]" id="overline">
               ABOUT THE COMPANY
             </div>
             <textarea
               className="border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[250px]"
-              name="aboutTheCompany"
+              name="about_company"
+              value={formData.about_company}
+              onChange={handleChange}
               placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque porta nunc viverra velit tincidunt, non vehicula augue vehicula. Donec viverra luctus nisl, sed vehicula ligula. Vivamus maximus metus a magna fermentum ullamcorper. Phasellus ultrices vestibulum ligula ut pellentesque. Quisque quis congue quam. Nunc porttitor risus lorem, in blandit augue iaculis vitae. Cras sit amet fringilla neque. Fusce ac elit ut quam ultrices bibendum. Curabitur vitae dignissim quam. Suspendisse aliquet massa id orci volutpat ullamcorper. Nunc at ante sem. Etiam elementum, mi eget aliquam lobortis, elit libero tempus ex, vel pretium nisi risus ac augue."
             ></textarea>
             <button
               className="button_pink_new mt-[24px] w-[180px]"
-              onClick={handleUpdateProfile}
+              onClick={handleSubmit}
             >
               UPDATE PROFILE
             </button>
