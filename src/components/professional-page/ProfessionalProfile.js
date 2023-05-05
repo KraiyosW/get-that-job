@@ -173,7 +173,6 @@ function ProfessionalProfile() {
               value={formData.phone_number}
               onChange={handleChange}
             />
-            <p className="text-[#8E8E8E] mt-[4px]" id="overline">+[COUNTRY CODE][NUMBER]</p>
             <div className="mb-[4px] mt-[8px]" id="overline">
               BIRTHDATE
             </div>

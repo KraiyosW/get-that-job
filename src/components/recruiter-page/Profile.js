@@ -124,6 +124,7 @@ function Profile() {
         company_name: result.data.company_name,
         company_website: result.data.company_website,
         about_company: result.data.about_company,
+        logo: result.data.logo,
         email: userEmail,
       });
 
@@ -152,7 +153,13 @@ function Profile() {
                 <img src={imagePreview} alt="Selected file preview" />
               ) : (
                 <Image
-                  src={LogoMockup}
+                  src={
+                    formData.logo === null
+                      ? LogoMockup
+                      : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${formData.logo}`
+                  }
+                  width={100}
+                  height={100}
                   alt="Company Logo"
                   className="w-[100%] h-auto rounded-[8px]"
                 />

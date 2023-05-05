@@ -1,4 +1,4 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRecruiterPost } from "@/hooks/recruiterPost.js";
 import { useRouter } from "next/router";
 import Warning from "../Warning";
@@ -9,11 +9,7 @@ function CreateNewJob() {
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { createPost, isLoading, isError } = useRecruiterPost();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-<<<<<<< HEAD
-  const userEmail = localStorage.getItem('email');
-=======
-  const userEmail = myState;
->>>>>>> 7afe7cdf421dc9ceb636e9f44347446acbb7f7d1
+  const userEmail = localStorage.getItem("email");
   const router = useRouter();
 
   useEffect(() => {
@@ -102,10 +98,10 @@ function CreateNewJob() {
     }
   };
 
-  if(!isAuthenticated){
-    return(<Warning/>)
+  if (!isAuthenticated) {
+    return (<Warning />)
   }
-  
+
   return (
     <>
       <main className="bg-white-secondary h-screen">

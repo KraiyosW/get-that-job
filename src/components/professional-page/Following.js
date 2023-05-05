@@ -138,7 +138,7 @@ const Following = () => {
 
           <div className="flex flex-col flex-wrap w-full items-start">
             <h6 className="max-[700px]:text-center mb-4 mt-4">
-              You are following {job.length} jobs.
+              You are following jobs.
             </h6>
             <div className="flex felx-row flex-wrap gap-[15px]">
               {job.map((item, index) => {
@@ -149,7 +149,13 @@ const Following = () => {
                   >
                     <div className="flex items-center gap-4">
                       <div>
-                        <Image alt="picture" src={babyswim} />
+                        <Image alt="picture" src={
+                          item.jobs_postings.recruiters.logo === null
+                            ? logoMockup
+                            : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${item.jobs_postings.recruiters.logo}`
+                        }
+                          width={100}
+                          height={100} />
                       </div>
 
                       <div className="flex flex-col">
