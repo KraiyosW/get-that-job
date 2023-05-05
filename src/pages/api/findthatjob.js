@@ -12,7 +12,7 @@ export default async function FindthatJob(req, res) {
         const job = await supabase
             .from("jobs_postings")
             .select(
-                "*, professional_follow_jobs ( professional_id,job_post_id, follow_status )"
+                "*, professional_follow_jobs ( professional_id,job_post_id, follow_status ) , recruiters ( logo )"
             )
             .eq("professional_follow_jobs.professional_id", profid)
             .eq('post_status', true)
