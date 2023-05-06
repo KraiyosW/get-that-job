@@ -5,6 +5,7 @@ import Image from "next/image";
 import LogoMockup from "../../image/logo-mockup.png";
 import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
+import { useToast, Box, Button } from '@chakra-ui/react'
 const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseURL, supabaseAnonKey);
@@ -16,6 +17,7 @@ function Profile() {
   const userEmail = recruiterState.email;
   const [data, setData] = useState({});
   const router = useRouter();
+  const toast = useToast()
 
   const [formData, setFormData] = useState({
     email: null,
@@ -50,12 +52,47 @@ function Profile() {
       if (uploadError) {
         throw uploadError;
       }
-      alert("Update profile completed!");
+      toast({
+        position: 'top',
+        render: () => (
+          <Box
+            className="bg-pink-primary flex flex-col justify-center text-center"
+            p={3}
+            color="white"
+            borderRadius="md"
+            boxShadow="md"
+          >
+            <div>Profile updated .</div>
+            <div>Profile has been successfully updated .</div>
+
+          </Box>
+        ),
+        duration: 3000,
+        isClosable: true,
+      });
 
       router.push("/job-postings");
     } catch (error) {
       console.error(error);
-      alert("Update profile failed!");
+      toast({
+        position: 'top',
+        render: () => (
+          <Box
+            className="bg-pink-primary flex flex-col justify-center text-center"
+            p={3}
+            color="white"
+            borderRadius="md"
+            boxShadow="md"
+          >
+            <div>Profile updated .</div>
+            <div>Profile has been successfully updated .</div>
+
+          </Box>
+        ),
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push("/job-postings");
     }
   };
 

@@ -13,6 +13,8 @@ import dollar from "../../image/dollar.png";
 import Warning from "../Warning";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
+import numeral from "numeral";
+
 
 const Findthatjob = () => {
   const [job, setJob] = useState([]);
@@ -278,14 +280,14 @@ const Findthatjob = () => {
                   <div className="flex flex-row items-center max-[700px]:justify-center">
 
                     <button
-                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] ${isAscendingClicked && sortAscending ? "text-[pink]" : ""
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] ${isAscendingClicked && sortAscending ? "bg-[#f08fb0] text-white" : ""
                         }`}
                       onClick={handleSortAscending}
                     >
                       Low to High
                     </button>
                     <button
-                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "text-[pink]" : ""
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "bg-[#f08fb0] text-white" : ""
                         }`}
                       onClick={handleSortDescending}
                     >
@@ -298,7 +300,7 @@ const Findthatjob = () => {
             </div>
           </div>
 
-          <div className="flex flex-col flex-wrap w-full items-center">
+          <div className="flex flex-col flex-wrap w-full ">
             <h6 className="max-[700px]:text-center mb-4 mt-4">
               {filterJobs.length} jobs for you
             </h6>
@@ -307,7 +309,7 @@ const Findthatjob = () => {
                 return (
                   <div
                     key={index}
-                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[320px] h-[190px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]"
+                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[420px] h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]"
                   >
                     <div className="flex items-center gap-4">
                       <div>
@@ -342,14 +344,14 @@ const Findthatjob = () => {
                           </div>
                           <div className="flex gap-1 items-center">
                             <Image alt="picture" src={dollar} />
-                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${item.salary_min_range} - ${item.salary_max_range}`}</p>
+                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${numeral(item.salary_min_range).format("0a")} - ${numeral(item.salary_max_range).format("0a")}`}</p>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex flex-row justify-between items-center min-[701px]:gap-[75px]">
-                      <div className="flex gap-2 p-1 items-center flex-row w-[200px]">
+                    <div className="flex flex-row items-center  ">
+                      <div className="flex gap-2 p-1 items-center flex-row ">
                         <div>
                           {item.professional_follow_jobs[0] === undefined && (
                             <Image
@@ -373,17 +375,7 @@ const Findthatjob = () => {
                                 className="w-[22px] h-[22px] border-[#F48FB1]"
                               />
                             )}
-                          {/* <Image
-                            alt="picture"
-                            {
-                              item.professional_follow_jobs[0] === undefined
-                                ? src={following} className="w-[22px] h-[22px] border-[#F48FB1]"
-                                : item.professional_follow_jobs[0].follow_status
-                                ? src={smallfollowing} className="w-[40px] h-[40px] border-[#F48FB1]"
-                                : src={following} className="w-[22px] h-[22px] border-[#F48FB1]"
-                            }
-                            
-                          /> */}
+
                         </div>
                         <button
                           onClick={() =>
@@ -403,7 +395,7 @@ const Findthatjob = () => {
                             : "Follow"} */}
                         </button>
                       </div>
-                      <div className="max-[768px]:flex max-[768px]:items-center">
+                      <div className="max-[768px]:flex max-[768px]:items-center ml-[70px]">
                         <button
                           className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3"
                           onClick={() => handleSeeMore(item.job_post_id)}

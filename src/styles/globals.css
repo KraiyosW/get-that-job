@@ -63,6 +63,7 @@ h6#heading6 {
   line-height: 1.5rem;
   font-weight: 400;
 }
+
 p#body1 {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -74,6 +75,7 @@ p#body1 {
   line-height: 1.25rem;
   font-weight: 400;
 }
+
 p#body2 {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -85,6 +87,7 @@ p#body2 {
   line-height: 1rem;
   font-weight: 400;
 }
+
 p#caption {
   font-size: 0.75rem;
   line-height: 1rem;
@@ -96,6 +99,7 @@ p#caption {
   line-height: 0.75rem;
   font-weight: 400;
 }
+
 p#overline {
   font-size: 0.625rem;
   line-height: 0.75rem;
@@ -137,7 +141,7 @@ input#upload {
   display: none;
 }
 
-input#upload + label {
+input#upload+label {
   background-color: #f48fb1;
   padding: 8px 16px 8px 16px;
   border-radius: 8px;
@@ -183,12 +187,14 @@ button.button_pink_tertiary {
   border-radius: 16px;
   color: white;
 }
+
 button.button_gray {
   background-color: #e1e2e1;
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
   color: #8e8e8e;
 }
+
 button.button_previous {
   width: 131px;
 }
@@ -319,10 +325,22 @@ input#input-glasses:focus {
   background-image: none;
   text-indent: 0px;
 }
+
 button#btn-white,
-button#btn-gray
-{
+button#btn-gray {
   width: 200px;
+}
+
+.followButton {
+
+  color: pink;
+  font-size: 100px;
+  width: 80px;
+}
+
+.followButton:hover {
+  background-color: transparent !important;
+  border: none !important;
 }
 
 /* h1 {
