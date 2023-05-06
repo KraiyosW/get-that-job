@@ -155,7 +155,7 @@ function ShowCandidates() {
     if (!isAuthenticated) {
       return (<Warning />)
     }
-  }
+  
 
 
   return (
