@@ -55,10 +55,10 @@ function AuthProvider(props) {
         },
       });
       console.log(response);
-      alert("Registration completed!");
+
     } catch (error) {
       console.error("Error:", error);
-      alert("Registration failed.");
+
     }
   };
 
@@ -70,10 +70,10 @@ function AuthProvider(props) {
         },
       });
       console.log(response);
-      alert("Registration completed!");
+
     } catch (error) {
       console.error("Error:", error);
-      alert("Registration failed.");
+
     }
   };
 
@@ -135,15 +135,15 @@ function AuthProvider(props) {
         }
       );
       const { data: recruiters, error: recruitersError } = await supabase
-      .from("recruiters")
-      .select("*")
-      .eq("email", response.data.user.user.email)
-      .eq("role", "recruiter");
+        .from("recruiters")
+        .select("*")
+        .eq("email", response.data.user.user.email)
+        .eq("role", "recruiter");
 
-    if (recruitersError) {
-      console.log(recruitersError);
-      throw new Error(recruitersError.message);
-    }
+      if (recruitersError) {
+        console.log(recruitersError);
+        throw new Error(recruitersError.message);
+      }
       localStorage.setItem("recruiter_id", recruiters[0].recruiter_id);
       localStorage.setItem("sb:token", response.data.token);
       localStorage.setItem("email", response.data.user.user.email);
