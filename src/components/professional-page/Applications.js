@@ -100,72 +100,7 @@ function Applications() {
           <h4 className="max-[700px]:text-center mb-[24px]" id="heading4">
             Your applications
           </h4>
-          <p className="max-[700px]:text-center mb-[6px]" id="overline">
-            Filter your applications
-          </p>
-          <form className="flex max-[700px]:flex-col flex-row flex-wrap gap-[12px]">
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="all"
-                  checked={selectedOption === "all"}
-                  onChange={handleOptionChange}
-                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
-                  id="my-radio"
-                />
-                <span>All</span>
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="waiting"
-                  checked={selectedOption === "waiting"}
-                  onChange={handleOptionChange}
-                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
-                />
-                Waiting
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="in-progress"
-                  checked={selectedOption === "in-progress"}
-                  onChange={handleOptionChange}
-                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
-                />
-                In progress
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="finished"
-                  checked={selectedOption === "finished"}
-                  onChange={handleOptionChange}
-                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
-                />
-                Finished
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="declined"
-                  checked={selectedOption === "declined"}
-                  onChange={handleOptionChange}
-                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
-                />
-                Declined
-              </label>
-            </div>
-          </form>
+
           <div className="flex flex-col">
             <h6
               className="max-[700px]:text-center mt-[20px] mb-[8px]"
