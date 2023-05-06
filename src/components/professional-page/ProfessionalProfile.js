@@ -6,8 +6,6 @@ import { useRouter } from "next/router";
 import { useToast, Box, Button } from '@chakra-ui/react'
 import Image from "next/image";
 import LogoMockup from "../../image/logo-mockup.png";
-import Warning from "../Warning";
-
 
 function ProfessionalProfile() {
   const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -17,12 +15,16 @@ function ProfessionalProfile() {
     supabaseAnonKey
   );
   const { professionalState } = useAuth();
-  const userEmail = professionalState.email;
+  
   const [data, setData] = useState({})
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const router = useRouter()
+
+  const userEmail = professionalState.email;
+
   const toast = useToast()
+
 
   const [formData, setFormData] = useState({
     email: "",
