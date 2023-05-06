@@ -15,7 +15,6 @@ import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
 import numeral from "numeral";
 
-
 const Findthatjob = () => {
   const [job, setJob] = useState([]);
   const [searchMessage, setSearchMessage] = useState("");
@@ -29,7 +28,6 @@ const Findthatjob = () => {
   const [sortDescending, setSortDescending] = useState(false);
   const [isAscendingClicked, setIsAscendingClicked] = useState(false);
   const [isDescendingClicked, setIsDescendingClicked] = useState(false);
-
 
   const getJobs = async () => {
     try {
@@ -62,7 +60,6 @@ const Findthatjob = () => {
       setIsAscendingClicked(false);
     }
   };
-
 
   const [formData, setFormData] = useState({
     job_category: "",
@@ -106,7 +103,6 @@ const Findthatjob = () => {
     const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
     setIsAuthenticated(!!token);
     getJobs();
-
   }, [isAuthenticated, followStatus]);
   console.log(job);
 
@@ -138,6 +134,7 @@ const Findthatjob = () => {
     }
 
     setFollowStatus(newFollowStatus);
+    console.log(followStatus);
   };
 
   const filterJobs = job.filter((jobs) => {
@@ -278,22 +275,23 @@ const Findthatjob = () => {
                     SALARY RANGE
                   </p>
                   <div className="flex flex-row items-center max-[700px]:justify-center">
-
                     <button
+
                       className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] ${isAscendingClicked && sortAscending ? "bg-[#F48FB1] text-white" : ""
                         }`}
+
                       onClick={handleSortAscending}
                     >
                       Low to High
                     </button>
                     <button
+
                       className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "bg-[#F48FB1] text-white" : ""
                         }`}
                       onClick={handleSortDescending}
                     >
                       High to Low
                     </button>
-
                   </div>
                 </div>
               </div>
@@ -313,11 +311,16 @@ const Findthatjob = () => {
                   >
                     <div className="flex items-center gap-4">
                       <div>
-                        <Image alt="picture" width={100} height={100} src={
-                          item.recruiters.logo === null
-                            ? logoMockup
-                            : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${item.recruiters.logo}`
-                        } />
+                        <Image
+                          alt="picture"
+                          width={100}
+                          height={100}
+                          src={
+                            item.recruiters.logo === null
+                              ? logoMockup
+                              : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${item.recruiters.logo}`
+                          }
+                        />
                       </div>
 
                       <div className="flex flex-col">
@@ -344,7 +347,11 @@ const Findthatjob = () => {
                           </div>
                           <div className="flex gap-1 items-center">
                             <Image alt="picture" src={dollar} />
-                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${numeral(item.salary_min_range).format("0a")} - ${numeral(item.salary_max_range).format("0a")}`}</p>
+                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${numeral(
+                              item.salary_min_range
+                            ).format("0a")} - ${numeral(
+                              item.salary_max_range
+                            ).format("0a")}`}</p>
                           </div>
                         </div>
                       </div>
@@ -375,7 +382,6 @@ const Findthatjob = () => {
                                 className="w-[22px] h-[22px] border-[#F48FB1]"
                               />
                             )}
-
                         </div>
                         <button
                           onClick={() =>
@@ -388,8 +394,8 @@ const Findthatjob = () => {
                           {item.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : item.professional_follow_jobs[0].follow_status
-                              ? "Following"
-                              : "Follow"}
+                            ? "Following"
+                            : "Follow"}
                           {/* {followStatus[item.job_post_id]
                             ? "Following"
                             : "Follow"} */}
