@@ -16,6 +16,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
 import { useAuth } from '@/contexts/authentication.js';
+import moment from "moment";
 import Link from "next/link";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -28,7 +29,6 @@ function JobPostings() {
   const [job, setJob] = useState([]);
   const [jobStatus, setJobStatus] = useState([])
   const [isUpdating, setIsUpdating] = useState(false)
-  const [selectedOption, setSelectedOption] = useState("all");
   const [myState,setMyState] = useState("")
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -67,7 +67,6 @@ function JobPostings() {
       console.log(jobPostingsData);
       const formattedJobs = jobPostingsData.map(job => ({
         ...job,
-        created_at: new Date(job.created_at).toLocaleDateString('en-GB')
       }));
       setJob(formattedJobs);
     } catch (error) {
@@ -119,11 +118,17 @@ function JobPostings() {
     }
     setIsUpdating(false)
   };
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
 
- 
+  function getFormattedDate(date) {
+    const differenceInDays = moment().diff(moment(date), 'days');
+  
+    if (differenceInDays > 7) {
+      const formattedDate = moment(date).format('DD/MM/YYYY');
+      return formattedDate;
+    } else {
+      return moment(date).fromNow();
+    }
+  }
 
   return (
     <>
@@ -132,58 +137,16 @@ function JobPostings() {
     <h4 className="max-[700px]:text-center mb-[24px]" id="heading4">
             Job Postings
           </h4>
-          <p className="max-[700px]:text-center mb-[6px]" id="overline">
-            Filter your Job Postings
-          </p>
-          <form className="flex flex-row flex-wrap gap-[12px]">
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="all"
-                  checked={selectedOption === "all"}
-                  onChange={handleOptionChange}
-                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
-                  id="my-radio"
-                />
-                <span>All</span>
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="candidates"
-                  checked={selectedOption === "candidates"}
-                  onChange={handleOptionChange}
-                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
-                />
-                With candidates on track
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="closed"
-                  checked={selectedOption === "closed"}
-                  onChange={handleOptionChange}
-                  className="mr-[3px] w-5 h-5 relative top-[4px] accent-pink-primary"
-                />
-                Closed
-              </label>
-            </div>
-          </form>
       <div className="flex flex-col">
         <h6
-          className="max-[700px]:text-center mt-[20px] mb-[8px]"
+          className="max-[700px]:text-center mb-[8px] text-[#bf5f82]"
           id="heading6"
         >
           {job.length} jobs postings found
         </h6>
         {job.map((item, index) => {
           return (
-            <div key={index} className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[100%] mb-[20px] h-auto ">
+            <div key={index} className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[70%] mb-[20px] h-auto ">
               <div className="flex flex-col" id="box-job-all">
                 <div
                   className="max-[700px]:text-center flex flex-row flex-wrap justify-between w-[100%]"
@@ -236,39 +199,7 @@ function JobPostings() {
                       <div className="max-[700px]:mr-[5px]" id="caption">
                         Open on
                       </div>
-                      <div id="caption">{item.created_at}</div>
-                    </div>
-                    <div className="max-[700px]:mt-[5px] max-[700px]:mb-[5px] max-[700px]:flex-row max-[700px]:justify-start mr-[20px] flex flex-col items-center justify-center">
-                      <div className="flex flex-row">
-                        <Image
-                          src={TTcandidate}
-                          alt="Total Candidates"
-                          className="mr-[6px]"
-                        />
-                        <div className="max-[700px]:mr-[5px]" id="caption">
-                          5
-                        </div>
-                      </div>
-                      <div id="caption">Total</div>
-                      <div id="caption">Candidates</div>
-                    </div>
-                    <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center">
-                      <div className="flex flex-row">
-                        <Image
-                          src={candidate}
-                          alt="Candidates on track"
-                          className="mr-[6px]"
-                        />
-                        <div className="text-pink-primary" id="caption">
-                          3
-                        </div>
-                      </div>
-                      <div className="text-pink-primary" id="caption">
-                        Candidates
-                      </div>
-                      <div className="text-pink-primary" id="caption">
-                        on track
-                      </div>
+                      <div id="caption">{getFormattedDate(item.created_at)}</div>
                     </div>
                   </div>
                   <div className="max-[700px]:mt-[10px] max-[700px]:mb-[10px] flex flex-row items-center">
@@ -344,7 +275,7 @@ function JobPostings() {
                       <div className="text-pink-tertiary mt-[10px] mb-[8px]" id="body1">
                         About the job position
                       </div>
-                      <div className="" id="body2">
+                      <div className="text-justify" id="body2">
                         {item.job_description}
                       </div>
                       <div>
@@ -354,7 +285,7 @@ function JobPostings() {
                         >
                           Mandatory Requirements
                         </div>
-                        <div className="" id="body2">
+                        <div className="text-justify" id="body2">
                           {item.requirement}
                         </div>
                       </div>
@@ -365,7 +296,7 @@ function JobPostings() {
                         >
                           Optional Requirements
                         </div>
-                        <div className="" id="body2">
+                        <div className="text-justify" id="body2">
                           {item.optional_requirement}
                         </div>
                       </div>

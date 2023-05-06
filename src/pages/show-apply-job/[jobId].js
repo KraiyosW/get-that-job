@@ -136,6 +136,17 @@ function ShowCandidates() {
     (item) => item.recruiter_status === 2
   ).length;
 
+  function getFormattedDate(date) {
+    const differenceInDays = moment().diff(moment(date), 'days');
+  
+    if (differenceInDays > 7) {
+      const formattedDate = moment(date).format('DD/MM/YYYY');
+      return formattedDate;
+    } else {
+      return moment(date).fromNow();
+    }
+  }
+
 
   return (
     <>
@@ -160,7 +171,7 @@ function ShowCandidates() {
           </h4>
 
           {post[0] && (
-            <div className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[100%] mb-[20px] h-auto ">
+            <div className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[80%] mb-[20px] h-auto ">
               <div className="flex flex-col" id="box-job-all">
                 <div
                   className="max-[700px]:text-center flex flex-row flex-wrap justify-between w-[100%]"
@@ -220,7 +231,7 @@ function ShowCandidates() {
                         Open on
                       </div>
                       <div id="caption">
-                        {moment(post[0].jobs_postings.created_at).fromNow()}
+                      {getFormattedDate(post[0].jobs_postings.created_at)}
                       </div>
                     </div>
                     <div className="max-[700px]:mt-[5px] max-[700px]:mb-[5px] max-[700px]:flex-row max-[700px]:justify-start mr-[20px] flex flex-col items-center justify-center">
@@ -376,9 +387,9 @@ function ShowCandidates() {
             {isLoading ? ( // Conditionally render based on isLoading
               <p></p>
             ) : post.length !== 0 ? (
-              <p>{post.length} candidates found</p>
+              <p className="text-[#bf5f82]">{post.length} candidates found</p>
             ) : (
-              <p>There are no candidates found.</p>
+              <p className="text-[#bf5f82]">There are no candidates found.</p>
             )}
           </h6>
 
@@ -388,14 +399,14 @@ function ShowCandidates() {
                 return (
                   <div
                     key={index}
-                    className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[100%] mb-[20px] h-auto "
+                    className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[80%] mb-[20px] h-auto "
                   >
                     <div className="flex flex-col" id="box-job-all">
                       <div
                         className="max-[700px]:text-center flex flex-row flex-wrap w-[100%]"
                         id="job-head-row"
                       >
-                        <div className="flex flex-col w-[35%]" id="job-title">
+                        <div className="flex flex-col w-[30%]" id="job-title">
                           <h6 className="mb-[4px]" id="heading6">
                             {item.professional.name}
                           </h6>
@@ -413,7 +424,7 @@ function ShowCandidates() {
                           </div>
                         </div>
                         <div className="max-[700px]:flex-col flex flex-row">
-                          <div className="max-[700px]:flex-row flex flex-col items-start justify-center w-[265px]">
+                          <div className="max-[700px]:flex-row flex flex-col items-start justify-center w-[220px]">
                             <div className="flex flex-row mb-[4px]">
                               <Image
                                 src={JobDate}
@@ -448,11 +459,11 @@ function ShowCandidates() {
                               className="mr-[6px]"
                             />
                             <div className="text-grey-primary" id="caption">
-                              {moment(item.created_at).fromNow()}
+                            {getFormattedDate(item.created_at)}
                             </div>
                           </div>
                           {item.recruiter_status === 1 || item.recruiter_status === null ? (
-                            <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[210px]">
+                            <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px]">
                               <Image
                                 src={waiting}
                                 alt="Waiting for review"
@@ -466,7 +477,7 @@ function ShowCandidates() {
                               </div>
                             </div>
                           ) : item.recruiter_status === 2 ? (
-                            <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[210px]">
+                            <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px]">
                               <Image
                                 src={review}
                                 alt="Review in progress"
@@ -480,7 +491,7 @@ function ShowCandidates() {
                               </div>
                             </div>
                           ) : (
-                            <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[210px]">
+                            <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px]">
                               <Image
                                 src={finished}
                                 alt="Review finished"
@@ -495,7 +506,7 @@ function ShowCandidates() {
                             </div>
                           )}
                         </div>
-                        <div className="flex flex-row items-center">
+                        <div className="flex flex-row items-center ml-[50px]">
                           {item.recruiter_status === 1 ||
                             item.recruiter_status === null ? (
                             <button
