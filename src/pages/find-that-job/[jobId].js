@@ -29,7 +29,7 @@ function JobDetails() {
 
   const router = useRouter();
   const id = router.query["jobId"];
-
+  
   const fetchPost = async (profId) => {
     try {
       const posts = await supabase
@@ -51,6 +51,7 @@ function JobDetails() {
     }
   };
 
+
   useEffect(() => {
     const token = localStorage.getItem("sb:token");
     setIsAuthenticated(!!token);
@@ -59,6 +60,7 @@ function JobDetails() {
       fetchPost(profId);
     }
   }, [followStatus, id, isAuthenticated]);
+
 
   const handleGoBack = () => {
     router.push("/find-that-job");
