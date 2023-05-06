@@ -150,6 +150,7 @@ function ShowCandidates() {
     } else {
       return moment(date).fromNow();
     }
+  }
 
   if(!isAuthenticated){
     return (<Warning/>)
