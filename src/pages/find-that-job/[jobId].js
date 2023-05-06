@@ -11,8 +11,10 @@ import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
 import following from "../../image/following.png";
 import smallfollowing from "../../image/smallfollowing.png";
+import PageNotFound from "@/components/PageNotFound";
 import Warning from "@/components/Warning";
 import { log } from "util";
+
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -101,13 +103,13 @@ function JobDetails() {
 
   return (
     <>
-      <Head />
-      <SidebarProfessional />
 
       {loading ? (
         <></>
-      ) : post ? (
-        <div className="job-detail-app">
+        ) : post ? (
+          <div className="job-detail-app">
+          <Head />
+          <SidebarProfessional />
           {/* Header Section */}
           <main className="bg-[#F5F5F6] h-screen">
             <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
@@ -349,6 +351,7 @@ function JobDetails() {
         <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
           <h3 className="ml-[240px] mb-[10px]" id="heading3">
             Job Not Found
+            <PageNotFound/>
           </h3>
         </div>
       )}

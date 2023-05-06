@@ -152,7 +152,7 @@ const Following = () => {
           </div>
 
           <div className="flex flex-col flex-wrap w-full items-start">
-            <h6 className="max-[700px]:text-center mb-4 mt-4">
+            <h6 className="max-[700px]:text-center mb-4 mt-4 text-[#bf5f82]" id="heading6">
               {job.length} You are following jobs.
             </h6>
             <div className="flex felx-row flex-wrap gap-[15px]">

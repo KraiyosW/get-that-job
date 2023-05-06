@@ -278,6 +278,7 @@ const Findthatjob = () => {
                     <button
 
                       className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] ${isAscendingClicked && sortAscending ? "bg-[#F48FB1] text-white" : ""
+
                         }`}
 
                       onClick={handleSortAscending}
@@ -287,6 +288,7 @@ const Findthatjob = () => {
                     <button
 
                       className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "bg-[#F48FB1] text-white" : ""
+
                         }`}
                       onClick={handleSortDescending}
                     >
@@ -299,7 +301,7 @@ const Findthatjob = () => {
           </div>
 
           <div className="flex flex-col flex-wrap w-full ">
-            <h6 className="max-[700px]:text-center mb-4 mt-4">
+            <h6 className="max-[700px]:text-center mb-4 mt-4 text-[#bf5f82]" id="heading6">
               {filterJobs.length} jobs for you
             </h6>
             <div className="flex felx-row flex-wrap gap-[15px]">

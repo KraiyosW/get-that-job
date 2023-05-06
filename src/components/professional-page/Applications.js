@@ -31,6 +31,17 @@ function Applications() {
 
 
   const router = useRouter();
+  function getFormattedDate(date) {
+    const differenceInDays = moment().diff(moment(date), 'days');
+  
+    if (differenceInDays > 7) {
+      const formattedDate = moment(date).format('DD/MM/YYYY');
+      return formattedDate;
+    } else {
+      return moment(date).fromNow();
+    }
+  }
+
   const AllJob = async () => {
     const userEmail = String(localStorage.getItem('email'));
     try {
@@ -54,8 +65,8 @@ function Applications() {
 
       const formattedJobs = uniqueFilteredResult.map((job) => ({
         ...job,
-        pro_created_at: moment(job.created_at).fromNow(),
-        created_at: moment(job.jobs_postings.created_at).fromNow(),
+        pro_created_at: getFormattedDate(job.created_at),
+        created_at: getFormattedDate(job.jobs_postings.created_at),
         company_name: job.jobs_postings.recruiters.company_name,
         salary_min_range: numeral(job.jobs_postings.salary_min_range).format("0a"),
         salary_max_range: numeral(job.jobs_postings.salary_max_range).format("0a"),
@@ -90,7 +101,6 @@ function Applications() {
   }
 
 
-
   return (
     <>
       <main className="bg-white-secondary h-screen">
@@ -102,7 +112,7 @@ function Applications() {
 
           <div className="flex flex-col">
             <h6
-              className="max-[700px]:text-center mt-[20px] mb-[8px]"
+              className="max-[700px]:text-center mb-[8px] text-[#bf5f82]"
               id="heading6"
             >
               {job.length} applications found
@@ -111,7 +121,7 @@ function Applications() {
               return (
                 <div
                   key={index}
-                  className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[100%] mb-[20px] h-auto "
+                  className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl max-[920px]:w-[100%] w-[70%] mb-[20px] h-auto "
                 >
                   <div className="flex flex-col" id="box-job-all">
                     <div
@@ -143,7 +153,7 @@ function Applications() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex flex-col max-[919px]:w-[100%] min-[920px]:w-[40%]">
+                      <div className="flex flex-col max-[919px]:w-[100%] min-[920px]:w-[35%]">
                         <div className="max-[700px]:flex-col flex flex-row mb-[8px]">
                           <div className="flex flex-row mr-[9px] max-[700px]:mb-[8px] max-[700px]:items-center">
                             <Image
@@ -291,7 +301,7 @@ function Applications() {
                           >
                             About the job position
                           </div>
-                          <div className="" id="body2">
+                          <div className="text-justify" id="body2">
                             {item.job_description}
                           </div>
                           <div>
@@ -301,7 +311,7 @@ function Applications() {
                             >
                               Mandatory Requirements
                             </div>
-                            <div className="" id="body2">
+                            <div className="text-justify" id="body2">
                               {item.requirement}
                             </div>
                           </div>
@@ -312,7 +322,7 @@ function Applications() {
                             >
                               Optional Requirements
                             </div>
-                            <div className="" id="body2">
+                            <div className="text-justify" id="body2">
                               {item.optional_requirement}
                             </div>
                           </div>
