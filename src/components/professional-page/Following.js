@@ -13,6 +13,18 @@ import Warning from "../Warning";
 import Link from "next/link";
 import jwtDecode from "jwt-decode";
 import { createClient } from "@supabase/supabase-js";
+import numeral from "numeral";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  Button,
+} from "@chakra-ui/react";
+
+
 
 const Following = () => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -29,6 +41,12 @@ const Following = () => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [followStatus, setFollowStatus] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef();
+  const [selectedJob, setSelectedJob] = useState(null);
+
+
 
   const getJobs = async () => {
     try {
@@ -104,25 +122,22 @@ const Following = () => {
   }
   const profId = localStorage.getItem("professional_id");
 
-  const handleFollowClick = async (id, status) => {
+  const handleFollowClick = async () => {
     await axios.post("/api/following", {
       professional_id: profId,
-      job_post_id: id,
+      job_post_id: selectedJob.job_post_id,
     });
 
     const newFollowStatus = { ...followStatus };
-    if (status) {
-      if (status.follow_status === undefined) {
-        newFollowStatus[id] = true;
-      } else if (status.follow_status) {
-        newFollowStatus[id] = false;
-      } else if (!status.follow_status) {
-        newFollowStatus[id] = true;
-      }
+    if (selectedJob.follow_status) {
+      newFollowStatus[selectedJob.job_post_id] = false;
+    } else {
+      newFollowStatus[selectedJob.job_post_id] = true;
     }
 
     setFollowStatus(newFollowStatus);
   };
+
 
   return (
     <main className="bg-[#F5F5F6] h-screen">
@@ -138,18 +153,24 @@ const Following = () => {
 
           <div className="flex flex-col flex-wrap w-full items-start">
             <h6 className="max-[700px]:text-center mb-4 mt-4">
-              You are following {job.length} jobs.
+              {job.length} You are following jobs.
             </h6>
             <div className="flex felx-row flex-wrap gap-[15px]">
               {job.map((item, index) => {
                 return (
                   <div
                     key={index}
-                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[320px] h-[190px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]"
+                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[420px] h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]"
                   >
                     <div className="flex items-center gap-4">
                       <div>
-                        <Image alt="picture" src={babyswim} />
+                        <Image alt="picture" src={
+                          item.jobs_postings.recruiters.logo === null
+                            ? logoMockup
+                            : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${item.jobs_postings.recruiters.logo}`
+                        }
+                          width={100}
+                          height={100} />
                       </div>
 
                       <div className="flex flex-col">
@@ -176,14 +197,14 @@ const Following = () => {
                           </div>
                           <div className="flex gap-1 items-center">
                             <Image alt="picture" src={dollar} />
-                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${item.jobs_postings.salary_min_range} - ${item.jobs_postings.salary_max_range}`}</p>
+                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${numeral(item.jobs_postings.salary_min_range).format("0a")} - ${numeral(item.jobs_postings.salary_max_range).format("0a")}`}</p>
                           </div>
                         </div>
                       </div>
                     </div>
 
                     <div className="flex flex-row justify-between items-center min-[701px]:gap-[75px]">
-                      <div className="flex gap-2 p-1 items-center flex-row w-[200px]">
+                      <div className="flex gap-2 p-1 items-center flex-row ">
                         <div>
                           <Image
                             alt="picture"
@@ -191,16 +212,48 @@ const Following = () => {
                             className="w-[40px] h-[40px] border-[#F48FB1]"
                           />
                         </div>
-                        <button
-                          onClick={() =>
-                            handleFollowClick(
-                              item.job_post_id,
-                              item.follow_status
-                            )
-                          }
-                        >
+                        <Button variant="ghost"
+                          color="pink" className="followButton" onClick={() => {
+                            setSelectedJob(item.jobs_postings);
+                            setIsOpen(true);
+                          }}>
                           {item.follow_status ? "Following" : null}
-                        </button>
+                        </Button>
+                        <AlertDialog
+                          isOpen={isOpen}
+                          leastDestructiveRef={cancelRef}
+                          onClose={onClose}
+                        >
+                          <AlertDialogOverlay>
+                            <AlertDialogContent>
+                              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                                Unfollow Job
+                              </AlertDialogHeader>
+
+                              <AlertDialogBody>
+                                {selectedJob && `Are you sure you want to unfollow ${selectedJob.job_title}?`}
+                              </AlertDialogBody>
+
+                              <AlertDialogFooter>
+                                <Button ref={cancelRef} onClick={onClose}>
+                                  Cancel
+                                </Button>
+                                <Button
+                                  colorScheme="red"
+                                  onClick={() => {
+                                    handleFollowClick(item.job_post_id, item.follow_status);
+                                    onClose();
+                                  }}
+                                  ml={3}
+                                >
+                                  Unfollow
+                                </Button>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialogOverlay>
+                        </AlertDialog>
+
+
                       </div>
                       <div className="max-[768px]:flex max-[768px]:items-center">
                         <button

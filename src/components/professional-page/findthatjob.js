@@ -13,6 +13,8 @@ import dollar from "../../image/dollar.png";
 import Warning from "../Warning";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
+import numeral from "numeral";
+
 
 const Findthatjob = () => {
   const [job, setJob] = useState([]);
@@ -25,11 +27,8 @@ const Findthatjob = () => {
   const [followIcon, setFollowIcon] = useState(following);
   const [sortAscending, setSortAscending] = useState(false);
   const [sortDescending, setSortDescending] = useState(false);
-  
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  const [isAscendingClicked, setIsAscendingClicked] = useState(false);
+  const [isDescendingClicked, setIsDescendingClicked] = useState(false);
 
 
   const getJobs = async () => {
@@ -38,20 +37,32 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
         `http://localhost:3000/api/findthatjob?profid=${profId}`
       );
       setJob(result.data.job.data);
+      console.log(result.data.job.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleSortAscending = () => {
-    setSortAscending(true);
-    setSortDescending(false);
+    if (!isAscendingClicked) {
+      // First click, enable ascending sort and set the clicked state
+      setSortAscending(true);
+      setSortDescending(false);
+      setIsAscendingClicked(true);
+      setIsDescendingClicked(false);
+    }
   };
 
   const handleSortDescending = () => {
-    setSortDescending(true);
-    setSortAscending(false);
+    if (!isDescendingClicked) {
+      // First click, enable descending sort and set the clicked state
+      setSortDescending(true);
+      setSortAscending(false);
+      setIsDescendingClicked(true);
+      setIsAscendingClicked(false);
+    }
   };
+
 
   const [formData, setFormData] = useState({
     job_category: "",
@@ -83,7 +94,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
   const handleSeeMore = (id) => {
     router.push(`find-that-job/${id}`);
   };
-  //ตัด job_description ให้สั้น
+  //ตัด recruiters.about_company ให้สั้น
   function shortenText(text, maxLength) {
     if (text !== null && text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
@@ -130,15 +141,19 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
   };
 
   const filterJobs = job.filter((jobs) => {
+    const lowercaseSearchMessage = searchMessage.toLowerCase();
+    const lowercaseJobTitle = jobs.job_title.toLowerCase();
+    const lowercaseAboutCompany = jobs.recruiters.about_company.toLowerCase();
+
     if (
       category !== "Select or create a category" &&
-      searchMessage.toLowerCase() !== "" &&
+      lowercaseSearchMessage !== "" &&
       selectedJobType !== "Select a type"
     ) {
       return (
         jobs.job_category.includes(category) &&
-        (jobs.job_title.toLowerCase().includes(searchMessage) ||
-          jobs.job_description.toLowerCase().includes(searchMessage)) &&
+        (lowercaseJobTitle.includes(lowercaseSearchMessage) ||
+          lowercaseAboutCompany.includes(lowercaseSearchMessage)) &&
         jobs.job_type.includes(selectedJobType)
       );
     } else if (
@@ -150,20 +165,20 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
         jobs.job_type.includes(selectedJobType)
       );
     } else if (
-      searchMessage.toLowerCase() !== "" &&
+      lowercaseSearchMessage !== "" &&
       selectedJobType !== "Select a type"
     ) {
       return (
-        (jobs.job_title.toLowerCase().includes(searchMessage) ||
-          jobs.job_description.toLowerCase().includes(searchMessage)) &&
+        (lowercaseJobTitle.includes(lowercaseSearchMessage) ||
+          lowercaseAboutCompany.includes(lowercaseSearchMessage)) &&
         jobs.job_type.includes(selectedJobType)
       );
     } else if (category !== "Select or create a category") {
       return jobs.job_category.includes(category);
-    } else if (searchMessage.toLowerCase() !== "") {
+    } else if (lowercaseSearchMessage !== "") {
       return (
-        jobs.job_title.toLowerCase().includes(searchMessage) ||
-        jobs.job_description.toLowerCase().includes(searchMessage)
+        lowercaseJobTitle.includes(lowercaseSearchMessage) ||
+        lowercaseAboutCompany.includes(lowercaseSearchMessage)
       );
     } else if (selectedJobType !== "Select a type") {
       return jobs.job_type.includes(selectedJobType);
@@ -265,13 +280,15 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                   <div className="flex flex-row items-center max-[700px]:justify-center">
 
                     <button
-                      className="bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[8px] mr-[15px] h-[36px]"
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] ${isAscendingClicked && sortAscending ? "bg-[#F08FB0] text-white" : ""
+                        }`}
                       onClick={handleSortAscending}
                     >
                       Low to High
                     </button>
                     <button
-                      className="bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[8px] h-[36px]"
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "bg-[#F08FB0] text-white" : ""
+                        }`}
                       onClick={handleSortDescending}
                     >
                       High to Low
@@ -283,7 +300,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
             </div>
           </div>
 
-          <div className="flex flex-col flex-wrap w-full items-center">
+          <div className="flex flex-col flex-wrap w-full ">
             <h6 className="max-[700px]:text-center mb-4 mt-4">
               {filterJobs.length} jobs for you
             </h6>
@@ -292,11 +309,15 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                 return (
                   <div
                     key={index}
-                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[320px] h-[190px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]"
+                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[420px] h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]"
                   >
                     <div className="flex items-center gap-4">
                       <div>
-                        <Image alt="picture" src={babyswim} />
+                        <Image alt="picture" width={100} height={100} src={
+                          item.recruiters.logo === null
+                            ? logoMockup
+                            : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${item.recruiters.logo}`
+                        } />
                       </div>
 
                       <div className="flex flex-col">
@@ -307,7 +328,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                         <h6 id="heading6">{item.job_title}</h6>
 
                         <p className="max-[700px]:hidden mb-[4px]" id="caption">
-                          {shortenText(item.job_description, 15)}
+                          {shortenText(item.recruiters.about_company, 15)}
                         </p>
 
                         <div className="flex gap-4 ">
@@ -323,14 +344,14 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                           </div>
                           <div className="flex gap-1 items-center">
                             <Image alt="picture" src={dollar} />
-                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${item.salary_min_range} - ${item.salary_max_range}`}</p>
+                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${numeral(item.salary_min_range).format("0a")} - ${numeral(item.salary_max_range).format("0a")}`}</p>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex flex-row justify-between items-center min-[701px]:gap-[75px]">
-                      <div className="flex gap-2 p-1 items-center flex-row w-[200px]">
+                    <div className="flex flex-row items-center  ">
+                      <div className="flex gap-2 p-1 items-center flex-row ">
                         <div>
                           {item.professional_follow_jobs[0] === undefined && (
                             <Image
@@ -354,17 +375,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                                 className="w-[22px] h-[22px] border-[#F48FB1]"
                               />
                             )}
-                          {/* <Image
-                            alt="picture"
-                            {
-                              item.professional_follow_jobs[0] === undefined
-                                ? src={following} className="w-[22px] h-[22px] border-[#F48FB1]"
-                                : item.professional_follow_jobs[0].follow_status
-                                ? src={smallfollowing} className="w-[40px] h-[40px] border-[#F48FB1]"
-                                : src={following} className="w-[22px] h-[22px] border-[#F48FB1]"
-                            }
-                            
-                          /> */}
+
                         </div>
                         <button
                           onClick={() =>
@@ -377,14 +388,14 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
                           {item.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : item.professional_follow_jobs[0].follow_status
-                            ? "Following"
-                            : "Follow"}
+                              ? "Following"
+                              : "Follow"}
                           {/* {followStatus[item.job_post_id]
                             ? "Following"
                             : "Follow"} */}
                         </button>
                       </div>
-                      <div className="max-[768px]:flex max-[768px]:items-center">
+                      <div className="max-[768px]:flex max-[768px]:items-center ml-[70px]">
                         <button
                           className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3"
                           onClick={() => handleSeeMore(item.job_post_id)}

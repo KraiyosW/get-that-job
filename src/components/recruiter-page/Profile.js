@@ -5,52 +5,94 @@ import Image from "next/image";
 import LogoMockup from "../../image/logo-mockup.png";
 import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
-const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+import { useToast, Box, Button } from '@chakra-ui/react'
+const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseURL, supabaseAnonKey);
 
 function Profile() {
-  const supabase = createClient(
-    supabaseURL,
-    supabaseAnonKey
-  );
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const { recruiterState } = useAuth();
   const userEmail = recruiterState.email;
-  const [data, setData] = useState({})
-  const router = useRouter()
-
+  const [data, setData] = useState({});
+  const router = useRouter();
+  const toast = useToast()
 
   const [formData, setFormData] = useState({
-    email: "",
-    company_name: "",
-    company_website: "",
-    about_company: "",
+    email: null,
+    company_name: null,
+    company_website: null,
+    about_company: null,
     logo: null,
     email: userEmail,
-
-
   });
   console.log(formData.logo);
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const { data, error } = await supabase
-        .from('recruiters')
-        .update(formData)
-        .eq('email', userEmail);
+    const fileInput = document.getElementById("fileInput");
+    const file = fileInput.files[0];
 
-      if (error) {
-        console.error(error);
+    try {
+      const result = await supabase
+        .from("recruiters")
+        .update(formData)
+        .eq("email", userEmail);
+      if (result.error) {
+        console.error(result.error);
         return;
       }
+      console.log(result.data);
 
-      console.log(data);
-      router.push('/job-postings');
+      const { error: uploadError } = await supabase.storage
+        .from("recruiters_logo")
+        .upload(formData.logo, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+      toast({
+        position: 'top',
+        render: () => (
+          <Box
+            className="bg-pink-primary flex flex-col justify-center text-center"
+            p={3}
+            color="white"
+            borderRadius="md"
+            boxShadow="md"
+          >
+            <div>Profile updated .</div>
+            <div>Profile has been successfully updated .</div>
+
+          </Box>
+        ),
+        duration: 3000,
+        isClosable: true,
+      });
+
+      router.push("/job-postings");
     } catch (error) {
       console.error(error);
+      toast({
+        position: 'top',
+        render: () => (
+          <Box
+            className="bg-pink-primary flex flex-col justify-center text-center"
+            p={3}
+            color="white"
+            borderRadius="md"
+            boxShadow="md"
+          >
+            <div>Profile updated .</div>
+            <div>Profile has been successfully updated .</div>
+
+          </Box>
+        ),
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push("/job-postings");
     }
   };
 
@@ -58,9 +100,13 @@ function Profile() {
     const file = event.target.files[0];
     setSelectedFile(file);
 
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
     setFormData({
       ...formData,
-      logo: file
+      logo: filePath,
     });
 
     const reader = new FileReader();
@@ -96,15 +142,15 @@ function Profile() {
   const handleChange = (event) => {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value
-    })
-  }
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const fetchData = async () => {
     try {
       const result = await supabase
         .from("recruiters")
-        .select('*')
+        .select("*")
         .eq("email", userEmail)
         .single();
       setData(result.data);
@@ -115,6 +161,7 @@ function Profile() {
         company_name: result.data.company_name,
         company_website: result.data.company_website,
         about_company: result.data.about_company,
+        logo: result.data.logo,
         email: userEmail,
       });
 
@@ -139,7 +186,21 @@ function Profile() {
             id="file-upload"
           >
             <div className="flex items-center max-[700px]:mt-[-4px] border-shadow w-[75px] h-[75px] rounded-[8px] drop-shadow-lg mr-[11px]">
-              {imagePreview ? (<img src={imagePreview} alt="Selected file preview" />) : (<Image src={LogoMockup} alt="Company Logo" className="w-[100%] h-auto rounded-[8px]" />)}
+              {imagePreview ? (
+                <img src={imagePreview} alt="Selected file preview" />
+              ) : (
+                <Image
+                  src={
+                    formData.logo === null
+                      ? LogoMockup
+                      : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${formData.logo}`
+                  }
+                  width={100}
+                  height={100}
+                  alt="Company Logo"
+                  className="w-[100%] h-auto rounded-[8px]"
+                />
+              )}
             </div>
             <div className="flex flex-col">
               <div>

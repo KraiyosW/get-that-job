@@ -1,8 +1,10 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRecruiterPost } from "@/hooks/recruiterPost.js";
 import { useRouter } from "next/router";
 import Warning from "../Warning";
 import { useAuth } from "@/contexts/authentication";
+import { useToast, Box } from '@chakra-ui/react'
+
 
 function CreateNewJob() {
   const [myState, setMyState] = useState("");
@@ -11,10 +13,9 @@ function CreateNewJob() {
   const { createPost, isLoading, isError } = useRecruiterPost();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const {recruiterState} = useAuth();
-
-  const userEmail = localStorage.getItem('email')  
-
+  const userEmail = localStorage.getItem("email");
   const router = useRouter();
+  const toast = useToast();
 
   useEffect(() => {
     const storedState = localStorage.getItem("email");
@@ -79,6 +80,23 @@ function CreateNewJob() {
     try {
       const authToken = JSON.stringify(localStorage.getItem('sb:token'));
       const response = await createPost(formData, authToken);
+      toast({
+        position: "top",
+        render: () => (
+          <Box
+            className="bg-pink-primary flex flex-col justify-center text-center"
+            p={3}
+            color="white"
+            borderRadius="md"
+            boxShadow="md"
+          >
+            <div>Created job .</div>
+            <div>Your job has been created successfully .</div>
+          </Box>
+        ),
+        duration: 3000,
+        isClosable: true,
+      });
       router.push('/job-postings')
 
       console.log(response);
@@ -98,13 +116,30 @@ function CreateNewJob() {
       });
     } catch (error) {
       console.error(error);
+      toast({
+        position: "top",
+        render: () => (
+          <Box
+            className="bg-red-500 flex flex-col justify-center text-center"
+            p={3}
+            color="white"
+            borderRadius="md"
+            boxShadow="md"
+          >
+            <div>Error created job.</div>
+            <div>Please try again later.</div>
+          </Box>
+        ),
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
-  if(!isAuthenticated){
-    return(<Warning/>)
+  if (!isAuthenticated) {
+    return (<Warning />)
   }
-  
+
   return (
     <>
       <main className="bg-white-secondary h-screen">

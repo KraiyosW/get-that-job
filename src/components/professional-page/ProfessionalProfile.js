@@ -1,11 +1,11 @@
 import React from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
+import { useToast, Box, Button } from '@chakra-ui/react'
 import Image from "next/image";
 import LogoMockup from "../../image/logo-mockup.png";
-import Warning from "../Warning";
 
 function ProfessionalProfile() {
   const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -20,7 +20,11 @@ function ProfessionalProfile() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const router = useRouter()
+
   const userEmail = professionalState.email;
+
+  const toast = useToast()
+
 
   const [formData, setFormData] = useState({
     email: "",
@@ -74,8 +78,8 @@ function ProfessionalProfile() {
     })
   }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
+
     try {
       const { data, error } = await supabase
         .from('professional')
@@ -92,6 +96,24 @@ function ProfessionalProfile() {
     } catch (error) {
       console.error(error);
     }
+    toast({
+      position: 'top',
+      render: () => (
+        <Box
+          className="bg-pink-primary flex flex-col justify-center text-center"
+          p={3}
+          color="white"
+          borderRadius="md"
+          boxShadow="md"
+        >
+          <div>Profile updated .</div>
+          <div>Profile has been successfully updated .</div>
+
+        </Box>
+      ),
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
 
@@ -173,7 +195,6 @@ function ProfessionalProfile() {
               value={formData.phone_number}
               onChange={handleChange}
             />
-            <p className="text-[#8E8E8E] mt-[4px]" id="overline">+[COUNTRY CODE][NUMBER]</p>
             <div className="mb-[4px] mt-[8px]" id="overline">
               BIRTHDATE
             </div>
@@ -267,13 +288,15 @@ function ProfessionalProfile() {
                 </div>
               </div>
             </div>
-
-            <button
+            <Button
               className="button_pink_new mt-[24px] w-[170px]"
+              variant="unstyled"
               onClick={handleSubmit}
             >
               SAVE CHANGES
-            </button>
+            </Button>
+
+
 
           </form>
         </div>

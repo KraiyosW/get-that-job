@@ -48,7 +48,8 @@ function ShowCandidates() {
       const posts = await supabase
         .from("professional_apply_jobs")
         .select(`*, professional (*), jobs_postings (*)`)
-        .eq("job_post_id", Number(id));
+        .eq("job_post_id", Number(id))
+        .order("created_at", "desc");
       const formattedPosts = posts.data.map((post) => ({
         ...post,
       }));
@@ -268,11 +269,10 @@ function ShowCandidates() {
                       onClick={() =>
                         handleStatus(post[0].jobs_postings.job_post_id)
                       }
-                      className={`flex flex-row mr-[6px] ${
-                        post[0].jobs_postings.post_status
+                      className={`flex flex-row mr-[6px] ${post[0].jobs_postings.post_status
                           ? "button_pink_tertiary"
                           : "button_gray"
-                      }`}
+                        }`}
                     >
                       <Image
                         src={post[0].jobs_postings.post_status ? close : closed}
@@ -407,7 +407,7 @@ function ShowCandidates() {
                           <h6 className="mb-[4px]" id="heading6">
                             {item.professional.name}
                           </h6>
-                          <div className="max-[700px]:mb-[15px] flex flex-row">
+                          <div className="max-[700px]:mbpx-[15px] flex flex-row">
                             <section className="flex flex-row mr-[9px] items-center">
                               <Image
                                 src={linkin}
@@ -421,7 +421,7 @@ function ShowCandidates() {
                           </div>
                         </div>
                         <div className="max-[700px]:flex-col flex flex-row">
-                          <div className="max-[700px]:flex-row flex flex-col items-start justify-center w-[280px]">
+                          <div className="max-[700px]:flex-row flex flex-col items-start justify-center w-[265px]">
                             <div className="flex flex-row mb-[4px]">
                               <Image
                                 src={JobDate}
@@ -449,7 +449,7 @@ function ShowCandidates() {
                               </div>
                             </div>
                           </div>
-                          <div className="max-[700px]:mt-[5px] max-[700px]:mb-[5px] max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[200px]">
+                          <div className="max-[700px]:mt-[5px] max-[700px]:mb-[5px] max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[100px]">
                             <Image
                               src={JobDate}
                               alt="Email Candidate Date"
@@ -459,7 +459,7 @@ function ShowCandidates() {
                               {moment(item.created_at).fromNow()}
                             </div>
                           </div>
-                          {item.recruiter_status === 1 ? (
+                          {item.recruiter_status === 1 || item.recruiter_status === null ? (
                             <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[210px]">
                               <Image
                                 src={waiting}
@@ -505,7 +505,7 @@ function ShowCandidates() {
                         </div>
                         <div className="flex flex-row items-center">
                           {item.recruiter_status === 1 ||
-                          item.recruiter_status === null ? (
+                            item.recruiter_status === null ? (
                             <button
                               onClick={() =>
                                 handleStatusCandidate(
