@@ -221,7 +221,7 @@ const Findthatjob = () => {
                     CATEGORY
                   </p>
                   <select
-                    className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px]"
+                    className="text-[#616161] border-solid border border-[#F48FB1] rounded-[8px] w-full max-w-[360px] h-[36px] "
                     id="category"
                     name="job_category"
                     value={category}
@@ -238,7 +238,7 @@ const Findthatjob = () => {
                     <option value="Software-Developer">
                       Software Developer
                     </option>
-                    <option value="Sales">Sales</option>
+                    <option value="Sales" >Sales</option>
                     <option value="Graphic-Designer">Graphic Designer</option>
                     <option value="Digital-Marketing">Digital Marketing</option>
                   </select>
@@ -405,7 +405,7 @@ const Findthatjob = () => {
                       </div>
                       <div className="max-[768px]:flex max-[768px]:items-center ml-[70px]">
                         <button
-                          className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3 active:opacity-[60%]"
+                          className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3 active:opacity-[60%] hover:text-pink-primary"
                           onClick={() => handleSeeMore(item.job_post_id)}
                         >
                           SEE MORE

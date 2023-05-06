@@ -29,12 +29,12 @@ function JobPostings() {
   const [job, setJob] = useState([]);
   const [jobStatus, setJobStatus] = useState([])
   const [isUpdating, setIsUpdating] = useState(false)
-  const [myState,setMyState] = useState("")
+  const [myState, setMyState] = useState("")
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [apply,setApply] = useState([])
-  const [statusRecruiter,setStatusRecruiter] = useState([])
+  const [apply, setApply] = useState([])
+  const [statusRecruiter, setStatusRecruiter] = useState([])
 
-  const router= useRouter()
+  const router = useRouter()
   const userEmail = String(myState);
 
   useEffect(() => {
@@ -54,18 +54,18 @@ function JobPostings() {
     try {
       const { data: jobPostingsData, error } = await supabase
         .rpc("get_jobs_post_page", { user_email: userEmail });
-  
+
       if (error) {
         console.error("Error fetching data:", error);
         return;
       }
-  
+
       if (!jobPostingsData || jobPostingsData.length === 0) {
         console.warn("No job postings found for the given email");
         setJob([]);
         return;
       }
-  
+
       console.log(jobPostingsData);
       const formattedJobs = jobPostingsData.map(job => ({
         ...job,
@@ -77,49 +77,49 @@ function JobPostings() {
         .select(`*, professional (*), jobs_postings (*)`)
         .in("job_post_id", jobPostingsIds)
 
-        console.log(apply)
+      console.log(apply)
 
-        const seperateApply = apply.data.reduce((acc, curr) => {
-          const jobPostId = curr.job_post_id
-          if (acc[jobPostId]) {
-            acc[jobPostId].push(curr)
-          } else {
-            acc[jobPostId] = [curr]
-          }
-          return acc
-        }, {})
+      const seperateApply = apply.data.reduce((acc, curr) => {
+        const jobPostId = curr.job_post_id
+        if (acc[jobPostId]) {
+          acc[jobPostId].push(curr)
+        } else {
+          acc[jobPostId] = [curr]
+        }
+        return acc
+      }, {})
 
-        setApply(seperateApply.data) /// ใช้ apply state นับ จำนวนคนสมัคร
-        
-        const statusRe = apply.data.reduce((acc, curr) => {
-          const { recruiter_status, job_post_id } = curr;
-          if (!acc[recruiter_status]) {
-            acc[recruiter_status] = { data: [curr], job_post_id };
-          } else {
-            acc[recruiter_status].data.push(curr);
-          }
-          return acc;
-        }, {});
+      setApply(seperateApply.data) /// ใช้ apply state นับ จำนวนคนสมัคร
 
-        setStatusRecruiter(statusRe) // ตรวจ recruiter Status ของแต่ละ job_post_id
-        console.log(apply);
-        console.log(statusRecruiter)
-        
+      const statusRe = apply.data.reduce((acc, curr) => {
+        const { recruiter_status, job_post_id } = curr;
+        if (!acc[recruiter_status]) {
+          acc[recruiter_status] = { data: [curr], job_post_id };
+        } else {
+          acc[recruiter_status].data.push(curr);
+        }
+        return acc;
+      }, {});
+
+      setStatusRecruiter(statusRe) // ตรวจ recruiter Status ของแต่ละ job_post_id
+      console.log(apply);
+      console.log(statusRecruiter)
+
     } catch (error) {
       console.error("Error:", error);
     }
   };
-  
-  useEffect(() => {
-    const token = localStorage.getItem("sb:token"); 
-    setIsAuthenticated(!!token); 
-    AllJob();
-  }, [jobStatus,isAuthenticated,userEmail,apply]);
 
-  
+  useEffect(() => {
+    const token = localStorage.getItem("sb:token");
+    setIsAuthenticated(!!token);
+    AllJob();
+  }, [jobStatus, isAuthenticated, userEmail, apply]);
+
+
   if (!isAuthenticated) {
-    return(
-      <Warning/>
+    return (
+      <Warning />
     );
   }
 
@@ -127,11 +127,11 @@ function JobPostings() {
     setIsExpanded((prevId) => (prevId === postId ? null : postId));
   };
 
-  const handleEdit = (id) =>{
+  const handleEdit = (id) => {
     router.push(`edit-job-post/${id}`);
   }
 
-  const handleShowCandidate = (id) =>{
+  const handleShowCandidate = (id) => {
     router.push(`show-apply-job/${id}`);
   }
 
@@ -157,7 +157,7 @@ function JobPostings() {
 
   function getFormattedDate(date) {
     const differenceInDays = moment().diff(moment(date), 'days');
-  
+
     if (differenceInDays > 7) {
       const formattedDate = moment(date).format('DD/MM/YYYY');
       return formattedDate;
@@ -168,185 +168,185 @@ function JobPostings() {
 
   return (
     <>
-    <main className="bg-white-secondary h-screen">
+      <main className="bg-white-secondary h-screen">
         <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
-    <h4 className="max-[700px]:text-center mb-[24px]" id="heading4">
+          <h4 className="max-[700px]:text-center mb-[24px]" id="heading4">
             Job Postings
           </h4>
-      <div className="flex flex-col">
-        <h6
-          className="max-[700px]:text-center mb-[8px] text-[#bf5f82]"
-          id="heading6"
-        >
-          {job.length} jobs postings found
-        </h6>
-        {job.map((item, index) => {
-          return (
-            <div key={index} className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[70%] mb-[20px] h-auto ">
-              <div className="flex flex-col" id="box-job-all">
-                <div
-                  className="max-[700px]:text-center flex flex-row flex-wrap justify-between w-[100%]"
-                  id="job-head-row"
-                >
-                  <div id="job-title flex flex-col">
-                    <h6 className="mb-[4px]" id="heading6">
-                      {item.job_title}
-                    </h6>
-                    <div className="max-[700px]:mb-[15px] flex flex-row">
-                      <section className="flex flex-row mr-[9px]">
-                        <Image
-                          src={TypeJob}
-                          alt="Type Job"
-                          className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
-                        />
-                        <div className="text-grey-secondary" id="caption">
-                          {item.job_category}
-                        </div>
-                      </section>
-                      <section className="flex flex-row mr-[9px]">
-                        <Image
-                          src={TimeWorking}
-                          alt="Time working"
-                          className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
-                        />
-                        <div className="text-grey-secondary" id="caption">
-                          {item.job_type}
-                        </div>
-                      </section>
-                      <section className="flex flex-row mr-[9px]">
-                        <Image
-                          src={Salary}
-                          alt="Salary"
-                          className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
-                        />
-                        <div className="text-grey-secondary" id="caption" key={index}>
-                          {numeral(item.salary_min_range).format("0a")} - {numeral(item.salary_max_range).format("0a")}
-                        </div>
-                      </section>
-                    </div>
-                  </div>
-                  <div className="max-[700px]:flex-col flex flex-row">
-                    <div className="max-[700px]:flex-row mr-[20px] flex flex-col items-center justify-center">
-                      <Image
-                        src={JobDate}
-                        alt="Job Date Open"
-                        className="max-[700px]:mr-[10px]"
-                      />
-                      <div className="max-[700px]:mr-[5px]" id="caption">
-                        Open on
-                      </div>
-                      <div id="caption">{getFormattedDate(item.created_at)}</div>
-                    </div>
-                  </div>
-                  <div className="max-[700px]:mt-[10px] max-[700px]:mb-[10px] flex flex-row items-center">
-                    <button onClick={()=>(handleShowCandidate(item.job_post_id))}>
-                    <Image
-                      src={show}
-                      alt="Show"
-                      className="w-[25px] h-[25px] mr-[5px]"
-                    />
-                    <div id="body2">SHOW</div>
-                    </button>
-                  </div>
-                  <div className="flex flex-row items-center">
-                    <button onClick={() => handleStatus(item.job_post_id)} className={`flex flex-row mr-[6px] ${item.post_status ? 'button_pink_tertiary' : 'button_gray'}`}>
-                      <Image
-                        src={item.post_status ? close : closed}
-                        alt="Close Botton"
-                        className="w-[25px] h-[25px] mr-[5px]"
-                      />
-                      {item.post_status ? 'CLOSE' : 'CLOSED'}
-                    </button>
-                    <button className="button_pink_tertiary flex flex-row" onClick={()=> handleEdit(item.job_post_id)}>
-                      <Image
-                        src={pencil}
-                        alt="Edit Botton"
-                        className="w-[20px] h-[20px] mr-[5px]"
-                      />
-                      EDIT
-                    </button>
-                    <button
-                      onClick={() => toggleExpanded(item.job_post_id)}
-                      className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px] mt-[30px]"
+          <div className="flex flex-col">
+            <h6
+              className="max-[700px]:text-center mb-[8px] text-[#bf5f82]"
+              id="heading6"
+            >
+              {job.length} jobs postings found
+            </h6>
+            {job.map((item, index) => {
+              return (
+                <div key={index} className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[70%] mb-[20px] h-auto ">
+                  <div className="flex flex-col" id="box-job-all">
+                    <div
+                      className="max-[700px]:text-center flex flex-row flex-wrap justify-between w-[100%]"
+                      id="job-head-row"
                     >
-                      <span className="ml-1">
-                        {isExpanded === item.job_post_id ? (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 inline"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 15l7-7 7 7"
+                      <div id="job-title flex flex-col">
+                        <h6 className="mb-[4px]" id="heading6">
+                          {item.job_title}
+                        </h6>
+                        <div className="max-[700px]:mb-[15px] flex flex-row">
+                          <section className="flex flex-row mr-[9px]">
+                            <Image
+                              src={TypeJob}
+                              alt="Type Job"
+                              className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                             />
-                          </svg>
-                        ) : (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 inline"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 9l-7 7-7-7"
+                            <div className="text-grey-secondary" id="caption">
+                              {item.job_category}
+                            </div>
+                          </section>
+                          <section className="flex flex-row mr-[9px]">
+                            <Image
+                              src={TimeWorking}
+                              alt="Time working"
+                              className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                             />
-                          </svg>
-                        )}
-                      </span>
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  {isExpanded === item.job_post_id && (
-                    <div className={`mt-1 mb-2`}>
-                      <div className="text-pink-tertiary mt-[10px] mb-[8px]" id="body1">
-                        About the job position
+                            <div className="text-grey-secondary" id="caption">
+                              {item.job_type}
+                            </div>
+                          </section>
+                          <section className="flex flex-row mr-[9px]">
+                            <Image
+                              src={Salary}
+                              alt="Salary"
+                              className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
+                            />
+                            <div className="text-grey-secondary" id="caption" key={index}>
+                              {numeral(item.salary_min_range).format("0a")} - {numeral(item.salary_max_range).format("0a")}
+                            </div>
+                          </section>
+                        </div>
                       </div>
-                      <div className="text-justify" id="body2">
-                        {item.job_description}
+                      <div className="max-[700px]:flex-col flex flex-row">
+                        <div className="max-[700px]:flex-row mr-[20px] flex flex-col items-center justify-center">
+                          <Image
+                            src={JobDate}
+                            alt="Job Date Open"
+                            className="max-[700px]:mr-[10px]"
+                          />
+                          <div className="max-[700px]:mr-[5px]" id="caption">
+                            Open on
+                          </div>
+                          <div id="caption">{getFormattedDate(item.created_at)}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div
-                          className="text-pink-tertiary mt-[16px] mb-[8px]"
-                          id="body1"
+                      <div className="max-[700px]:mt-[10px] max-[700px]:mb-[10px] flex flex-row items-center">
+                        <button onClick={() => (handleShowCandidate(item.job_post_id))}>
+                          <Image
+                            src={show}
+                            alt="Show"
+                            className="w-[25px] h-[25px] mr-[5px]"
+                          />
+                          <div id="body2">SHOW</div>
+                        </button>
+                      </div>
+                      <div className="flex flex-row items-center">
+                        <button onClick={() => handleStatus(item.job_post_id)} className={`flex flex-row mr-[6px] hover:bg-pink-primary active:opacity-[80%] ${item.post_status ? 'button_pink_tertiary' : 'button_gray'}`}>
+                          <Image
+                            src={item.post_status ? close : closed}
+                            alt="Close Botton"
+                            className="w-[25px] h-[25px] mr-[5px]"
+                          />
+                          {item.post_status ? 'CLOSE' : 'CLOSED'}
+                        </button>
+                        <button className="button_pink_tertiary flex flex-row hover:bg-pink-primary active:opacity-[80%]" onClick={() => handleEdit(item.job_post_id)}>
+                          <Image
+                            src={pencil}
+                            alt="Edit Botton"
+                            className="w-[20px] h-[20px] mr-[5px]"
+                          />
+                          EDIT
+                        </button>
+                        <button
+                          onClick={() => toggleExpanded(item.job_post_id)}
+                          className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px] mt-[30px]"
                         >
-                          Mandatory Requirements
-                        </div>
-                        <div className="text-justify" id="body2">
-                          {item.requirement}
-                        </div>
-                      </div>
-                      <div>
-                        <div
-                          className="text-pink-tertiary mt-[16px] mb-[8px]"
-                          id="body1"
-                        >
-                          Optional Requirements
-                        </div>
-                        <div className="text-justify" id="body2">
-                          {item.optional_requirement}
-                        </div>
+                          <span className="ml-1">
+                            {isExpanded === item.job_post_id ? (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5 inline"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 15l7-7 7 7"
+                                />
+                              </svg>
+                            ) : (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5 inline"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M19 9l-7 7-7-7"
+                                />
+                              </svg>
+                            )}
+                          </span>
+                        </button>
                       </div>
                     </div>
-                  )}
+                    <div>
+                      {isExpanded === item.job_post_id && (
+                        <div className={`mt-1 mb-2`}>
+                          <div className="text-pink-tertiary mt-[10px] mb-[8px]" id="body1">
+                            About the job position
+                          </div>
+                          <div className="text-justify" id="body2">
+                            {item.job_description}
+                          </div>
+                          <div>
+                            <div
+                              className="text-pink-tertiary mt-[16px] mb-[8px]"
+                              id="body1"
+                            >
+                              Mandatory Requirements
+                            </div>
+                            <div className="text-justify" id="body2">
+                              {item.requirement}
+                            </div>
+                          </div>
+                          <div>
+                            <div
+                              className="text-pink-tertiary mt-[16px] mb-[8px]"
+                              id="body1"
+                            >
+                              Optional Requirements
+                            </div>
+                            <div className="text-justify" id="body2">
+                              {item.optional_requirement}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          )
-        }
-        )
-        }
-      </div>
-      </div>
+              )
+            }
+            )
+            }
+          </div>
+        </div>
       </main>
     </>
   );

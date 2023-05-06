@@ -386,12 +386,12 @@ function JobApply() {
                           )}
                           {post.professional_follow_jobs[0].follow_status ===
                             true && (
-                            <Image
-                              alt="picture"
-                              src={smallfollowing}
-                              className="w-[40px] h-[40px] border-[#F48FB1] mr-2"
-                            />
-                          )}
+                              <Image
+                                alt="picture"
+                                src={smallfollowing}
+                                className="w-[40px] h-[40px] border-[#F48FB1] mr-2"
+                              />
+                            )}
                           {post.professional_follow_jobs[0] !== undefined &&
                             !post.professional_follow_jobs[0].follow_status && (
                               <Image
@@ -403,14 +403,14 @@ function JobApply() {
                           {post.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : post.professional_follow_jobs[0].follow_status
-                            ? "Following"
-                            : "Follow"}
+                              ? "Following"
+                              : "Follow"}
                         </button>
                       </div>
                     </div>
                     <div className="btn">
                       <Button
-                        class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
+                        class="apply-button active:opacity-[80%] bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
                         id="applyButton"
                         onClick={handleButtonClick}
                         variant="unstyled"
@@ -648,7 +648,7 @@ function JobApply() {
                           </div>
                           <div className="btn flex flex-row justify-center">
                             <Button
-                              class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
+                              class="apply-button active:opacity-[80%] bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
                               id="applyButton"
                               onClick={handleButtonClick}
                               variant="unstyled"
