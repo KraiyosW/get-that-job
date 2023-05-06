@@ -280,14 +280,14 @@ const Findthatjob = () => {
                   <div className="flex flex-row items-center max-[700px]:justify-center">
 
                     <button
-                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] ${isAscendingClicked && sortAscending ? "bg-[#F08FB0] text-white" : ""
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] ${isAscendingClicked && sortAscending ? "bg-[#F48FB1] text-white" : ""
                         }`}
                       onClick={handleSortAscending}
                     >
                       Low to High
                     </button>
                     <button
-                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "bg-[#F08FB0] text-white" : ""
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "bg-[#F48FB1] text-white" : ""
                         }`}
                       onClick={handleSortDescending}
                     >
@@ -397,7 +397,7 @@ const Findthatjob = () => {
                       </div>
                       <div className="max-[768px]:flex max-[768px]:items-center ml-[70px]">
                         <button
-                          className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3"
+                          className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3 active:opacity-[60%]"
                           onClick={() => handleSeeMore(item.job_post_id)}
                         >
                           SEE MORE

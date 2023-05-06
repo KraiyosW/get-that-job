@@ -28,8 +28,8 @@ function JobDetails() {
 
   useEffect(() => {
     let isMounted = true;
-    const token = localStorage.getItem("sb:token"); 
-    setIsAuthenticated(!!token); 
+    const token = localStorage.getItem("sb:token");
+    setIsAuthenticated(!!token);
     const fetchPost = async () => {
       try {
         const posts = await supabase
@@ -65,7 +65,7 @@ function JobDetails() {
     return () => {
       isMounted = false;
     };
-  }, [id,isAuthenticated]);
+  }, [id, isAuthenticated]);
 
   const handleGoBack = () => {
     router.push("/find-that-job");
@@ -75,8 +75,8 @@ function JobDetails() {
     router.push(`/applications/${id}`);
   };
 
-  if(!isAuthenticated){
-    return(<Warning/>)
+  if (!isAuthenticated) {
+    return (<Warning />)
   }
 
   return (
