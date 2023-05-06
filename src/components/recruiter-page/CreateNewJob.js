@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useRecruiterPost } from "@/hooks/recruiterPost.js";
 import { useRouter } from "next/router";
 import Warning from "../Warning";
+import { useAuth } from "@/contexts/authentication";
 import { useToast, Box } from '@chakra-ui/react'
+
 
 function CreateNewJob() {
   const [myState, setMyState] = useState("");
@@ -10,6 +12,7 @@ function CreateNewJob() {
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { createPost, isLoading, isError } = useRecruiterPost();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const {recruiterState} = useAuth();
   const userEmail = localStorage.getItem("email");
   const router = useRouter();
   const toast = useToast();
@@ -26,11 +29,6 @@ function CreateNewJob() {
   useEffect(() => {
     localStorage.setItem("email", myState);
   }, [myState]);
-
-  useEffect(() => {
-    const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
-    setIsAuthenticated(!!token);
-  }, [isAuthenticated]);
 
 
   // สร้าง state สำหรับเก็บข้อมูลจากฟอร์ม
@@ -69,6 +67,10 @@ function CreateNewJob() {
   const handleSelectJobType = (event) => {
     setSelectedJobType(event.target.value);
   };
+
+  if(!isAuthenticated){
+    return (<Warning/>)
+  }
 
 
 

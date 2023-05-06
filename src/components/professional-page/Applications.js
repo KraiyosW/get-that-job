@@ -51,28 +51,25 @@ function Applications() {
         .limit(20)
         .order("created_at", { ascending: true });
 
-      console.log(result.data.map((item) => item.professional?.email === userEmail)); /// add dot notaion prevent email undefinde
+      const filteredResult = result.data.filter((item) => item.professional?.email === userEmail);
 
-      const filteredResult = result.data.filter((item) => {
-        if (item.professional?.email === userEmail) {
+      // Remove duplicates based on job_title
+      const uniqueJobTitles = new Set();
+      const uniqueFilteredResult = filteredResult.filter((item) => {
+        if (!uniqueJobTitles.has(item.jobs_postings.job_title)) {
+          uniqueJobTitles.add(item.jobs_postings.job_title);
           return true;
         }
         return false;
       });
 
-      console.log(filteredResult);
-
-      const formattedJobs = filteredResult.map((job) => ({
+      const formattedJobs = uniqueFilteredResult.map((job) => ({
         ...job,
         pro_created_at: getFormattedDate(job.created_at),
         created_at: getFormattedDate(job.jobs_postings.created_at),
         company_name: job.jobs_postings.recruiters.company_name,
-        salary_min_range: numeral(job.jobs_postings.salary_min_range).format(
-          "0a"
-        ),
-        salary_max_range: numeral(job.jobs_postings.salary_max_range).format(
-          "0a"
-        ),
+        salary_min_range: numeral(job.jobs_postings.salary_min_range).format("0a"),
+        salary_max_range: numeral(job.jobs_postings.salary_max_range).format("0a"),
         job_title: job.jobs_postings.job_title,
         job_category: job.jobs_postings.job_category,
         job_type: job.jobs_postings.job_type,
@@ -86,6 +83,7 @@ function Applications() {
       console.error(error);
     }
   };
+
   useEffect(() => {
     const token = localStorage.getItem("sb:token");
     setIsAuthenticated(!!token);
@@ -110,6 +108,7 @@ function Applications() {
           <h4 className="max-[700px]:text-center mb-[24px]" id="heading4">
             Your applications
           </h4>
+
 
           <div className="flex flex-col">
             <h6

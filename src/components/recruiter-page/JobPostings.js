@@ -31,6 +31,8 @@ function JobPostings() {
   const [isUpdating, setIsUpdating] = useState(false)
   const [myState,setMyState] = useState("")
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [apply,setApply] = useState([])
+  const [statusRecruiter,setStatusRecruiter] = useState([])
 
   const router= useRouter()
   const userEmail = String(myState);
@@ -51,7 +53,7 @@ function JobPostings() {
     console.log(userEmail)
     try {
       const { data: jobPostingsData, error } = await supabase
-        .rpc("get_jobs_by_email", { user_email: userEmail });
+        .rpc("get_jobs_post_page", { user_email: userEmail });
   
       if (error) {
         console.error("Error fetching data:", error);
@@ -69,6 +71,40 @@ function JobPostings() {
         ...job,
       }));
       setJob(formattedJobs);
+      const jobPostingsIds = jobPostingsData.map((id) => id.job_post_id)
+      const apply = await supabase
+        .from("professional_apply_jobs")
+        .select(`*, professional (*), jobs_postings (*)`)
+        .in("job_post_id", jobPostingsIds)
+
+        console.log(apply)
+
+        const seperateApply = apply.data.reduce((acc, curr) => {
+          const jobPostId = curr.job_post_id
+          if (acc[jobPostId]) {
+            acc[jobPostId].push(curr)
+          } else {
+            acc[jobPostId] = [curr]
+          }
+          return acc
+        }, {})
+
+        setApply(seperateApply.data) /// ใช้ apply state นับ จำนวนคนสมัคร
+        
+        const statusRe = apply.data.reduce((acc, curr) => {
+          const { recruiter_status, job_post_id } = curr;
+          if (!acc[recruiter_status]) {
+            acc[recruiter_status] = { data: [curr], job_post_id };
+          } else {
+            acc[recruiter_status].data.push(curr);
+          }
+          return acc;
+        }, {});
+
+        setStatusRecruiter(statusRe) // ตรวจ recruiter Status ของแต่ละ job_post_id
+        console.log(apply);
+        console.log(statusRecruiter)
+        
     } catch (error) {
       console.error("Error:", error);
     }
@@ -78,7 +114,7 @@ function JobPostings() {
     const token = localStorage.getItem("sb:token"); 
     setIsAuthenticated(!!token); 
     AllJob();
-  }, [jobStatus,isAuthenticated,userEmail]);
+  }, [jobStatus,isAuthenticated,userEmail,apply]);
 
   
   if (!isAuthenticated) {

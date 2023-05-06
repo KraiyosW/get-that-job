@@ -12,6 +12,9 @@ import upload from "@/image/upload.png";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
 import { useToast, Box, Button } from "@chakra-ui/react";
+import following from "../../image/following.png";
+import smallfollowing from "../../image/smallfollowing.png";
+import axios from "axios";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -24,6 +27,10 @@ function JobApply() {
   const [timeAgo, setTimeAgo] = useState("");
   const [isCurrentCv, setIsCurrentCv] = useState("true");
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [followStatus, setFollowStatus] = useState(null);
+  const [followIcon, setFollowIcon] = useState(following);
+
   const [user, setUser] = useState(null);
   const [file, setFile] = useState(null);
   const [experience, setExperience] = useState(null);
@@ -33,6 +40,12 @@ function JobApply() {
   const [errorExp, setErrorExp] = useState(null);
   const [errorInterested, setErrorInterested] = useState(null);
 
+  const [buttonClicked, setButtonClicked] = useState(null);
+  const handleButtonClick = (event) => {
+    const buttonId = event.target.id;
+    setButtonClicked(buttonId);
+  };
+
   const router = useRouter();
   const id = router.query["jobId"];
 
@@ -40,13 +53,13 @@ function JobApply() {
   const fileNameField = useRef(null);
   const toast = useToast();
 
-  const userInformation = async () => {
+  const userInformation = async (profId) => {
     const userEmail = String(localStorage.email);
     try {
       const result = await supabase
         .from("professional")
         .select("*")
-        .eq("email", userEmail)
+        .eq("professtional_id", profId)
         .single();
       setUser(result.data);
       setExperience(result.data.experience);
@@ -56,217 +69,210 @@ function JobApply() {
   };
 
   useEffect(() => {
-    userInformation();
-  }, []);
+    const token = localStorage.getItem("sb:token");
+    setIsAuthenticated(!!token);
+    const profId = localStorage.getItem("professional_id");
 
-  useEffect(() => {
-    let isMounted = true;
-    const fetchPost = async () => {
-      try {
-        const posts = await supabase
-          .from("jobs_postings")
-          .select(`*, recruiters (*)`)
-          .eq("job_post_id", Number(id))
-          .single();
-        if (isMounted) {
-          setPost(posts.data);
-          setLoading(false);
-          // Calculate time ago
-          const createdDate = new Date(posts.data.created_at);
-          const currentDate = new Date();
-          const diffTime = Math.abs(currentDate - createdDate);
-          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-          setTimeAgo(`${diffDays}`);
-        }
-      } catch (error) {
-        console.error(error);
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
+    userInformation(profId);
     if (id) {
-      setLoading(true);
-      fetchPost();
+      fetchPost(profId);
     }
+  }, [followStatus, id, isAuthenticated]);
 
-    return () => {
-      isMounted = false;
-    };
-  }, [id]);
+  const fetchPost = async (profId) => {
+    try {
+      const posts = await supabase
+        .from("jobs_postings")
+        .select(`*, professional_follow_jobs (*), recruiters (*)`)
+        .eq("job_post_id", Number(id))
+        .eq("professional_follow_jobs.professional_id", profId)
+        .single();
+      setPost(posts.data);
+      setLoading(false);
+      // Calculate time ago
+      const createdDate = new Date(posts.data.created_at);
+      const currentDate = new Date();
+      const diffTime = Math.abs(currentDate - createdDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      setTimeAgo(`${diffDays}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     let isValid = true;
 
-    if (!experience || experience < 0) {
-      setErrorExp("Please enter your professional experience.");
-      isValid = false;
-    } else if (experience.length < 300 || experience.length > 2000) {
-      setErrorExp(
-        "Professional experience must be between 300 and 2000 characters."
-      );
-      isValid = false;
-    } else {
-      setErrorExp("");
-    }
+    if (buttonClicked === "applyButton") {
+      if (!experience || experience < 0) {
+        setErrorExp("Please enter your professional experience.");
+        isValid = false;
+      } else if (experience.length < 300 || experience.length > 2000) {
+        setErrorExp(
+          "Professional experience must be between 300 and 2000 characters."
+        );
+        isValid = false;
+      } else {
+        setErrorExp("");
+      }
 
-    if (!interested || interested < 0) {
-      setErrorInterested(
-        "Please enter your interested in working at the company"
-      );
-      isValid = false;
-    } else if (interested.length < 50 || interested.length > 2000) {
-      setErrorInterested(
-        "Interested in working at the company must be between 50 and 2000 characters."
-      );
-      isValid = false;
-    } else {
-      setErrorInterested("");
-    }
+      if (!interested || interested < 0) {
+        setErrorInterested(
+          "Please enter your interested in working at the company"
+        );
+        isValid = false;
+      } else if (interested.length < 50 || interested.length > 2000) {
+        setErrorInterested(
+          "Interested in working at the company must be between 50 and 2000 characters."
+        );
+        isValid = false;
+      } else {
+        setErrorInterested("");
+      }
 
-    if (isValid) {
-      if (isCurrentCv === "true") {
-        try {
-          const oldCv = {
-            professional_id: user.professtional_id,
-            job_post_id: id,
-            cv: user.cv,
-            professional_experience: experience,
-            interested: interested,
-            recruiter_status: 1,
-          };
-          const { data, error } = await supabase
-            .from("professional_apply_jobs")
-            .insert({
-              ...oldCv,
+      if (isValid) {
+        if (isCurrentCv === "true") {
+          try {
+            const oldCv = {
+              professional_id: user.professtional_id,
+              job_post_id: id,
+              cv: user.cv,
+              professional_experience: experience,
+              interested: interested,
+              recruiter_status: 1,
+            };
+            const { data, error } = await supabase
+              .from("professional_apply_jobs")
+              .insert({
+                ...oldCv,
+              });
+
+            if (error) {
+              alert(error.message);
+            } else {
+              console.log(data);
+            }
+
+            toast({
+              position: "top",
+              render: () => (
+                <Box
+                  className="bg-pink-primary flex flex-col justify-center text-center"
+                  p={3}
+                  color="white"
+                  borderRadius="md"
+                  boxShadow="md"
+                >
+                  <div>Application Submitted.</div>
+                  <div>Your application has been successfully submitted.</div>
+                </Box>
+              ),
+              duration: 3000,
+              isClosable: true,
             });
-
-          if (error) {
-            alert(error.message);
-          } else {
-            console.log(data);
-          }
-
-          toast({
-            position: "top",
-            render: () => (
-              <Box
-                className="bg-pink-primary flex flex-col justify-center text-center"
-                p={3}
-                color="white"
-                borderRadius="md"
-                boxShadow="md"
-              >
-                <div>Application Submitted.</div>
-                <div>Your application has been successfully submitted.</div>
-              </Box>
-            ),
-            duration: 3000,
-            isClosable: true,
-          });
-          router.push("/applications");
-        } catch (error) {
-          toast({
-            position: "top",
-            render: () => (
-              <Box
-                className="bg-red-500 flex flex-col justify-center text-center"
-                p={3}
-                color="white"
-                borderRadius="md"
-                boxShadow="md"
-              >
-                <div>Error submitting application.</div>
-                <div>Please try again later.</div>
-              </Box>
-            ),
-            duration: 3000,
-            isClosable: true,
-          });
-        }
-      } else if (isCurrentCv === "false") {
-        if (file === null) {
-          setErrorCv("Please select your CV file.");
-          isValid = false;
-        } else if (file.size > 5 * 1024 * 1024) {
-          setErrorCv("File size should be less than or equal to 5MB.");
-          isValid = false;
-        } else {
-          setErrorCv("");
-        }
-
-        try {
-          const fileExt = file.name.split(".").pop();
-          const fileName = `${Math.random()}.${fileExt}`;
-          const filePath = `${fileName}`;
-          const bucket = `professional_cv/${user.name}`;
-
-          const newCv = {
-            professional_id: user.professtional_id,
-            job_post_id: id,
-            cv: filePath,
-            professional_experience: experience,
-            interested: interested,
-            recruiter_status: 1,
-          };
-
-          const { error: uploadError } = await supabase.storage
-            .from(bucket)
-            .upload(filePath, file);
-          if (uploadError) {
-            throw uploadError;
-          }
-
-          const { data, error } = await supabase
-            .from("professional_apply_jobs")
-            .insert({
-              ...newCv,
+            router.push("/applications");
+          } catch (error) {
+            toast({
+              position: "top",
+              render: () => (
+                <Box
+                  className="bg-red-500 flex flex-col justify-center text-center"
+                  p={3}
+                  color="white"
+                  borderRadius="md"
+                  boxShadow="md"
+                >
+                  <div>Error submitting application.</div>
+                  <div>Please try again later.</div>
+                </Box>
+              ),
+              duration: 3000,
+              isClosable: true,
             });
-
-          if (error) {
-            alert(error.message);
+          }
+        } else if (isCurrentCv === "false") {
+          if (file === null) {
+            setErrorCv("Please select your CV file.");
+            isValid = false;
+          } else if (file.size > 5 * 1024 * 1024) {
+            setErrorCv("File size should be less than or equal to 5MB.");
+            isValid = false;
           } else {
-            console.log(data);
+            setErrorCv("");
           }
 
-          toast({
-            position: "top",
-            render: () => (
-              <Box
-                className="bg-pink-primary flex flex-col justify-center text-center"
-                p={3}
-                color="white"
-                borderRadius="md"
-                boxShadow="md"
-              >
-                <div>Application Submitted.</div>
-                <div>Your application has been successfully submitted.</div>
-              </Box>
-            ),
-            duration: 3000,
-            isClosable: true,
-          });
-          router.push("/applications");
-        } catch (error) {
-          toast({
-            position: "top",
-            render: () => (
-              <Box
-                className="bg-red-500 flex flex-col justify-center text-center"
-                p={3}
-                color="white"
-                borderRadius="md"
-                boxShadow="md"
-              >
-                <div>Error submitting application.</div>
-                <div>Please try again later.</div>
-              </Box>
-            ),
-            duration: 3000,
-            isClosable: true,
-          });
+          try {
+            const fileExt = file.name.split(".").pop();
+            const fileName = `${Math.random()}.${fileExt}`;
+            const filePath = `${fileName}`;
+            const bucket = `professional_cv/${user.name}`;
+
+            const newCv = {
+              professional_id: user.professtional_id,
+              job_post_id: id,
+              cv: filePath,
+              professional_experience: experience,
+              interested: interested,
+              recruiter_status: 1,
+            };
+
+            const { error: uploadError } = await supabase.storage
+              .from(bucket)
+              .upload(filePath, file);
+            if (uploadError) {
+              throw uploadError;
+            }
+
+            const { data, error } = await supabase
+              .from("professional_apply_jobs")
+              .insert({
+                ...newCv,
+              });
+
+            if (error) {
+              alert(error.message);
+            } else {
+              console.log(data);
+            }
+
+            toast({
+              position: "top",
+              render: () => (
+                <Box
+                  className="bg-pink-primary flex flex-col justify-center text-center"
+                  p={3}
+                  color="white"
+                  borderRadius="md"
+                  boxShadow="md"
+                >
+                  <div>Application Submitted.</div>
+                  <div>Your application has been successfully submitted.</div>
+                </Box>
+              ),
+              duration: 3000,
+              isClosable: true,
+            });
+            router.push("/applications");
+          } catch (error) {
+            toast({
+              position: "top",
+              render: () => (
+                <Box
+                  className="bg-red-500 flex flex-col justify-center text-center"
+                  p={3}
+                  color="white"
+                  borderRadius="md"
+                  boxShadow="md"
+                >
+                  <div>Error submitting application.</div>
+                  <div>Please try again later.</div>
+                </Box>
+              ),
+              duration: 3000,
+              isClosable: true,
+            });
+          }
         }
       }
     }
@@ -295,6 +301,31 @@ function JobApply() {
     const uploadedFileName = event.target.files[0].name;
     fileNameField.current.textContent = uploadedFileName;
   }
+
+  const handleFollowClick = async () => {
+    const profId = localStorage.getItem("professional_id");
+    await axios.post("/api/following", {
+      professional_id: profId,
+      job_post_id: id,
+    });
+
+    let newFollowStatus = followStatus;
+    if (post.professional_follow_jobs[0]) {
+      if (post.professional_follow_jobs[0].follow_status === undefined) {
+        newFollowStatus = true;
+        setFollowIcon(smallfollowing);
+      } else if (post.professional_follow_jobs[0].follow_status) {
+        newFollowStatus = false;
+        setFollowIcon(following);
+      } else if (!post.professional_follow_jobs[0].follow_status) {
+        newFollowStatus = true;
+        setFollowIcon(smallfollowing);
+      }
+    }
+
+    setFollowStatus(newFollowStatus);
+    fetchPost(profId);
+  };
 
   return (
     <>
@@ -342,51 +373,46 @@ function JobApply() {
                         <h5 id="heading5" className="company-name mb-[8px]">
                           {post.recruiters.company_name}
                         </h5>
-                        <button className="flex flex-row items-center">
-                          {/* <Image
-                        className="w-[40px] h-[40px] mr-[5px]"
-                        src={followingIcon}
-                        alt="Apply Button Icon"
-                      /> */}
-                          <svg
-                            className="mr-[5px]"
-                            width="40"
-                            height="41"
-                            viewBox="0 0 40 41"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <rect
-                              y="0.5"
-                              width="40"
-                              height="40"
-                              rx="20"
-                              fill="#F48FB1"
+                        <button
+                          className="flex flex-row items-center"
+                          onClick={handleFollowClick}
+                        >
+                          {post.professional_follow_jobs[0] === undefined && (
+                            <Image
+                              alt="picture"
+                              src={following}
+                              className="w-[25px] h-[25px] border-[#F48FB1] mr-2"
                             />
-                            <g clip-path="url(#clip0_2033_622)">
-                              <path
-                                d="M21 9.5L21.001 12.562C22.7632 12.7848 24.4013 13.5874 25.6572 14.8435C26.9131 16.0996 27.7155 17.7378 27.938 19.5H31V21.5L27.938 21.501C27.7153 23.2631 26.9128 24.901 25.6569 26.1569C24.401 27.4128 22.7631 28.2153 21.001 28.438L21 31.5H19V28.438C17.2378 28.2155 15.5996 27.4131 14.3435 26.1572C13.0874 24.9013 12.2848 23.2632 12.062 21.501L9 21.5V19.5H12.062C12.2846 17.7376 13.0871 16.0993 14.3432 14.8432C15.5993 13.5871 17.2376 12.7846 19 12.562V9.5H21ZM20 14.5C18.4087 14.5 16.8826 15.1321 15.7574 16.2574C14.6321 17.3826 14 18.9087 14 20.5C14 22.0913 14.6321 23.6174 15.7574 24.7426C16.8826 25.8679 18.4087 26.5 20 26.5C21.5913 26.5 23.1174 25.8679 24.2426 24.7426C25.3679 23.6174 26 22.0913 26 20.5C26 18.9087 25.3679 17.3826 24.2426 16.2574C23.1174 15.1321 21.5913 14.5 20 14.5ZM20 18.5C20.5304 18.5 21.0391 18.7107 21.4142 19.0858C21.7893 19.4609 22 19.9696 22 20.5C22 21.0304 21.7893 21.5391 21.4142 21.9142C21.0391 22.2893 20.5304 22.5 20 22.5C19.4696 22.5 18.9609 22.2893 18.5858 21.9142C18.2107 21.5391 18 21.0304 18 20.5C18 19.9696 18.2107 19.4609 18.5858 19.0858C18.9609 18.7107 19.4696 18.5 20 18.5V18.5Z"
-                                fill="white"
+                          )}
+                          {post.professional_follow_jobs[0].follow_status ===
+                            true && (
+                            <Image
+                              alt="picture"
+                              src={smallfollowing}
+                              className="w-[40px] h-[40px] border-[#F48FB1] mr-2"
+                            />
+                          )}
+                          {post.professional_follow_jobs[0] !== undefined &&
+                            !post.professional_follow_jobs[0].follow_status && (
+                              <Image
+                                alt="followIcon"
+                                src={following}
+                                className="w-[25px] h-[25px] border-[#F48FB1] mr-2"
                               />
-                            </g>
-                            <defs>
-                              <clipPath id="clip0_2033_622">
-                                <rect
-                                  width="24"
-                                  height="24"
-                                  fill="white"
-                                  transform="translate(8 8.5)"
-                                />
-                              </clipPath>
-                            </defs>
-                          </svg>
-                          Following
+                            )}
+                          {post.professional_follow_jobs[0] === undefined
+                            ? "Follow"
+                            : post.professional_follow_jobs[0].follow_status
+                            ? "Following"
+                            : "Follow"}
                         </button>
                       </div>
                     </div>
                     <div className="btn">
                       <Button
                         class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
+                        id="applyButton"
+                        onClick={handleButtonClick}
                         variant="unstyled"
                         type="submit"
                       >
@@ -623,6 +649,8 @@ function JobApply() {
                           <div className="btn flex flex-row justify-center">
                             <Button
                               class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
+                              id="applyButton"
+                              onClick={handleButtonClick}
                               variant="unstyled"
                               type="submit"
                             >
