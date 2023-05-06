@@ -60,8 +60,8 @@ function ShowCandidates() {
     }
   };
   useEffect(() => {
-    const token = localStorage.getItem("sb:token"); 
-    setIsAuthenticated(!!token); 
+    const token = localStorage.getItem("sb:token");
+    setIsAuthenticated(!!token);
     fetchData();
   }, [id, jobStatus, isUpdating]);
 
@@ -143,7 +143,7 @@ function ShowCandidates() {
 
   function getFormattedDate(date) {
     const differenceInDays = moment().diff(moment(date), 'days');
-  
+
     if (differenceInDays > 7) {
       const formattedDate = moment(date).format('DD/MM/YYYY');
       return formattedDate;
@@ -151,8 +151,9 @@ function ShowCandidates() {
       return moment(date).fromNow();
     }
 
-  if(!isAuthenticated){
-    return (<Warning/>)
+    if (!isAuthenticated) {
+      return (<Warning />)
+    }
   }
 
 
@@ -239,7 +240,7 @@ function ShowCandidates() {
                         Open on
                       </div>
                       <div id="caption">
-                      {getFormattedDate(post[0].jobs_postings.created_at)}
+                        {getFormattedDate(post[0].jobs_postings.created_at)}
                       </div>
                     </div>
                     <div className="max-[700px]:mt-[5px] max-[700px]:mb-[5px] max-[700px]:flex-row max-[700px]:justify-start mr-[20px] flex flex-col items-center justify-center">
@@ -281,8 +282,8 @@ function ShowCandidates() {
                         handleStatus(post[0].jobs_postings.job_post_id)
                       }
                       className={`flex flex-row mr-[6px] ${post[0].jobs_postings.post_status
-                          ? "button_pink_tertiary"
-                          : "button_gray"
+                        ? "button_pink_tertiary"
+                        : "button_gray"
                         }`}
                     >
                       <Image
@@ -467,7 +468,7 @@ function ShowCandidates() {
                               className="mr-[6px]"
                             />
                             <div className="text-grey-primary" id="caption">
-                            {getFormattedDate(item.created_at)}
+                              {getFormattedDate(item.created_at)}
                             </div>
                           </div>
                           {item.recruiter_status === 1 || item.recruiter_status === null ? (
