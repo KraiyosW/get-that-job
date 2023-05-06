@@ -11,7 +11,7 @@ import companyLogo from "@/image/logo-web-works.png";
 import upload from "@/image/upload.png";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
-import { useToast, Box, Button } from '@chakra-ui/react'
+import { useToast, Box, Button } from "@chakra-ui/react";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -39,7 +39,6 @@ function JobApply() {
   const inputFile = useRef(null);
   const fileNameField = useRef(null);
   const toast = useToast();
-
 
   const userInformation = async () => {
     const userEmail = String(localStorage.email);
@@ -136,6 +135,7 @@ function JobApply() {
             cv: user.cv,
             professional_experience: experience,
             interested: interested,
+            recruiter_status: 1,
           };
           const { data, error } = await supabase
             .from("professional_apply_jobs")
@@ -148,7 +148,6 @@ function JobApply() {
           } else {
             console.log(data);
           }
-
 
           toast({
             position: "top",
@@ -168,7 +167,6 @@ function JobApply() {
             isClosable: true,
           });
           router.push("/applications");
-
         } catch (error) {
           toast({
             position: "top",
@@ -211,6 +209,7 @@ function JobApply() {
             cv: filePath,
             professional_experience: experience,
             interested: interested,
+            recruiter_status: 1,
           };
 
           const { error: uploadError } = await supabase.storage
@@ -232,7 +231,6 @@ function JobApply() {
             console.log(data);
           }
 
-
           toast({
             position: "top",
             render: () => (
@@ -251,7 +249,6 @@ function JobApply() {
             isClosable: true,
           });
           router.push("/applications");
-
         } catch (error) {
           toast({
             position: "top",
@@ -273,7 +270,6 @@ function JobApply() {
         }
       }
     }
-
   };
 
   const handleExpChange = (event) => {
@@ -401,7 +397,6 @@ function JobApply() {
                         />
                         SEND APPLICATION
                       </Button>
-
                     </div>
                   </div>
                   <div className="box-2 text-center">
