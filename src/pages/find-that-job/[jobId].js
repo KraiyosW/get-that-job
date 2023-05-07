@@ -31,7 +31,7 @@ function JobDetails() {
 
   const router = useRouter();
   const id = router.query["jobId"];
-  
+
   const fetchPost = async (profId) => {
     try {
       const posts = await supabase
@@ -106,8 +106,8 @@ function JobDetails() {
 
       {loading ? (
         <></>
-        ) : post ? (
-          <div className="job-detail-app">
+      ) : post ? (
+        <div className="job-detail-app">
           <Head />
           <SidebarProfessional />
           {/* Header Section */}
@@ -172,14 +172,14 @@ function JobDetails() {
                         {post.professional_follow_jobs[0] === undefined
                           ? "Follow"
                           : post.professional_follow_jobs[0].follow_status
-                          ? "Following"
-                          : "Follow"}
+                            ? "Following"
+                            : "Follow"}
                       </button>
                     </div>
                   </div>
                   <div className="btn">
                     <button
-                      className="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
+                      className="apply-button active:opacity-[80%] bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
                       onClick={handleApply}
                     >
                       <Image
@@ -330,7 +330,7 @@ function JobDetails() {
                     </div>
                     <div className="btn flex justify-center">
                       <button
-                        className="apply-button bg-pink-primary rounded-[16px] text-white w-[173px] h-[56px] py-[16px] pr-[24px] text-right font-medium relative"
+                        className="apply-button active:opacity-[80%] bg-pink-primary rounded-[16px] text-white w-[173px] h-[56px] py-[16px] pr-[24px] text-right font-medium relative"
                         onClick={handleApply}
                       >
                         <Image

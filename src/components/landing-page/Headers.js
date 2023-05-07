@@ -23,7 +23,7 @@ const Headers = () => {
         promise you! Just give us the money and we will take care of it.
       </h5>
       <Link href="/register">
-        <button className="uppercase mt-[2rem] mb-[2.063rem] w-[16.5rem] h-[3.5rem] rounded-[16px] bg-pink-primary text-white-primary tracking-[0.078rem] active:opacity-[80%] " id="btn">
+        <button className="uppercase mt-[2rem] mb-[2.063rem] w-[16.5rem] h-[3.5rem] rounded-[16px] bg-pink-primary text-white-primary tracking-[0.078rem] active:opacity-[80%] shadowHover" id="btn">
           create an account now
         </button>
       </Link>

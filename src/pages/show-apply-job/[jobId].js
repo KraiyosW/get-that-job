@@ -153,10 +153,10 @@ function ShowCandidates() {
     }
   }
 
-    if (!isAuthenticated) {
-      return (<Warning />)
-    }
-  
+  if (!isAuthenticated) {
+    return (<Warning />)
+  }
+
 
 
   return (
@@ -287,7 +287,7 @@ function ShowCandidates() {
                       onClick={() =>
                         handleStatus(post[0].jobs_postings.job_post_id)
                       }
-                      className={`flex flex-row mr-[6px] ${post[0].jobs_postings.post_status
+                      className={`flex flex-row mr-[6px] hover:bg-pink-primary active:opacity-[80%] ${post[0].jobs_postings.post_status
                         ? "button_pink_tertiary"
                         : "button_gray"
                         }`}
@@ -300,7 +300,7 @@ function ShowCandidates() {
                       {post[0].jobs_postings.post_status ? "CLOSE" : "CLOSED"}
                     </button>
                     <button
-                      className="button_pink_tertiary flex flex-row"
+                      className="button_pink_tertiary flex flex-row hover:bg-pink-primary active:opacity-[80%]"
                       onClick={() =>
                         handleEdit(post[0].jobs_postings.job_post_id)
                       }

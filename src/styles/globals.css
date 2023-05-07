@@ -127,6 +127,10 @@ button.button_pink {
   text-align: left;
 }
 
+button.button_pink:active {
+  opacity: 80%;
+}
+
 button.button_pink_previous {
   background-color: #f48fb1;
   padding: 8px 16px 8px 16px;
@@ -341,6 +345,34 @@ button#btn-gray {
 .followButton:hover {
   background-color: transparent !important;
   border: none !important;
+}
+
+
+.shadowHover:hover {
+  box-shadow: 0cm 0cm 0.2cm 0cm pink;
+}
+
+
+.translateAnimate {
+  animation: animate 10s infinite linear;
+}
+
+@keyframes animate {
+  25% {
+    transform: translateY(-40px);
+  }
+
+  50% {
+    transform: translateY(0px)
+  }
+
+  75% {
+    transform: translateY(40px)
+  }
+
+  100% {
+    transform: translateY(0px)
+  }
 }
 
 /* h1 {

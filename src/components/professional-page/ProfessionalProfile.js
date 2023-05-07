@@ -15,7 +15,7 @@ function ProfessionalProfile() {
     supabaseAnonKey
   );
   const { professionalState } = useAuth();
-  
+
   const [data, setData] = useState({})
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -195,6 +195,8 @@ function ProfessionalProfile() {
               value={formData.phone_number}
               onChange={handleChange}
             />
+            <p id="overline">+[country code][number]</p>
+
             <div className="mb-[4px] mt-[8px]" id="overline">
               BIRTHDATE
             </div>
@@ -289,7 +291,7 @@ function ProfessionalProfile() {
               </div>
             </div>
             <Button
-              className="button_pink_new mt-[24px] w-[170px]"
+              className="button_pink_new mt-[24px] w-[170px] active:opacity-[80%]"
               variant="unstyled"
               onClick={handleSubmit}
             >
