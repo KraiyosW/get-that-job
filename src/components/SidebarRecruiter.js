@@ -143,7 +143,7 @@ const SideBarRecruiter = () => {
           </div>
         </div>
         <div className="box-2 pl-[16px] max-[700px]:text-center max-[700px]:hidden">
-          <div>Â© 202X - Get That Job</div>
+          <div>Â© 2023 - Get That Job</div>
         </div>
       </div>
     </div>

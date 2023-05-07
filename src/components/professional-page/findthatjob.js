@@ -277,7 +277,7 @@ const Findthatjob = () => {
                   <div className="flex flex-row items-center max-[700px]:justify-center">
                     <button
 
-                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] ${isAscendingClicked && sortAscending ? "bg-[#f48fb1] text-white" : ""
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] max-[700px]:mr-[10px] ${isAscendingClicked && sortAscending ? "bg-[#F48Fb1] text-white" : ""
 
                         }`}
 
@@ -287,7 +287,7 @@ const Findthatjob = () => {
                     </button>
                     <button
 
-                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "bg-[#f48fb1] text-white" : ""
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "bg-[#F48Fb1] text-white" : ""
 
                         }`}
                       onClick={handleSortDescending}
@@ -304,14 +304,14 @@ const Findthatjob = () => {
             <h6 className="max-[700px]:text-center mb-4 mt-4 text-[#bf5f82]" id="heading6">
               {filterJobs.length} jobs for you
             </h6>
-            <div className="flex felx-row flex-wrap gap-[15px]">
+            <div className="flex felx-row flex-wrap gap-[15px] max-[700px]:w-full">
               {filterJobs.map((item, index) => {
                 return (
                   <div
                     key={index}
-                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[420px] h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]"
+                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[420px] h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)] max-[700px]:w-full max-[700px]:h-auto"
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex max-[700px]:flex-col items-center gap-4">
                       <div>
                         <Image
                           alt="picture"
@@ -373,7 +373,7 @@ const Findthatjob = () => {
                             <Image
                               alt="picture"
                               src={smallfollowing}
-                              className="w-[40px] h-[40px] border-[#F48FB1]"
+                              className="w-[40px] max-[700px]:h-auto h-[40px] border-[#F48FB1]"
                             />
                           )}
                           {item.professional_follow_jobs[0] !== undefined &&
@@ -386,6 +386,7 @@ const Findthatjob = () => {
                             )}
                         </div>
                         <button
+                        className=""
                           onClick={() =>
                             handleFollowClick(
                               item.job_post_id,
@@ -403,7 +404,7 @@ const Findthatjob = () => {
                             : "Follow"} */}
                         </button>
                       </div>
-                      <div className="max-[768px]:flex max-[768px]:items-center ml-[70px]">
+                      <div className="max-[768px]:flex max-[768px]:items-center max-[700px]:ml-0 ml-[70px]">
                         <button
                           className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3 active:opacity-[60%]"
                           onClick={() => handleSeeMore(item.job_post_id)}
