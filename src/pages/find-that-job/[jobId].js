@@ -348,12 +348,7 @@ function JobDetails() {
           </main>
         </div>
       ) : (
-        <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
-          <h3 className="ml-[240px] mb-[10px]" id="heading3">
-            Job Not Found
-            <PageNotFound />
-          </h3>
-        </div>
+            <PageNotFound/>
       )}
     </>
   );

@@ -23,7 +23,7 @@ function Footer() {
     "https://linkedin.com/in/kraiyos-wanna",
     "https://linkedin.com/in/sudarad-thonglue",
     "https://linkedin.com/in/jittawat-vonglao-033b5726a",
-    "https://linkedin.com/in/yok-yokkk-752381269",
+    "https://www.linkedin.com/in/patiparn-wongsawang-752381269/",
     "https://linkedin.com/in/brighttech"
   ];
 
@@ -50,7 +50,7 @@ function Footer() {
         ))}
       </div>
       <h2 className="mt-10" id="subtitle2">
-        © 2021 - Get That Job
+        © 2023 - Get That Job
       </h2>
     </div>
   );
