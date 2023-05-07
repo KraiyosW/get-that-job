@@ -252,7 +252,7 @@ function ProfessionalProfile() {
           <form
             className="flex flex-col max-[700px]:items-center"
             id="file-form"
-            onSubmit={handleUpdateProfile}
+
           >
 
             <div className="mb-[4px] mt-[8px]" id="overline">

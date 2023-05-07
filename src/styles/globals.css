@@ -184,6 +184,7 @@ button.button_bg_white {
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
 }
+
 button.button_bg_yellow {
   background-color: rgb(247, 255, 137);
   padding: 8px 16px 8px 16px;
@@ -338,6 +339,12 @@ input#input-glasses:focus {
 button#btn-white,
 button#btn-gray {
   width: 200px;
+}
+
+button.button_bg_yellow {
+  background-color: pink;
+  padding: 8px 16px 8px 16px;
+  border-radius: 16px;
 }
 
 .followButton {
