@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from 'react';
 import Image from "next/image";
 import linkin from "../../image/linkin.png";
 import phone from "../../image/phone.png";
@@ -17,7 +17,6 @@ import closed from "../../image/closed.png";
 import pencil from "../../image/pencil.png";
 import review from "../../image/review.png";
 import finished from "../../image/finished.png";
-import { useState } from "react";
 import { useRouter } from "next/router";
 import { createClient } from "@supabase/supabase-js";
 import { useEffect } from "react";
@@ -27,6 +26,16 @@ import moment from "moment";
 import Link from "next/link";
 import Warning from "@/components/Warning";
 import NoCandidateFound from "@/components/NoCandidateFound";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  Button,
+} from "@chakra-ui/react";
+
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -42,6 +51,15 @@ function ShowCandidates() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => setIsOpen(false);
+  const cancelRef = useRef();
+  const [currentProfessionalApplyJobId, setCurrentProfessionalApplyJobId] = useState(null);
+  const [isStatusOneDialogOpen, setIsStatusOneDialogOpen] = useState(false);
+  const onStatusOneDialogClose = () => setIsStatusOneDialogOpen(false);
+  const statusOneDialogCancelRef = useRef();
+
+
 
   const fetchData = async () => {
     try {
@@ -70,6 +88,46 @@ function ShowCandidates() {
   const toggleExpanded = (postId) => {
     setIsExpanded((prevId) => (prevId === postId ? false : postId));
   };
+
+  const handleStatusDialogOpen = (professional_apply_job_id) => {
+    setCurrentProfessionalApplyJobId(professional_apply_job_id);
+    setIsOpen(true);
+  };
+
+  const handleStatusOneDialogOpen = (professional_apply_job_id) => {
+    setCurrentProfessionalApplyJobId(professional_apply_job_id);
+    setIsStatusOneDialogOpen(true);
+  };
+
+
+
+
+  const handleStatusOneAction = async (professional_apply_job_id) => {
+    setIsUpdating(true);
+    try {
+      let { data, error } = await supabase
+        .from("professional_apply_jobs")
+        .update({ recruiter_status: 2 }) // Update the recruiter_status to 2
+        .eq("professional_apply_job_id", professional_apply_job_id);
+
+      if (error) throw error;
+
+      setPost((prevState) =>
+        prevState.map((post) =>
+          post.professional_apply_job_id === professional_apply_job_id
+            ? { ...post, recruiter_status: 2 }
+            : post
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    setIsUpdating(false);
+    onStatusOneDialogClose();
+  };
+
+
+
 
   const handleStatus = async (jobId) => {
     setIsUpdating(true);
@@ -186,7 +244,7 @@ function ShowCandidates() {
               </h4>
 
               {post[0] && (
-                <div className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[80%] mb-[20px] h-auto ">
+                <div className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[80.2%] mb-[20px] h-auto ">
                   <div className="flex flex-col" id="box-job-all">
                     <div
                       className="max-[700px]:text-center flex flex-row flex-wrap justify-between w-[100%]"
@@ -283,24 +341,9 @@ function ShowCandidates() {
                         </div>
                       </div>
                       <div className="flex flex-row items-center">
+
                         <button
-                          onClick={() =>
-                            handleStatus(post[0].jobs_postings.job_post_id)
-                          }
-                          className={`flex flex-row mr-[6px] hover:bg-pink-primary active:opacity-[80%] ${post[0].jobs_postings.post_status
-                            ? "button_pink_tertiary"
-                            : "button_gray"
-                            }`}
-                        >
-                          <Image
-                            src={post[0].jobs_postings.post_status ? close : closed}
-                            alt="Close Botton"
-                            className="w-[25px] h-[25px] mr-[5px]"
-                          />
-                          {post[0].jobs_postings.post_status ? "CLOSE" : "CLOSED"}
-                        </button>
-                        <button
-                          className="button_pink_tertiary flex flex-row hover:bg-pink-primary active:opacity-[80%]"
+                          className="button_pink_tertiary flex flex-row  active:opacity-[80%]"
                           onClick={() =>
                             handleEdit(post[0].jobs_postings.job_post_id)
                           }
@@ -408,7 +451,7 @@ function ShowCandidates() {
                     return (
                       <div
                         key={index}
-                        className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[80%] mb-[20px] h-auto "
+                        className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[80.2%] mb-[20px] h-auto "
                       >
                         <div className="flex flex-col" id="box-job-all">
                           <div
@@ -471,6 +514,7 @@ function ShowCandidates() {
                                   {getFormattedDate(item.created_at)}
                                 </div>
                               </div>
+
                               {item.recruiter_status === 1 || item.recruiter_status === null ? (
                                 <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px]">
                                   <Image
@@ -485,6 +529,7 @@ function ShowCandidates() {
                                     review
                                   </div>
                                 </div>
+
                               ) : item.recruiter_status === 2 ? (
                                 <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px]">
                                   <Image
@@ -516,31 +561,96 @@ function ShowCandidates() {
                               )}
                             </div>
                             <div className="flex flex-row items-center ml-[50px]">
+
+                              <AlertDialog
+                                isOpen={isStatusOneDialogOpen}
+                                leastDestructiveRef={statusOneDialogCancelRef}
+                                onClose={onStatusOneDialogClose}
+                              >
+                                <AlertDialogOverlay>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                                      Mark as started
+                                    </AlertDialogHeader>
+
+                                    <AlertDialogBody>
+                                      Are you sure you want to mark this as started?
+                                    </AlertDialogBody>
+
+                                    <AlertDialogFooter>
+                                      <Button ref={statusOneDialogCancelRef} onClick={onStatusOneDialogClose}>
+                                        Cancel
+                                      </Button>
+                                      <Button
+                                        colorScheme="pink"
+                                        onClick={() => {
+                                          handleStatusOneAction(currentProfessionalApplyJobId);
+                                        }}
+                                        ml={3}
+                                      >
+                                        Mark as started
+                                      </Button>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialogOverlay>
+                              </AlertDialog>
+
+
+
+                              <AlertDialog
+                                isOpen={isOpen}
+                                leastDestructiveRef={cancelRef}
+                                onClose={onClose}
+                              >
+                                <AlertDialogOverlay>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                                      Mark as Finished
+                                    </AlertDialogHeader>
+
+                                    <AlertDialogBody>
+                                      Are you sure you want to mark this as finished?
+                                    </AlertDialogBody>
+
+                                    <AlertDialogFooter>
+                                      <Button ref={cancelRef} onClick={onClose}>
+                                        Cancel
+                                      </Button>
+                                      <Button
+                                        colorScheme="red"
+                                        onClick={() => {
+                                          handleStatusFinished(currentProfessionalApplyJobId);
+                                          onClose();
+                                        }}
+                                        ml={3}
+                                      >
+                                        Mark as Finished
+                                      </Button>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialogOverlay>
+                              </AlertDialog>
                               {item.recruiter_status === 1 ||
                                 item.recruiter_status === null ? (
                                 <button
-                                  onClick={() =>
-                                    handleStatusCandidate(
-                                      item.professional_apply_job_id
-                                    )
-                                  }
+                                  onClick={() => handleStatusOneDialogOpen(item.professional_apply_job_id)}
                                   className="button_bg_white"
                                   id="btn-white"
                                 >
                                   MARK AS STARTED
                                 </button>
+
+
+
                               ) : item.recruiter_status === 2 ? (
                                 <button
-                                  onClick={() =>
-                                    handleStatusFinished(
-                                      item.professional_apply_job_id
-                                    )
-                                  }
+                                  onClick={() => handleStatusDialogOpen(item.professional_apply_job_id)}
                                   className="button_bg_white"
                                   id="btn-white"
                                 >
                                   MARK AS FINISHED
                                 </button>
+
                               ) : (
                                 <button className="button_gray" id="btn-gray">FINISHED</button>
                               )}

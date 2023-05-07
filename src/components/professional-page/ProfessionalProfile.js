@@ -61,15 +61,27 @@ function ProfessionalProfile() {
     }
 
     const { data, error } = await supabase.storage
-      .from("profiles/professional")
+      .from("professional_cv")
       .upload(`user-${Date.now()}`, file);
 
     if (error) {
       alert("Error uploading file: ", error.message);
     } else {
-      alert("File uploaded successfully!");
+      const fileURL = data.Key; // Extract the file URL from the data object
+      const { data: updateData, error: updateError } = await supabase
+        .from("professional")
+        .update({ cv_url: fileURL }) // Add the cv_url field to your table schema
+        .eq("email", userEmail);
+
+      if (updateError) {
+        alert("Error updating profile with CV URL: ", updateError.message);
+      } else {
+        alert("File uploaded and profile updated successfully!");
+      }
     }
+
   };
+
 
   const handleChange = (event) => {
     setFormData({
@@ -161,7 +173,9 @@ function ProfessionalProfile() {
           <form
             className="flex flex-col max-[700px]:items-center"
             id="file-form"
+            onSubmit={handleUpdateProfile}
           >
+
             <div className="mb-[4px] mt-[8px]" id="overline">
               EMAIL
             </div>
@@ -267,7 +281,7 @@ function ProfessionalProfile() {
                   type="file"
                   id="fileInput"
                   accept="pdf/*"
-
+                  onChange={handleFileInputChange}
                 />
                 <div className="icon-file">
                   <svg
@@ -293,10 +307,12 @@ function ProfessionalProfile() {
             <Button
               className="button_pink_new mt-[24px] w-[170px] active:opacity-[80%]"
               variant="unstyled"
+              type="submit"
               onClick={handleSubmit}
             >
               SAVE CHANGES
             </Button>
+
 
 
 
