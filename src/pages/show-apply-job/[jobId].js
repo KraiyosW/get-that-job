@@ -76,7 +76,7 @@ function ShowCandidates() {
       setIsLoading(false);
     } catch {
       console.error();
-    }finally {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -219,16 +219,15 @@ function ShowCandidates() {
     );
   }
   if (!isAuthenticated) {
-  return (
-    <Warning />
-  );
-}
+    return (
+      <Warning />
+    );
+  }
 
 
 
   return (
     <>
-
     {isLoading ? ( // Conditionally render based on isLoading
     <></>
   ) : post.length !== 0 ? (
