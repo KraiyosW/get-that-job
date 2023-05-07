@@ -122,10 +122,16 @@ function EditJobPost() {
     });
   };
 
-  if (!isAuthenticated) {
-    return (<Warning />)
+  if (isLoading) {
+    return (
+      <div className="bg-[#F5F5F6] h-screen"></div>
+    );
   }
-
+  if (!isAuthenticated) {
+  return (
+    <Warning />
+  );
+}
 
 
   // ฟังก์ชั่นสำหรับการ submit form

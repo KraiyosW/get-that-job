@@ -167,7 +167,7 @@ function ProfessionalProfile() {
 
   if (isLoading) {
     return (
-      <></>
+      <div className="bg-[#F5F5F6] h-screen"></div>
     );
   }
   if (!isAuthenticated) {
