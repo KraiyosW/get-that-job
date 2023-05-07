@@ -15,7 +15,6 @@ import PageNotFound from "@/components/PageNotFound";
 import Warning from "@/components/Warning";
 import { log } from "util";
 
-
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -28,6 +27,8 @@ function JobDetails() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [followStatus, setFollowStatus] = useState(null);
   const [followIcon, setFollowIcon] = useState(following);
+  const [requirement, setRequirement] = useState([]);
+  const [optRequirement, setOptRequirement] = useState([]);
 
   const router = useRouter();
   const id = router.query["jobId"];
@@ -48,11 +49,29 @@ function JobDetails() {
       const diffTime = Math.abs(currentDate - createdDate);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       setTimeAgo(`${diffDays}`);
+      console.log(posts.data.requirement);
+      const requirementArr = posts.data.requirement.split("\n").map((item) => {
+        if (item.startsWith("-")) {
+          return item.slice(1);
+        }
+        return item;
+      });
+      const optRequirementArr = posts.data.optional_requirement
+        .split("\n")
+        .map((item) => {
+          if (item.startsWith("-")) {
+            return item.slice(1);
+          }
+          return item;
+        });
+      console.log(requirementArr);
+      console.log(optRequirementArr);
+      setRequirement(requirementArr);
+      setOptRequirement(optRequirementArr);
     } catch (error) {
       console.error(error);
     }
   };
-
 
   useEffect(() => {
     const token = localStorage.getItem("sb:token");
@@ -62,7 +81,6 @@ function JobDetails() {
       fetchPost(profId);
     }
   }, [followStatus, id, isAuthenticated]);
-
 
   const handleGoBack = () => {
     router.push("/find-that-job");
@@ -98,19 +116,14 @@ function JobDetails() {
   };
 
   if (loading) {
-    return (
-      <div className="bg-[#F5F5F6] h-screen"></div>
-    );
+    return <div className="bg-[#F5F5F6] h-screen"></div>;
   }
   if (!isAuthenticated) {
-  return (
-    <Warning />
-  );
-}
+    return <Warning />;
+  }
 
   return (
     <>
-
       {loading ? (
         <></>
       ) : post ? (
@@ -179,8 +192,8 @@ function JobDetails() {
                         {post.professional_follow_jobs[0] === undefined
                           ? "Follow"
                           : post.professional_follow_jobs[0].follow_status
-                            ? "Following"
-                            : "Follow"}
+                          ? "Following"
+                          : "Follow"}
                       </button>
                     </div>
                   </div>
@@ -324,7 +337,12 @@ function JobDetails() {
                       >
                         Mandatory Requirements
                       </h5>
-                      <p className="mb-[16px]">{post.requirement}</p>
+                      <ul>
+                        {requirement.map((item, index) => (
+                          <li key={index}>- {item}</li>
+                        ))}
+                      </ul>
+                      {/* <p className="mb-[16px]">{post.requirement}</p> */}
                     </div>
                     <div className="optional-requirements">
                       <h5
@@ -333,7 +351,12 @@ function JobDetails() {
                       >
                         Optional Requirements
                       </h5>
-                      <p className="mb-[16px]">{post.optional_requirement}</p>
+                      <ul>
+                        {requirement.map((item, index) => (
+                          <li key={index}>- {item}</li>
+                        ))}
+                      </ul>
+                      {/* <p className="mb-[16px]">{post.optional_requirement}</p> */}
                     </div>
                     <div className="btn flex justify-center">
                       <button
@@ -355,7 +378,7 @@ function JobDetails() {
           </main>
         </div>
       ) : (
-            <PageNotFound/>
+        <PageNotFound />
       )}
     </>
   );
