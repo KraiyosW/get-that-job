@@ -287,7 +287,7 @@ const Findthatjob = () => {
                   <div className="flex flex-row items-center max-[700px]:justify-center">
                     <button
 
-                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] max-[700px]:mr-[10px] ${isAscendingClicked && sortAscending ? "bg-[#F48Fb1] text-white" : ""
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] max-[700px]:mr-[10px] ${isAscendingClicked && sortAscending ? "bg-[#f48fb1] text-white" : ""
 
                         }`}
 
@@ -297,7 +297,7 @@ const Findthatjob = () => {
                     </button>
                     <button
 
-                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "bg-[#F48Fb1] text-white" : ""
+                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "bg-[#f48fb1] text-white" : ""
 
                         }`}
                       onClick={handleSortDescending}
@@ -320,6 +320,7 @@ const Findthatjob = () => {
                   <div
                     key={index}
                     className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] max-[900px]:w-full w-[420px] h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)] max-[700px]:h-auto"
+
                   >
                     <div className="flex max-[700px]:flex-col items-center gap-4">
                       <div>
@@ -396,7 +397,7 @@ const Findthatjob = () => {
                             )}
                         </div>
                         <button
-                        className=""
+                          className=""
                           onClick={() =>
                             handleFollowClick(
                               item.job_post_id,
