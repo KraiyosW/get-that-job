@@ -314,12 +314,12 @@ const Findthatjob = () => {
             <h6 className="max-[700px]:text-center mb-4 mt-4 text-[#bf5f82]" id="heading6">
               {filterJobs.length} jobs for you
             </h6>
-            <div className="flex felx-row flex-wrap gap-[15px] max-[700px]:w-full">
+            <div className="flex felx-row flex-wrap gap-[15px] max-[900px]:w-full">
               {filterJobs.map((item, index) => {
                 return (
                   <div
                     key={index}
-                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[420px] h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)] max-[700px]:w-full max-[700px]:h-auto"
+                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] max-[900px]:w-full w-[420px] h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)] max-[700px]:h-auto"
                   >
                     <div className="flex max-[700px]:flex-col items-center gap-4">
                       <div>
@@ -383,7 +383,7 @@ const Findthatjob = () => {
                             <Image
                               alt="picture"
                               src={smallfollowing}
-                              className="w-[40px] max-[700px]:h-auto h-[40px] border-[#F48FB1]"
+                              className="w-[40px] max-[900px]:h-auto h-[40px] border-[#F48FB1]"
                             />
                           )}
                           {item.professional_follow_jobs[0] !== undefined &&
@@ -391,7 +391,7 @@ const Findthatjob = () => {
                               <Image
                                 alt="followIcon"
                                 src={following}
-                                className="w-[22px] h-[22px] border-[#F48FB1]"
+                                className="w-[22px] max-[900px]:h-auto h-[22px] border-[#F48FB1]"
                               />
                             )}
                         </div>
@@ -414,7 +414,7 @@ const Findthatjob = () => {
                             : "Follow"} */}
                         </button>
                       </div>
-                      <div className="max-[768px]:flex max-[768px]:items-center max-[700px]:ml-0 ml-[70px]">
+                      <div className="max-[768px]:flex max-[768px]:items-center max-[900px]:ml-0 ml-[70px]">
                         <button
                           className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3 active:opacity-[60%] hover:text-pink-primary"
                           onClick={() => handleSeeMore(item.job_post_id)}

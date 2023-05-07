@@ -195,13 +195,13 @@ function ShowCandidates() {
           </h4>
 
           {post[0] && (
-            <div className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[80%] mb-[20px] h-auto ">
+            <div className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl max-[900px]:w-[100%] w-[80.5%] mb-[20px] h-auto ">
               <div className="flex flex-col" id="box-job-all">
                 <div
                   className="max-[700px]:text-center flex flex-row flex-wrap justify-between w-[100%]"
                   id="job-head-row"
                 >
-                  <div id="job-title flex flex-col">
+                  <div className="flex flex-col max-[900px]:mb-[10px]" id="job-title">
                     <h6 className="mb-[4px]" id="heading6">
                       {post[0].jobs_postings.job_title}
                     </h6>
@@ -210,7 +210,7 @@ function ShowCandidates() {
                         <Image
                           src={TypeJob}
                           alt="Type Job"
-                          className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
+                          className="max-[900px]:w-[20px] max-[900px]:h-[20px] max-[700px]:h-[20px] mr-[6px]"
                         />
                         <div className="text-grey-secondary" id="caption">
                           {post[0].jobs_postings.job_category}
@@ -220,7 +220,7 @@ function ShowCandidates() {
                         <Image
                           src={TimeWorking}
                           alt="Time working"
-                          className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
+                          className="max-[900px]:w-[20px] max-[900px]:h-[20px] max-[700px]:h-[20px] mr-[6px]"
                         />
                         <div className="text-grey-secondary" id="caption">
                           {post[0].jobs_postings.job_type}
@@ -230,7 +230,7 @@ function ShowCandidates() {
                         <Image
                           src={Salary}
                           alt="Salary"
-                          className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
+                          className="max-[900px]:w-[20px] max-[900px]:h-[20px] max-[700px]:h-[20px] mr-[6px]"
                         />
                         <div className="text-grey-secondary" id="caption">
                           {numeral(
@@ -417,7 +417,7 @@ function ShowCandidates() {
                 return (
                   <div
                     key={index}
-                    className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[80%] mb-[20px] h-auto "
+                    className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl max-[900px]:w-[100%] w-[80.5%] mb-[20px] h-auto "
                   >
                     <div className="flex flex-col" id="box-job-all">
                       <div
