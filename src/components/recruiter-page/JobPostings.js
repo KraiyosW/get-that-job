@@ -18,6 +18,15 @@ import { useRouter } from "next/router";
 import { useAuth } from '@/contexts/authentication.js';
 import moment from "moment";
 import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  Button,
+} from "@chakra-ui/react";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -33,9 +42,19 @@ function JobPostings() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [apply, setApply] = useState([])
   const [statusRecruiter, setStatusRecruiter] = useState([])
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef();
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState({});
+
 
   const router = useRouter()
   const userEmail = String(myState);
+  const openDialog = (job) => {
+    setSelectedJob(job);
+    setIsOpen(true);
+  };
 
   useEffect(() => {
     const storedState = localStorage.getItem("email");
@@ -138,22 +157,28 @@ function JobPostings() {
 
 
   const handleStatus = async (jobId) => {
-    setIsUpdating(true)
+    setIsUpdating(true);
     let { data, error } = await supabase
       .from('jobs_postings')
       .update({ post_status: false })
-      .match({ job_post_id: jobId })
-    if (error) console.log('error', error)
+      .match({ job_post_id: jobId });
+    if (error) console.log('error', error);
     else {
-      // อัพเดทสถานะของ job ใน state เมื่ออัพเดทข้อมูลในฐานข้อมูลสำเร็จ
-      setJobStatus((prevState) =>
-        prevState.map((job) =>
+      setJob((prevJobs) =>
+        prevJobs.map((job) =>
           job.job_post_id === jobId ? { ...job, post_status: false } : job
         )
-      )
+      );
+      setIsButtonDisabled((prevState) => ({
+        ...prevState,
+        [jobId]: true,
+      }));
     }
-    setIsUpdating(false)
+    setIsUpdating(false);
   };
+
+
+
 
   function getFormattedDate(date) {
     const differenceInDays = moment().diff(moment(date), 'days');
@@ -165,6 +190,14 @@ function JobPostings() {
       return moment(date).fromNow();
     }
   }
+
+  const handleStatusDialogOpen = (job) => {
+    setSelectedJob(job);
+    setIsOpen(true);
+  };
+
+
+
 
   return (
     <>
@@ -249,7 +282,49 @@ function JobPostings() {
                         </button>
                       </div>
                       <div className="flex flex-row items-center">
-                        <button onClick={() => handleStatus(item.job_post_id)} className={`flex flex-row mr-[6px] hover:bg-pink-primary active:opacity-[80%] ${item.post_status ? 'button_pink_tertiary' : 'button_gray'}`}>
+
+                        <AlertDialog
+                          isOpen={isOpen}
+                          leastDestructiveRef={cancelRef}
+                          onClose={onClose}
+                        >
+                          <AlertDialogOverlay>
+                            <AlertDialogContent>
+                              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                                Confirm action
+                              </AlertDialogHeader>
+
+                              <AlertDialogBody>
+                                {selectedJob && `Are you sure you want to change the status of ${selectedJob.job_title}?`}
+                              </AlertDialogBody>
+
+                              <AlertDialogFooter>
+                                <Button ref={cancelRef} onClick={onClose}>
+                                  Cancel
+                                </Button>
+                                <Button
+                                  colorScheme="red"
+                                  onClick={() => {
+                                    handleStatus(selectedJob.job_post_id);
+                                    onClose();
+                                  }}
+                                  ml={3}
+                                >
+                                  Confirm
+                                </Button>
+
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialogOverlay>
+                        </AlertDialog>
+
+
+                        <button
+                          onClick={() => handleStatusDialogOpen(item)}
+                          disabled={isButtonDisabled[item.job_post_id]}
+                          className={`flex flex-row mr-[6px]  active:opacity-[80%] ${item.post_status ? 'button_pink_tertiary' : 'button_gray'
+                            }`}
+                        >
                           <Image
                             src={item.post_status ? close : closed}
                             alt="Close Botton"
@@ -257,7 +332,12 @@ function JobPostings() {
                           />
                           {item.post_status ? 'CLOSE' : 'CLOSED'}
                         </button>
-                        <button className="button_pink_tertiary flex flex-row hover:bg-pink-primary active:opacity-[80%]" onClick={() => handleEdit(item.job_post_id)}>
+
+
+
+
+
+                        <button className="button_pink_tertiary flex flex-row  active:opacity-[80%]" onClick={() => handleEdit(item.job_post_id)}>
                           <Image
                             src={pencil}
                             alt="Edit Botton"
