@@ -545,7 +545,7 @@ function ShowCandidates() {
                                   item.professional_apply_job_id
                                 )
                               }
-                              className="button_bg_white"
+                              className="button_bg_yellow"
                               id="btn-white"
                             >
                               MARK AS FINISHED
