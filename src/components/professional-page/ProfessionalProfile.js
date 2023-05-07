@@ -3,32 +3,29 @@ import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
-import { useToast, Box, Button } from '@chakra-ui/react'
+import { useToast, Box, Button } from "@chakra-ui/react";
 import Warning from "../Warning";
 import Image from "next/image";
 import LogoMockup from "../../image/logo-mockup.png";
 
 function ProfessionalProfile() {
-  const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  const supabase = createClient(
-    supabaseURL,
-    supabaseAnonKey
-  );
+  const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabase = createClient(supabaseURL, supabaseAnonKey);
   const { professionalState } = useAuth();
 
-  const [data, setData] = useState({})
+  const [data, setData] = useState({});
+  const [file, setFile] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [myState,setMyState] = useState("")
+  const [myState, setMyState] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter()
+  const router = useRouter();
 
   const userEmail = String(myState);
 
-  const toast = useToast()
-
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -39,69 +36,143 @@ function ProfessionalProfile() {
     job_title: "",
     experience: "",
     education: "",
-    email: userEmail,
   });
 
-  function handleFileInputChange(event) {
-    const file = event.target.files[0];
-    setSelectedFile(file);
+  // function handleFileInputChange(event) {
+  //   const file = event.target.files[0];
+  //   setSelectedFile(file);
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
 
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
+  //   reader.onloadend = () => {
+  //     setImagePreview(reader.result);
+  //   };
+  // }
+
+  function handleFileUpload(event) {
+    setFile(event.target.files[0]);
   }
-  const handleUpdateProfile = async (event) => {
-    event.preventDefault();
 
-    const fileInput = document.getElementById("fileInput");
-    const file = fileInput.files[0];
+  // const handleUpdateProfile = async (event) => {
+  //   event.preventDefault();
 
-    if (!file) {
-      alert("Please select a file to upload.");
-      return;
-    }
+  //   const fileInput = document.getElementById("fileInput");
+  //   const file = fileInput.files[0];
 
-    const { data, error } = await supabase.storage
-      .from("profiles/professional")
-      .upload(`user-${Date.now()}`, file);
+  //   if (!file) {
+  //     alert("Please select a file to upload.");
+  //     return;
+  //   }
 
-    if (error) {
-      alert("Error uploading file: ", error.message);
-    } else {
-      alert("File uploaded successfully!");
-    }
-  };
+  //   const { data, error } = await supabase.storage
+  //     .from("profiles/professional")
+  //     .upload(`user-${Date.now()}`, file);
+
+  //   if (error) {
+  //     alert("Error uploading file: ", error.message);
+  //   } else {
+  //     alert("File uploaded successfully!");
+  //   }
+  // };
 
   const handleChange = (event) => {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value
-    })
-  }
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const handleSubmit = async () => {
-
     try {
-      const { data, error } = await supabase
-        .from('professional')
-        .update(formData)
-        .eq('email', userEmail);
+      if (file) {
+        try {
+          const fileExt = file.name.split(".").pop();
+          const fileName = `${Math.random()}.${fileExt}`;
+          const filePath = `${fileName}`;
+          const bucket = `professional_cv/${formData.name}`;
 
-      if (error) {
-        console.error(error);
-        return;
+          const profData = {
+            ...formData,
+            cv: filePath,
+          };
+          console.log(profData);
+
+          const { data, error } = await supabase
+            .from("professional")
+            .update(profData)
+            .eq("email", userEmail);
+
+          if (error) {
+            console.error(error);
+          }
+
+          console.log(data);
+
+          const { error: uploadError } = await supabase.storage
+            .from(bucket)
+            .upload(filePath, file);
+
+          if (uploadError) {
+            throw uploadError;
+          }
+          router.push("/find-that-job");
+        } catch (error) {
+          toast({
+            position: "top",
+            render: () => (
+              <Box
+                className="bg-red-500 flex flex-col justify-center text-center"
+                p={3}
+                color="white"
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <div>Cv uploaded failed .</div>
+                <div>Please try again .</div>
+              </Box>
+            ),
+            duration: 3000,
+            isClosable: true,
+          });
+          return;
+        }
+      } else if (!file) {
+        const { data, error } = await supabase
+          .from("professional")
+          .update(formData)
+          .eq("email", userEmail);
+
+        if (error) {
+          console.error(error);
+        }
+
+        console.log(data);
+        router.push("/find-that-job");
       }
-
-      console.log(data);
-      router.push('/find-that-job');
     } catch (error) {
       console.error(error);
+      toast({
+        position: "top",
+        render: () => (
+          <Box
+            className="bg-pink-primary flex flex-col justify-center text-center"
+            p={3}
+            color="white"
+            borderRadius="md"
+            boxShadow="md"
+          >
+            <div>Profile updated failed .</div>
+            <div>Please try again .</div>
+          </Box>
+        ),
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
     }
     toast({
-      position: 'top',
+      position: "top",
       render: () => (
         <Box
           className="bg-pink-primary flex flex-col justify-center text-center"
@@ -112,7 +183,6 @@ function ProfessionalProfile() {
         >
           <div>Profile updated .</div>
           <div>Profile has been successfully updated .</div>
-
         </Box>
       ),
       duration: 3000,
@@ -120,13 +190,11 @@ function ProfessionalProfile() {
     });
   };
 
-
   const fetchData = async () => {
     try {
-
       const result = await supabase
         .from("professional")
-        .select('*')
+        .select("*")
         .eq("email", userEmail)
         .single();
       setData(result.data);
@@ -142,41 +210,33 @@ function ProfessionalProfile() {
         experience: result.data.experience,
         education: result.data.education,
       });
-
-
     } catch (error) {
       console.log(error);
-    }finally {
+    } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
     const storedState = localStorage.getItem("email");
-    const token = localStorage.getItem("sb:token"); 
-    setIsAuthenticated(!!token); 
+    const token = localStorage.getItem("sb:token");
+    setIsAuthenticated(!!token);
     if (storedState) {
       setMyState(storedState);
     }
     fetchData();
-  }, [myState,isAuthenticated]);
+  }, [myState, isAuthenticated]);
 
   useEffect(() => {
     localStorage.setItem("myState", myState);
   }, [myState]);
 
   if (isLoading) {
-    return (
-      <div className="bg-[#F5F5F6] h-screen"></div>
-    );
+    return <div className="bg-[#F5F5F6] h-screen"></div>;
   }
   if (!isAuthenticated) {
-  return (
-    <Warning />
-  );
-}
-
-
+    return <Warning />;
+  }
 
   return (
     <>
@@ -247,8 +307,12 @@ function ProfessionalProfile() {
               value={formData.linkedin_url}
               onChange={handleChange}
             />
-            <h5 className="mt-[32px] mb-[8px]" id="heading5">Personal information</h5>
-            <p className="text-[#616161] mb-[8px]" id="overline">Changes made here will be reflected in your future applications</p>
+            <h5 className="mt-[32px] mb-[8px]" id="heading5">
+              Personal information
+            </h5>
+            <p className="text-[#616161] mb-[8px]" id="overline">
+              Changes made here will be reflected in your future applications
+            </p>
             <div className="mb-[4px] mt-[8px]" id="overline">
               TITLE
             </div>
@@ -294,8 +358,8 @@ function ProfessionalProfile() {
                 <input
                   type="file"
                   id="fileInput"
-                  accept="pdf/*"
-
+                  accept=".pdf"
+                  onChange={(e) => handleFileUpload(e)}
                 />
                 <div className="icon-file">
                   <svg
@@ -325,14 +389,11 @@ function ProfessionalProfile() {
             >
               SAVE CHANGES
             </Button>
-
-
-
           </form>
         </div>
       </main>
     </>
-  )
+  );
 }
 
-export default ProfessionalProfile
+export default ProfessionalProfile;
