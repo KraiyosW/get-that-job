@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/authentication";
 import { createClient } from "@supabase/supabase-js";
 import Warning from "@/components/Warning";
 import { useToast, Box } from '@chakra-ui/react'
+import PageNotFound from "@/components/PageNotFound";
 
 
 
@@ -25,6 +26,7 @@ function EditJobPost() {
   const [selectedJobType, setSelectedJobType] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [myState, setMyState] = useState("");
+  const [loading, setLoading] = useState(true);
   const userEmail = recruiterState.email;
   const router = useRouter();
   const toast = useToast();
@@ -60,6 +62,7 @@ function EditJobPost() {
         if (!posts.data) return; // check if post is undefined or null
 
         setPost(posts.data);
+        setLoading(false);
 
         setFormData({
           ...formData,
@@ -173,7 +176,10 @@ function EditJobPost() {
   };
 
   return (
-    <>
+    <>{loading ? (
+      <></>
+      ) : post ? (
+        <>
       <SideBarRecruiter />
       <main className="bg-white-secondary h-screen">
         <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px] max-[700px]:items-center max-[700px]:text-center">
@@ -308,6 +314,10 @@ function EditJobPost() {
           </form>
         </div>
       </main>
+      </>
+      ) : (
+        <PageNotFound/>
+      )}
     </>
   );
 }

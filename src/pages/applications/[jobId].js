@@ -15,6 +15,7 @@ import { useToast, Box, Button } from "@chakra-ui/react";
 import following from "../../image/following.png";
 import smallfollowing from "../../image/smallfollowing.png";
 import axios from "axios";
+import PageNotFound from "@/components/PageNotFound";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -329,13 +330,13 @@ function JobApply() {
 
   return (
     <>
-      <Head />
-      <SidebarProfessional />
 
       {loading ? (
         <></>
-      ) : post ? (
-        <div className="application-app">
+        ) : post ? (
+          <div className="application-app">
+          <Head />
+          <SidebarProfessional />
           {/* Header Section */}
           <main className="bg-[#F5F5F6] h-screen ">
             <form onSubmit={handleSubmit}>
@@ -386,12 +387,12 @@ function JobApply() {
                           )}
                           {post.professional_follow_jobs[0].follow_status ===
                             true && (
-                            <Image
-                              alt="picture"
-                              src={smallfollowing}
-                              className="w-[40px] h-[40px] border-[#F48FB1] mr-2"
-                            />
-                          )}
+                              <Image
+                                alt="picture"
+                                src={smallfollowing}
+                                className="w-[40px] h-[40px] border-[#F48FB1] mr-2"
+                              />
+                            )}
                           {post.professional_follow_jobs[0] !== undefined &&
                             !post.professional_follow_jobs[0].follow_status && (
                               <Image
@@ -403,14 +404,14 @@ function JobApply() {
                           {post.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : post.professional_follow_jobs[0].follow_status
-                            ? "Following"
-                            : "Follow"}
+                              ? "Following"
+                              : "Follow"}
                         </button>
                       </div>
                     </div>
                     <div className="btn">
                       <Button
-                        class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
+                        class="apply-button active:opacity-[80%] bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
                         id="applyButton"
                         onClick={handleButtonClick}
                         variant="unstyled"
@@ -648,7 +649,7 @@ function JobApply() {
                           </div>
                           <div className="btn flex flex-row justify-center">
                             <Button
-                              class="apply-button bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
+                              class="apply-button active:opacity-[80%] bg-pink-primary flex flex-row items-center justify-center py-[16px] px-[24px] rounded-[16px] text-white"
                               id="applyButton"
                               onClick={handleButtonClick}
                               variant="unstyled"
@@ -672,11 +673,7 @@ function JobApply() {
           </main>
         </div>
       ) : (
-        <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
-          <h3 className="ml-[240px] mb-[10px]" id="heading3">
-            Job Not Found
-          </h3>
-        </div>
+        <PageNotFound/>
       )}
     </>
   );

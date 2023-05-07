@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const Contentsection = () => {
   return (
-    <div className="w-full flex flex-col min-[768px]:flex-row">
+    <div className="w-full flex flex-col min-[768px]:flex-row ">
       <div className="w-[100%] min-[768px]:w-[60%] bg-pink-tertiary flex flex-row px-[30px] min-[821px]:px-[120px] py-[64px]">
         <div className="flex flex-col">
           <h3 className=" text-white-primary text-center" id="heading3">
@@ -29,7 +29,7 @@ const Contentsection = () => {
         <Image
           alt="find-your-next-job-icon"
           src={findjob}
-          className="w-[100%]"
+          className="translateAnimate w-[100%]"
         />
       </div>
     </div>

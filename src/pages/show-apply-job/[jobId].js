@@ -26,6 +26,7 @@ import SideBarRecruiter from "@/components/SidebarRecruiter.js";
 import moment from "moment";
 import Link from "next/link";
 import Warning from "@/components/Warning";
+import NoCandidateFound from "@/components/NoCandidateFound";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -152,13 +153,17 @@ function ShowCandidates() {
     }
   }
 
-    if (!isAuthenticated) {
-      return (<Warning />)
-    }
-  
+  if (!isAuthenticated) {
+    return (<Warning />)
+  }
+
 
 
   return (
+    <>
+    {isLoading ? ( // Conditionally render based on isLoading
+    <></>
+  ) : post.length !== 0 ? (
     <>
       <SideBarRecruiter />
       <main className="bg-white-secondary h-screen">
@@ -282,7 +287,7 @@ function ShowCandidates() {
                       onClick={() =>
                         handleStatus(post[0].jobs_postings.job_post_id)
                       }
-                      className={`flex flex-row mr-[6px] ${post[0].jobs_postings.post_status
+                      className={`flex flex-row mr-[6px] hover:bg-pink-primary active:opacity-[80%] ${post[0].jobs_postings.post_status
                         ? "button_pink_tertiary"
                         : "button_gray"
                         }`}
@@ -295,7 +300,7 @@ function ShowCandidates() {
                       {post[0].jobs_postings.post_status ? "CLOSE" : "CLOSED"}
                     </button>
                     <button
-                      className="button_pink_tertiary flex flex-row"
+                      className="button_pink_tertiary flex flex-row hover:bg-pink-primary active:opacity-[80%]"
                       onClick={() =>
                         handleEdit(post[0].jobs_postings.job_post_id)
                       }
@@ -358,7 +363,7 @@ function ShowCandidates() {
                       >
                         About the job position
                       </div>
-                      <div className="" id="body2">
+                      <div className="text-justify" id="body2">
                         {post[0].jobs_postings.job_description}
                       </div>
                       <div>
@@ -368,7 +373,7 @@ function ShowCandidates() {
                         >
                           Mandatory Requirements
                         </div>
-                        <div className="" id="body2">
+                        <div className="text-justify" id="body2">
                           {post[0].jobs_postings.requirement}
                         </div>
                       </div>
@@ -379,7 +384,7 @@ function ShowCandidates() {
                         >
                           Optional Requirements
                         </div>
-                        <div className="" id="body2">
+                        <div className="text-justify" id="body2">
                           {post[0].jobs_postings.optional_requirement}
                         </div>
                       </div>
@@ -394,13 +399,7 @@ function ShowCandidates() {
             className="max-[700px]:text-center mt-[20px] mb-[8px]"
             id="heading6"
           >
-            {isLoading ? ( // Conditionally render based on isLoading
-              <p></p>
-            ) : post.length !== 0 ? (
               <p className="text-[#bf5f82]">{post.length} candidates found</p>
-            ) : (
-              <p className="text-[#bf5f82]">There are no candidates found.</p>
-            )}
           </h6>
 
           <div className="flex flex-col">
@@ -596,7 +595,7 @@ function ShowCandidates() {
                             >
                               Professional experience
                             </div>
-                            <div className="" id="body2">
+                            <div className="text-justify" id="body2">
                               {item.professional_experience}
                             </div>
                             <div>
@@ -606,7 +605,7 @@ function ShowCandidates() {
                               >
                                 Why are you interested in working at The company
                               </div>
-                              <div className="" id="body2">
+                              <div className="text-justify" id="body2">
                                 {item.interested}
                               </div>
                             </div>
@@ -640,6 +639,10 @@ function ShowCandidates() {
           </div>
         </div>
       </main>
+    </>
+    ) : (
+      <NoCandidateFound/>
+    )}
     </>
   );
 }

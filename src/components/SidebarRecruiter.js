@@ -60,7 +60,7 @@ const SideBarRecruiter = () => {
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px]  ${router.pathname === '/job-postings' ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px]  ${(router.pathname.startsWith('/job-postings') || router.pathname.startsWith('/show-apply-job')) ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
               id="sidebar-menu"
             >
               <Image
@@ -143,7 +143,7 @@ const SideBarRecruiter = () => {
           </div>
         </div>
         <div className="box-2 pl-[16px] max-[700px]:text-center max-[700px]:hidden">
-          <div>Â© 202X - Get That Job</div>
+          <div>Â© 2023 - Get That Job</div>
         </div>
       </div>
     </div>

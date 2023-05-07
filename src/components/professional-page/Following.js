@@ -257,7 +257,7 @@ const Following = () => {
                       </div>
                       <div className="max-[768px]:flex max-[768px]:items-center">
                         <button
-                          className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3"
+                          className="border-[1px] border-[pink] rounded-[15px] max-[700px]:py-[3px] max-[700px]:px-[5px] py-1 px-3 active:opacity-[80%] hover:text-pink-primary"
                           onClick={() => handleSeeMore(item.job_post_id)}
                         >
                           SEE MORE
