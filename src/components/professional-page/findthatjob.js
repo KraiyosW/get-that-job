@@ -28,6 +28,7 @@ const Findthatjob = () => {
   const [sortDescending, setSortDescending] = useState(false);
   const [isAscendingClicked, setIsAscendingClicked] = useState(false);
   const [isDescendingClicked, setIsDescendingClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getJobs = async () => {
     try {
@@ -38,6 +39,8 @@ const Findthatjob = () => {
       console.log(result.data.job.data);
     } catch (error) {
       console.log(error);
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -106,9 +109,16 @@ const Findthatjob = () => {
   }, [isAuthenticated, followStatus]);
   console.log(job);
 
-  if (!isAuthenticated) {
-    return <Warning />;
+  if (isLoading) {
+    return (
+      <></>
+    );
   }
+  if (!isAuthenticated) {
+  return (
+    <Warning />
+  );
+}
   const profId = localStorage.getItem("professional_id");
 
   const handleFollowClick = async (id, status) => {

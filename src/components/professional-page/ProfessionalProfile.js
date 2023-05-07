@@ -22,6 +22,7 @@ function ProfessionalProfile() {
   const [imagePreview, setImagePreview] = useState(null);
   const [myState,setMyState] = useState("")
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter()
 
   const userEmail = String(myState);
@@ -145,6 +146,8 @@ function ProfessionalProfile() {
 
     } catch (error) {
       console.log(error);
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -162,9 +165,16 @@ function ProfessionalProfile() {
     localStorage.setItem("myState", myState);
   }, [myState]);
 
-  if(!isAuthenticated){
-    return(<Warning/>)
+  if (isLoading) {
+    return (
+      <></>
+    );
   }
+  if (!isAuthenticated) {
+  return (
+    <Warning />
+  );
+}
 
 
 

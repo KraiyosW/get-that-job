@@ -45,6 +45,7 @@ const Following = () => {
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef();
   const [selectedJob, setSelectedJob] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
 
 
@@ -56,6 +57,8 @@ const Following = () => {
       setJob(result.data.job.data);
     } catch (error) {
       console.log(error);
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -117,9 +120,16 @@ const Following = () => {
 
   console.log(job);
 
-  if (!isAuthenticated) {
-    return <Warning />;
+  if (isLoading) {
+    return (
+      <></>
+    );
   }
+  if (!isAuthenticated) {
+  return (
+    <Warning />
+  );
+}
   const profId = localStorage.getItem("professional_id");
 
   const handleFollowClick = async () => {
