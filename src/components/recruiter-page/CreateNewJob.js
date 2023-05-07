@@ -13,11 +13,9 @@ function CreateNewJob() {
   const { createPost, isLoading, isError } = useRecruiterPost();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const {recruiterState} = useAuth();
-  const userEmail = localStorage.getItem('email') ?? String(myState);
+  const userEmail = localStorage.getItem("email");
   const router = useRouter();
   const toast = useToast();
-
-  console.log(userEmail)
 
   useEffect(() => {
     const storedState = localStorage.getItem("email");

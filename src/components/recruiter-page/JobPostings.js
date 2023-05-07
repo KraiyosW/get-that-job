@@ -33,6 +33,7 @@ function JobPostings() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [apply, setApply] = useState([])
   const [statusRecruiter, setStatusRecruiter] = useState([])
+  const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter()
   const userEmail = String(myState);
@@ -71,6 +72,7 @@ function JobPostings() {
         ...job,
       }));
       setJob(formattedJobs);
+
       const jobPostingsIds = jobPostingsData.map((id) => id.job_post_id)
       const apply = await supabase
         .from("professional_apply_jobs")
@@ -107,6 +109,8 @@ function JobPostings() {
 
     } catch (error) {
       console.error("Error:", error);
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -116,12 +120,16 @@ function JobPostings() {
     AllJob();
   }, [jobStatus, isAuthenticated, userEmail, apply]);
 
-
-  if (!isAuthenticated) {
+  if (isLoading) {
     return (
-      <Warning />
+      <></>
     );
   }
+  if (!isAuthenticated) {
+  return (
+    <Warning />
+  );
+}
 
   const toggleExpanded = (postId) => {
     setIsExpanded((prevId) => (prevId === postId ? null : postId));

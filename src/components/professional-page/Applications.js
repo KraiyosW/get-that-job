@@ -28,6 +28,7 @@ function Applications() {
   const [jobStatus, setJobStatus] = useState([]);
   const [selectedOption, setSelectedOption] = useState("all");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
 
   const router = useRouter();
@@ -81,6 +82,8 @@ function Applications() {
       setJob(formattedJobs);
     } catch (error) {
       console.error(error);
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -96,9 +99,16 @@ function Applications() {
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
-  if (!isAuthenticated) {
-    return (<Warning />)
+  if (isLoading) {
+    return (
+      <></>
+    );
   }
+  if (!isAuthenticated) {
+  return (
+    <Warning />
+  );
+}
 
 
   return (
