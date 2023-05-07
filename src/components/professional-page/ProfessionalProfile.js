@@ -23,6 +23,7 @@ function ProfessionalProfile() {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
+
   const userEmail = String(myState);
 
   const toast = useToast();
@@ -217,6 +218,7 @@ function ProfessionalProfile() {
       console.log(error);
     } finally {
       setIsLoading(false);
+
     }
   };
 
@@ -234,12 +236,14 @@ function ProfessionalProfile() {
     localStorage.setItem("myState", myState);
   }, [myState]);
 
+
   if (isLoading) {
     return <div className="bg-[#F5F5F6] h-screen"></div>;
   }
   if (!isAuthenticated) {
     return <Warning />;
   }
+
 
   return (
     <>

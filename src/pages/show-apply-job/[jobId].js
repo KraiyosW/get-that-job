@@ -228,12 +228,13 @@ function ShowCandidates() {
 
   return (
     <>
-      {isLoading ? ( // Conditionally render based on isLoading
-        <></>
-      ) : post.length !== 0 ? (
-        <>
-          <SideBarRecruiter />
-           <main className="bg-white-secondary h-screen">
+
+    {isLoading ? ( // Conditionally render based on isLoading
+    <></>
+  ) : post.length !== 0 ? (
+    <>
+      <SideBarRecruiter />
+      <main className="bg-white-secondary h-screen">
             <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
               <button
                 className="flex flex-row items-center mb-[16px]"
@@ -654,7 +655,7 @@ function ShowCandidates() {
                               ) : item.recruiter_status === 2 ? (
                                 <button
                                   onClick={() => handleStatusDialogOpen(item.professional_apply_job_id)}
-                                  className="button_bg_white"
+                                  className="button_bg_yellow"
                                   id="btn-white"
                                 >
                                   MARK AS FINISHED
