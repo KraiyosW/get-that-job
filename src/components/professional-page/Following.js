@@ -165,12 +165,12 @@ const Following = () => {
             <h6 className="max-[700px]:text-center mb-4 mt-4 text-[#bf5f82]" id="heading6">
               {job.length} You are following jobs.
             </h6>
-            <div className="flex felx-row flex-wrap gap-[15px]">
+            <div className="flex felx-row flex-wrap gap-[15px] max-[900px]:w-full">
               {job.map((item, index) => {
                 return (
                   <div
                     key={index}
-                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[420px] h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]"
+                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] w-[420px] max-[900px]:h-auto h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)]"
                   >
                     <div className="flex items-center gap-4">
                       <div>
@@ -213,7 +213,7 @@ const Following = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-row justify-between items-center min-[701px]:gap-[75px]">
+                    <div className="flex flex-row justify-between items-center max-[900px]:gap-[5px] gap-[75px]">
                       <div className="flex gap-2 p-1 items-center flex-row ">
                         <div>
                           <Image

@@ -221,7 +221,7 @@ function JobPostings() {
             </h6>
             {job.map((item, index) => {
               return (
-                <div key={index} className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[70%] mb-[20px] h-auto ">
+                <div key={index} className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl max-[900px]:w-[100%] w-[70%] mb-[20px] h-auto ">
                   <div className="flex flex-col" id="box-job-all">
                     <div
                       className="max-[700px]:text-center flex flex-row flex-wrap justify-between w-[100%]"
@@ -236,7 +236,7 @@ function JobPostings() {
                             <Image
                               src={TypeJob}
                               alt="Type Job"
-                              className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
+                              className="max-[900px]:w-[20px] max-[900px]:h-[20px] mr-[6px]"
                             />
                             <div className="text-grey-secondary" id="caption">
                               {item.job_category}
@@ -246,7 +246,7 @@ function JobPostings() {
                             <Image
                               src={TimeWorking}
                               alt="Time working"
-                              className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
+                              className="max-[900px]:w-[20px] max-[900px]:h-[20px] mr-[6px]"
                             />
                             <div className="text-grey-secondary" id="caption">
                               {item.job_type}
@@ -256,7 +256,7 @@ function JobPostings() {
                             <Image
                               src={Salary}
                               alt="Salary"
-                              className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
+                              className="max-[900px]:w-[20px] max-[900px]:h-[20px] mr-[6px]"
                             />
                             <div className="text-grey-secondary" id="caption" key={index}>
                               {numeral(item.salary_min_range).format("0a")} - {numeral(item.salary_max_range).format("0a")}

@@ -228,12 +228,12 @@ function ShowCandidates() {
 
   return (
     <>
-      {isLoading ? ( // Conditionally render based on isLoading
-        <></>
-      ) : post.length !== 0 ? (
-        <>
-          <SideBarRecruiter />
-          <main className="bg-white-secondary h-screen">
+    {isLoading ? ( // Conditionally render based on isLoading
+    <></>
+  ) : post.length !== 0 ? (
+    <>
+      <SideBarRecruiter />
+      <main className="bg-white-secondary h-screen">
             <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
               <button
                 className="flex flex-row items-center mb-[16px]"
