@@ -13,8 +13,10 @@ const supabase = createClient(supabaseURL, supabaseAnonKey);
 function Profile() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [myState,setMyState] = useState("")
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { recruiterState } = useAuth();
-  const userEmail = recruiterState.email;
+  const userEmail = String(myState);
   const [data, setData] = useState({});
   const router = useRouter();
   const toast = useToast()
@@ -171,8 +173,18 @@ function Profile() {
     }
   };
   useEffect(() => {
+    const storedState = localStorage.getItem("email");
+    const token = localStorage.getItem("sb:token"); 
+    setIsAuthenticated(!!token); 
+    if (storedState) {
+      setMyState(storedState);
+    }
     fetchData();
-  }, []);
+  }, [isAuthenticated,myState]);
+
+  useEffect(() => {
+    localStorage.setItem("myState", myState);
+  }, [myState]);
 
   return (
     <>

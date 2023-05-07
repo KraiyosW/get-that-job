@@ -76,6 +76,8 @@ function ShowCandidates() {
       setIsLoading(false);
     } catch {
       console.error();
+    }finally {
+      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -211,9 +213,16 @@ function ShowCandidates() {
     }
   }
 
-  if (!isAuthenticated) {
-    return (<Warning />)
+  if (isLoading) {
+    return (
+      <div className="bg-[#F5F5F6] h-screen"></div>
+    );
   }
+  if (!isAuthenticated) {
+  return (
+    <Warning />
+  );
+}
 
 
 
@@ -224,7 +233,7 @@ function ShowCandidates() {
       ) : post.length !== 0 ? (
         <>
           <SideBarRecruiter />
-          <main className="bg-white-secondary h-screen">
+           <main className="bg-white-secondary h-screen">
             <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
               <button
                 className="flex flex-row items-center mb-[16px]"

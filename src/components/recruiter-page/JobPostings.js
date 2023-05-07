@@ -47,8 +47,7 @@ function JobPostings() {
   const cancelRef = React.useRef();
   const [selectedJob, setSelectedJob] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState({});
-
-
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter()
   const userEmail = String(myState);
   const openDialog = (job) => {
@@ -90,6 +89,7 @@ function JobPostings() {
         ...job,
       }));
       setJob(formattedJobs);
+
       const jobPostingsIds = jobPostingsData.map((id) => id.job_post_id)
       const apply = await supabase
         .from("professional_apply_jobs")
@@ -126,6 +126,8 @@ function JobPostings() {
 
     } catch (error) {
       console.error("Error:", error);
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -135,12 +137,16 @@ function JobPostings() {
     AllJob();
   }, [jobStatus, isAuthenticated, userEmail, apply]);
 
-
-  if (!isAuthenticated) {
+  if (isLoading) {
     return (
-      <Warning />
+      <div className="bg-[#F5F5F6] h-screen"></div>
     );
   }
+  if (!isAuthenticated) {
+  return (
+    <Warning />
+  );
+}
 
   const toggleExpanded = (postId) => {
     setIsExpanded((prevId) => (prevId === postId ? null : postId));
