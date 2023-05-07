@@ -97,9 +97,16 @@ function JobDetails() {
     fetchPost(profId);
   };
 
-  if (!isAuthenticated) {
-    return <Warning />;
+  if (loading) {
+    return (
+      <div className="bg-[#F5F5F6] h-screen"></div>
+    );
   }
+  if (!isAuthenticated) {
+  return (
+    <Warning />
+  );
+}
 
   return (
     <>

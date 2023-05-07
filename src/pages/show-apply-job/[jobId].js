@@ -58,6 +58,8 @@ function ShowCandidates() {
       setIsLoading(false);
     } catch {
       console.error();
+    }finally {
+      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -153,9 +155,16 @@ function ShowCandidates() {
     }
   }
 
-  if (!isAuthenticated) {
-    return (<Warning />)
+  if (isLoading) {
+    return (
+      <div className="bg-[#F5F5F6] h-screen"></div>
+    );
   }
+  if (!isAuthenticated) {
+  return (
+    <Warning />
+  );
+}
 
 
 
@@ -536,7 +545,7 @@ function ShowCandidates() {
                                   item.professional_apply_job_id
                                 )
                               }
-                              className="button_bg_white"
+                              className="button_bg_yellow"
                               id="btn-white"
                             >
                               MARK AS FINISHED

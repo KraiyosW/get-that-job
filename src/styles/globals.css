@@ -184,6 +184,11 @@ button.button_bg_white {
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
 }
+button.button_bg_yellow {
+  background-color: rgb(247, 255, 137);
+  padding: 8px 16px 8px 16px;
+  border-radius: 16px;
+}
 
 button.button_pink_tertiary {
   background-color: #bf5f82;
