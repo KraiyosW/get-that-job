@@ -60,6 +60,7 @@ function ProfessionalProfile() {
   //   const fileInput = document.getElementById("fileInput");
   //   const file = fileInput.files[0];
 
+
   //   if (!file) {
   //     alert("Please select a file to upload.");
   //     return;
@@ -75,6 +76,8 @@ function ProfessionalProfile() {
   //     alert("File uploaded successfully!");
   //   }
   // };
+
+
 
   const handleChange = (event) => {
     setFormData({
@@ -249,7 +252,9 @@ function ProfessionalProfile() {
           <form
             className="flex flex-col max-[700px]:items-center"
             id="file-form"
+            onSubmit={handleUpdateProfile}
           >
+
             <div className="mb-[4px] mt-[8px]" id="overline">
               EMAIL
             </div>
@@ -385,10 +390,12 @@ function ProfessionalProfile() {
             <Button
               className="button_pink_new mt-[24px] w-[170px] active:opacity-[80%]"
               variant="unstyled"
+              type="submit"
               onClick={handleSubmit}
             >
               SAVE CHANGES
             </Button>
+
           </form>
         </div>
       </main>
