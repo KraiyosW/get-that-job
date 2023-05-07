@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
 import { useToast, Box, Button } from '@chakra-ui/react'
+import Warning from "../Warning";
 import Image from "next/image";
 import LogoMockup from "../../image/logo-mockup.png";
 
@@ -19,9 +20,11 @@ function ProfessionalProfile() {
   const [data, setData] = useState({})
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [myState,setMyState] = useState("")
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter()
 
-  const userEmail = professionalState.email;
+  const userEmail = String(myState);
 
   const toast = useToast()
 
@@ -144,9 +147,24 @@ function ProfessionalProfile() {
       console.log(error);
     }
   };
+
   useEffect(() => {
+    const storedState = localStorage.getItem("email");
+    const token = localStorage.getItem("sb:token"); 
+    setIsAuthenticated(!!token); 
+    if (storedState) {
+      setMyState(storedState);
+    }
     fetchData();
-  }, []);
+  }, [myState,isAuthenticated]);
+
+  useEffect(() => {
+    localStorage.setItem("myState", myState);
+  }, [myState]);
+
+  if(!isAuthenticated){
+    return(<Warning/>)
+  }
 
 
 
