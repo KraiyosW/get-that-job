@@ -353,7 +353,7 @@ function JobPostings() {
                         </button>
                         <button
                           onClick={() => toggleExpanded(item.job_post_id)}
-                          className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px] mt-[30px]"
+                          className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px]"
                         >
                           <span className="ml-1">
                             {isExpanded === item.job_post_id ? (
