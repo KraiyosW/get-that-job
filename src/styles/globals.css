@@ -387,6 +387,42 @@ button.button_bg_yellow {
   }
 }
 
+.team-title {
+  position: relative;
+  text-decoration: none;
+}
+
+.team-title::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 1px;
+  left: 0;
+  background-color: #BF5F82;
+  transition: width 6s ease;
+}
+
+.team-title.underline::after {
+  width: 100%;
+}
+
+@media screen and (max-width: 500px) {
+  .team-title::after {
+    width: 0;
+    transition: none;
+  }
+
+  .team-title.underline::after {
+    width: 0;
+  }
+}
+
+
+
+
+
+
 /* h1 {
   font-size: 97px;
   line-height: 118px;
