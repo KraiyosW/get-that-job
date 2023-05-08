@@ -39,7 +39,7 @@ const Findthatjob = () => {
       console.log(result.data.job.data);
     } catch (error) {
       console.log(error);
-    }finally {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -115,10 +115,10 @@ const Findthatjob = () => {
     );
   }
   if (!isAuthenticated) {
-  return (
-    <Warning />
-  );
-}
+    return (
+      <Warning />
+    );
+  }
   const profId = localStorage.getItem("professional_id");
 
   const handleFollowClick = async (id, status) => {
@@ -282,28 +282,25 @@ const Findthatjob = () => {
                     className="text-[#616161] mb-[4px] tracking-[1.5px]"
                     id="overline"
                   >
-                    SALARY RANGE
+                    SORT BY SALARY
                   </p>
                   <div className="flex flex-row items-center max-[700px]:justify-center">
                     <button
-
-                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] max-[700px]:mr-[10px] ${isAscendingClicked && sortAscending ? "bg-[#f48fb1] text-white" : ""
-
+                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] max-[700px]:mr-[10px] ${sortAscending ? "bg-[#F48FB1] text-white" : "bg-white"
                         }`}
-
                       onClick={handleSortAscending}
                     >
                       Low to High
                     </button>
                     <button
-
-                      className={`bg-white border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${isDescendingClicked && sortDescending ? "bg-[#f48fb1] text-white" : ""
-
+                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${sortDescending ? "bg-[#F48FB1] text-white" : "bg-white"
                         }`}
                       onClick={handleSortDescending}
                     >
                       High to Low
                     </button>
+
+
                   </div>
                 </div>
               </div>

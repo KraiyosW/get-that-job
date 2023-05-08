@@ -228,12 +228,12 @@ function ShowCandidates() {
 
   return (
     <>
-    {isLoading ? ( // Conditionally render based on isLoading
-    <></>
-  ) : post.length !== 0 ? (
-    <>
-      <SideBarRecruiter />
-      <main className="bg-white-secondary h-screen">
+      {isLoading ? ( // Conditionally render based on isLoading
+        <></>
+      ) : post.length !== 0 ? (
+        <>
+          <SideBarRecruiter />
+          <main className="bg-white-secondary h-screen">
             <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
               <button
                 className="flex flex-row items-center mb-[16px]"
@@ -253,13 +253,13 @@ function ShowCandidates() {
               </h4>
 
               {post[0] && (
-                <div className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[80.2%] mb-[20px] h-auto ">
+                <div className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl max-[900px]:w-[100%] w-[80.5%] mb-[20px] h-auto">
                   <div className="flex flex-col" id="box-job-all">
                     <div
                       className="max-[700px]:text-center flex flex-row flex-wrap justify-between w-[100%]"
                       id="job-head-row"
                     >
-                      <div id="job-title flex flex-col">
+                      <div id="job-title" className='flex flex-col max-[900px]:mb-[10px]'>
                         <h6 className="mb-[4px]" id="heading6">
                           {post[0].jobs_postings.job_title}
                         </h6>
@@ -268,7 +268,7 @@ function ShowCandidates() {
                             <Image
                               src={TypeJob}
                               alt="Type Job"
-                              className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
+                              className="max-[900px]:w-[20px] max-[900px]:h-[20px] max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                             />
                             <div className="text-grey-secondary" id="caption">
                               {post[0].jobs_postings.job_category}
@@ -278,7 +278,7 @@ function ShowCandidates() {
                             <Image
                               src={TimeWorking}
                               alt="Time working"
-                              className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
+                              className="max-[900px]:w-[20px] max-[900px]:h-[20px] max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                             />
                             <div className="text-grey-secondary" id="caption">
                               {post[0].jobs_postings.job_type}
@@ -288,7 +288,7 @@ function ShowCandidates() {
                             <Image
                               src={Salary}
                               alt="Salary"
-                              className="max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
+                              className="max-[900px]:w-[20px] max-[900px]:h-[20px] max-[700px]:w-[20px] max-[700px]:h-[20px] mr-[6px]"
                             />
                             <div className="text-grey-secondary" id="caption">
                               {numeral(
@@ -460,14 +460,14 @@ function ShowCandidates() {
                     return (
                       <div
                         key={index}
-                        className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl w-[80.2%] mb-[20px] h-auto "
+                        className="bg-white px-[16px] py-[16px] border rounded-lg shadow-xl max-[900px]:w-[100%] w-[80.5%] mb-[20px] h-auto"
                       >
                         <div className="flex flex-col" id="box-job-all">
                           <div
                             className="max-[700px]:text-center flex flex-row flex-wrap w-[100%]"
                             id="job-head-row"
                           >
-                            <div className="flex flex-col w-[30%]" id="job-title">
+                            <div className="flex flex-col max-[1050px]:w-[100%] w-[30%]" id="job-title">
                               <h6 className="mb-[4px]" id="heading6">
                                 {item.professional.name}
                               </h6>
@@ -478,14 +478,21 @@ function ShowCandidates() {
                                     alt="job position"
                                     className="w-[15px] h-[15px] mr-[6px]"
                                   />
-                                  <div className="text-grey-primary" id="body2">
-                                    {item.jobs_postings.job_title}
-                                  </div>
+                                  <Link
+                                    href={item.professional.linkedin_url}
+                                    className="text-grey-primary"
+                                    id="body2"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    LinkedIn
+                                  </Link>
                                 </section>
                               </div>
                             </div>
                             <div className="max-[700px]:flex-col flex flex-row">
-                              <div className="max-[700px]:flex-row flex flex-col items-start justify-center w-[220px]">
+                              <div className="flex flex-col items-start justify-center w-[220px]
+">
                                 <div className="flex flex-row mb-[4px]">
                                   <Image
                                     src={JobDate}
@@ -525,7 +532,7 @@ function ShowCandidates() {
                               </div>
 
                               {item.recruiter_status === 1 || item.recruiter_status === null ? (
-                                <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px]">
+                                <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px] max-[900px]:mb-[10px] ">
                                   <Image
                                     src={waiting}
                                     alt="Waiting for review"
@@ -540,7 +547,7 @@ function ShowCandidates() {
                                 </div>
 
                               ) : item.recruiter_status === 2 ? (
-                                <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px]">
+                                <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px] max-[900px]:mb-[10px] ">
                                   <Image
                                     src={review}
                                     alt="Review in progress"
@@ -554,7 +561,7 @@ function ShowCandidates() {
                                   </div>
                                 </div>
                               ) : (
-                                <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px]">
+                                <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px] max-[900px]:mb-[10px] ">
                                   <Image
                                     src={finished}
                                     alt="Review finished"
@@ -643,7 +650,7 @@ function ShowCandidates() {
                                 item.recruiter_status === null ? (
                                 <button
                                   onClick={() => handleStatusOneDialogOpen(item.professional_apply_job_id)}
-                                  className="button_bg_white"
+                                  className="button_bg_white max-[900px]:mt-[20px]"
                                   id="btn-white"
                                 >
                                   MARK AS STARTED
