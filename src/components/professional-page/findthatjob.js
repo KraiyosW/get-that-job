@@ -146,7 +146,7 @@ const Findthatjob = () => {
   const filterJobs = job.filter((jobs) => {
     const lowercaseSearchMessage = searchMessage.toLowerCase();
     const lowercaseJobTitle = jobs.job_title.toLowerCase();
-    const lowercaseAboutCompany = jobs.recruiters.about_company.toLowerCase();
+    const lowercaseAboutCompany = jobs.recruiters.company_name.toLowerCase();
 
     if (
       category !== "Select or create a category" &&
@@ -282,17 +282,15 @@ const Findthatjob = () => {
                   </p>
                   <div className="flex flex-row items-center max-[700px]:justify-center">
                     <button
-                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] max-[700px]:mr-[10px] ${
-                        sortAscending ? "bg-[#F48FB1] text-white" : "bg-white"
-                      }`}
+                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] max-[700px]:mr-[10px] ${sortAscending ? "bg-[#F48FB1] text-white" : "bg-white"
+                        }`}
                       onClick={handleSortAscending}
                     >
                       Low to High
                     </button>
                     <button
-                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${
-                        sortDescending ? "bg-[#F48FB1] text-white" : "bg-white"
-                      }`}
+                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${sortDescending ? "bg-[#F48FB1] text-white" : "bg-white"
+                        }`}
                       onClick={handleSortDescending}
                     >
                       High to Low
@@ -345,7 +343,7 @@ const Findthatjob = () => {
                         <h6 id="heading6">{item.job_title}</h6>
 
                         <p className="max-[700px]:hidden mb-[4px]" id="caption">
-                          {shortenText(item.recruiters.about_company, 15)}
+                          {item.recruiters.company_name}
                         </p>
 
                         <div className="flex gap-4 ">
@@ -416,8 +414,8 @@ const Findthatjob = () => {
                           {item.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : item.professional_follow_jobs[0].follow_status
-                            ? "Following"
-                            : "Follow"}
+                              ? "Following"
+                              : "Follow"}
                           {/* {followStatus[item.job_post_id]
                             ? "Following"
                             : "Follow"} */}
