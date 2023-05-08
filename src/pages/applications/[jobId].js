@@ -12,8 +12,8 @@ import upload from "@/image/upload.png";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
 import { useToast, Box, Button } from "@chakra-ui/react";
-import following from "../../image/following.png";
-import smallfollowing from "../../image/smallfollowing.png";
+import following from "../../image/unfollow-btn.png";
+import smallfollowing from "@/image/following-btn.png";
 import axios from "axios";
 import PageNotFound from "@/components/PageNotFound";
 
@@ -330,11 +330,10 @@ function JobApply() {
 
   return (
     <>
-
       {loading ? (
         <></>
-        ) : post ? (
-          <div className="application-app">
+      ) : post ? (
+        <div className="application-app">
           <Head />
           <SidebarProfessional />
           {/* Header Section */}
@@ -387,12 +386,12 @@ function JobApply() {
                           )}
                           {post.professional_follow_jobs[0].follow_status ===
                             true && (
-                              <Image
-                                alt="picture"
-                                src={smallfollowing}
-                                className="w-[40px] h-[40px] border-[#F48FB1] mr-2"
-                              />
-                            )}
+                            <Image
+                              alt="picture"
+                              src={smallfollowing}
+                              className="w-[40px] h-[40px] border-[#F48FB1] mr-2"
+                            />
+                          )}
                           {post.professional_follow_jobs[0] !== undefined &&
                             !post.professional_follow_jobs[0].follow_status && (
                               <Image
@@ -404,8 +403,8 @@ function JobApply() {
                           {post.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : post.professional_follow_jobs[0].follow_status
-                              ? "Following"
-                              : "Follow"}
+                            ? "Following"
+                            : "Follow"}
                         </button>
                       </div>
                     </div>
@@ -673,7 +672,7 @@ function JobApply() {
           </main>
         </div>
       ) : (
-        <PageNotFound/>
+        <PageNotFound />
       )}
     </>
   );

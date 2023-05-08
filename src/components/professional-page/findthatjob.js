@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import babyswim from "../../image/babyswim.png";
-import following from "../../image/following.png";
-import smallfollowing from "@/image/smallfollowing.png";
+import following from "../../image/unfollow-btn.png";
+import smallfollowing from "@/image/following-btn.png";
 // import smallfollowing from "../../image/small-following.png";
-import categorypic from "../../image/categorypic.png";
-import calendar from "../../image/calendar.png";
-import dollar from "../../image/dollar.png";
+import categorypic from "../../image/icon-manu.png";
+import calendar from "../../image/icon-calendar.png";
+import dollar from "../../image/icon-dollar.png";
 import Warning from "../Warning";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
@@ -110,14 +110,10 @@ const Findthatjob = () => {
   console.log(job);
 
   if (isLoading) {
-    return (
-      <div className="bg-[#F5F5F6] h-screen"></div>
-    );
+    return <div className="bg-[#F5F5F6] h-screen"></div>;
   }
   if (!isAuthenticated) {
-    return (
-      <Warning />
-    );
+    return <Warning />;
   }
   const profId = localStorage.getItem("professional_id");
 
@@ -248,7 +244,7 @@ const Findthatjob = () => {
                     <option value="Software-Developer">
                       Software Developer
                     </option>
-                    <option value="Sales" >Sales</option>
+                    <option value="Sales">Sales</option>
                     <option value="Graphic-Designer">Graphic Designer</option>
                     <option value="Digital-Marketing">Digital Marketing</option>
                   </select>
@@ -286,21 +282,21 @@ const Findthatjob = () => {
                   </p>
                   <div className="flex flex-row items-center max-[700px]:justify-center">
                     <button
-                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] max-[700px]:mr-[10px] ${sortAscending ? "bg-[#F48FB1] text-white" : "bg-white"
-                        }`}
+                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] max-[700px]:mr-[10px] ${
+                        sortAscending ? "bg-[#F48FB1] text-white" : "bg-white"
+                      }`}
                       onClick={handleSortAscending}
                     >
                       Low to High
                     </button>
                     <button
-                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${sortDescending ? "bg-[#F48FB1] text-white" : "bg-white"
-                        }`}
+                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${
+                        sortDescending ? "bg-[#F48FB1] text-white" : "bg-white"
+                      }`}
                       onClick={handleSortDescending}
                     >
                       High to Low
                     </button>
-
-
                   </div>
                 </div>
               </div>
@@ -308,7 +304,10 @@ const Findthatjob = () => {
           </div>
 
           <div className="flex flex-col flex-wrap w-full ">
-            <h6 className="max-[700px]:text-center mb-4 mt-4 text-[#bf5f82]" id="heading6">
+            <h6
+              className="max-[700px]:text-center mb-4 mt-4 text-[#bf5f82]"
+              id="heading6"
+            >
               {filterJobs.length} jobs for you
             </h6>
             <div className="flex felx-row flex-wrap gap-[15px] max-[900px]:w-full">
@@ -317,7 +316,6 @@ const Findthatjob = () => {
                   <div
                     key={index}
                     className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] max-[900px]:w-full w-[420px] h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)] max-[700px]:h-auto"
-
                   >
                     <div className="flex max-[700px]:flex-col items-center gap-4">
                       <div>
@@ -335,7 +333,12 @@ const Findthatjob = () => {
 
                       <div className="flex flex-col">
                         <div className="flex gap-1 items-center">
-                          <Image alt="picture" src={categorypic} />
+                          <Image
+                            alt="picture"
+                            width={11.25}
+                            height={12.5}
+                            src={categorypic}
+                          />
                           <p id="caption">{item.job_category}</p>
                         </div>
                         <h6 id="heading6">{item.job_title}</h6>
@@ -348,6 +351,8 @@ const Findthatjob = () => {
                           <div className="flex gap-1 items-center">
                             <Image
                               alt="picture"
+                              width={12.5}
+                              height={12.5}
                               src={calendar}
                               className="h-[12.5px] w-[12.5px]"
                             />
@@ -356,7 +361,12 @@ const Findthatjob = () => {
                             </p>
                           </div>
                           <div className="flex gap-1 items-center">
-                            <Image alt="picture" src={dollar} />
+                            <Image
+                              alt="picture"
+                              width={12.5}
+                              height={12.5}
+                              src={dollar}
+                            />
                             <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${numeral(
                               item.salary_min_range
                             ).format("0a")} - ${numeral(
@@ -405,8 +415,8 @@ const Findthatjob = () => {
                           {item.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : item.professional_follow_jobs[0].follow_status
-                              ? "Following"
-                              : "Follow"}
+                            ? "Following"
+                            : "Follow"}
                           {/* {followStatus[item.job_post_id]
                             ? "Following"
                             : "Follow"} */}
