@@ -5,10 +5,10 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import babyswim from "../../image/babyswim.png";
 import following from "../../image/following.png";
-import smallfollowing from "../../image/smallfollowing.png";
-import categorypic from "../../image/categorypic.png";
-import calendar from "../../image/calendar.png";
-import dollar from "../../image/dollar.png";
+import smallfollowing from "../../image/following-btn.png";
+import categorypic from "../../image/icon-manu.png";
+import calendar from "../../image/icon-calendar.png";
+import dollar from "../../image/icon-dollar.png";
 import Warning from "../Warning";
 import Link from "next/link";
 import jwtDecode from "jwt-decode";
@@ -23,8 +23,6 @@ import {
   AlertDialogOverlay,
   Button,
 } from "@chakra-ui/react";
-
-
 
 const Following = () => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -47,8 +45,6 @@ const Following = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-
-
   const getJobs = async () => {
     try {
       const result = await axios.get(
@@ -57,7 +53,7 @@ const Following = () => {
       setJob(result.data.job.data);
     } catch (error) {
       console.log(error);
-    }finally {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -121,15 +117,11 @@ const Following = () => {
   console.log(job);
 
   if (isLoading) {
-    return (
-      <div className="bg-[#F5F5F6] h-screen"></div>
-    );
+    return <div className="bg-[#F5F5F6] h-screen"></div>;
   }
   if (!isAuthenticated) {
-  return (
-    <Warning />
-  );
-}
+    return <Warning />;
+  }
   const profId = localStorage.getItem("professional_id");
 
   const handleFollowClick = async () => {
@@ -148,7 +140,6 @@ const Following = () => {
     setFollowStatus(newFollowStatus);
   };
 
-
   return (
     <main className="bg-[#F5F5F6] h-screen">
       <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
@@ -162,7 +153,10 @@ const Following = () => {
           </div>
 
           <div className="flex flex-col flex-wrap w-full items-start">
-            <h6 className="max-[700px]:text-center mb-4 mt-4 text-[#bf5f82]" id="heading6">
+            <h6
+              className="max-[700px]:text-center mb-4 mt-4 text-[#bf5f82]"
+              id="heading6"
+            >
               {job.length} You are following jobs.
             </h6>
             <div className="flex felx-row flex-wrap gap-[15px] max-[900px]:w-full">
@@ -174,18 +168,26 @@ const Following = () => {
                   >
                     <div className="flex items-center gap-4">
                       <div>
-                        <Image alt="picture" src={
-                          item.jobs_postings.recruiters.logo === null
-                            ? logoMockup
-                            : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${item.jobs_postings.recruiters.logo}`
-                        }
+                        <Image
+                          alt="picture"
+                          src={
+                            item.jobs_postings.recruiters.logo === null
+                              ? logoMockup
+                              : `https://zsvpcibqzkxoqqpektgc.supabase.co/storage/v1/object/public/recruiters_logo/${item.jobs_postings.recruiters.logo}`
+                          }
                           width={100}
-                          height={100} />
+                          height={100}
+                        />
                       </div>
 
                       <div className="flex flex-col">
                         <div className="flex gap-1 items-center">
-                          <Image alt="picture" src={categorypic} />
+                          <Image
+                            alt="picture"
+                            src={categorypic}
+                            width={11.5}
+                            height={12.5}
+                          />
                           <p id="caption">{item.jobs_postings.job_category}</p>
                         </div>
                         <h6 id="heading6">{item.jobs_postings.job_title}</h6>
@@ -199,15 +201,25 @@ const Following = () => {
                             <Image
                               alt="picture"
                               src={calendar}
-                              className="h-[12.5px] w-[12.5px]"
+                              width={11.5}
+                              height={12.5}
                             />
                             <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">
                               {item.jobs_postings.job_type}
                             </p>
                           </div>
                           <div className="flex gap-1 items-center">
-                            <Image alt="picture" src={dollar} />
-                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${numeral(item.jobs_postings.salary_min_range).format("0a")} - ${numeral(item.jobs_postings.salary_max_range).format("0a")}`}</p>
+                            <Image
+                              alt="picture"
+                              src={dollar}
+                              width={11.5}
+                              height={12.5}
+                            />
+                            <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${numeral(
+                              item.jobs_postings.salary_min_range
+                            ).format("0a")} - ${numeral(
+                              item.jobs_postings.salary_max_range
+                            ).format("0a")}`}</p>
                           </div>
                         </div>
                       </div>
@@ -222,11 +234,15 @@ const Following = () => {
                             className="w-[40px] h-[40px] border-[#F48FB1]"
                           />
                         </div>
-                        <Button variant="ghost"
-                          color="pink" className="followButton" onClick={() => {
+                        <Button
+                          variant="ghost"
+                          color="pink"
+                          className="followButton"
+                          onClick={() => {
                             setSelectedJob(item.jobs_postings);
                             setIsOpen(true);
-                          }}>
+                          }}
+                        >
                           {item.follow_status ? "Following" : null}
                         </Button>
                         <AlertDialog
@@ -236,12 +252,16 @@ const Following = () => {
                         >
                           <AlertDialogOverlay>
                             <AlertDialogContent>
-                              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                              <AlertDialogHeader
+                                fontSize="lg"
+                                fontWeight="bold"
+                              >
                                 Unfollow Job
                               </AlertDialogHeader>
 
                               <AlertDialogBody>
-                                {selectedJob && `Are you sure you want to unfollow ${selectedJob.job_title}?`}
+                                {selectedJob &&
+                                  `Are you sure you want to unfollow ${selectedJob.job_title}?`}
                               </AlertDialogBody>
 
                               <AlertDialogFooter>
@@ -251,7 +271,10 @@ const Following = () => {
                                 <Button
                                   colorScheme="red"
                                   onClick={() => {
-                                    handleFollowClick(item.job_post_id, item.follow_status);
+                                    handleFollowClick(
+                                      item.job_post_id,
+                                      item.follow_status
+                                    );
                                     onClose();
                                   }}
                                   ml={3}
@@ -262,8 +285,6 @@ const Following = () => {
                             </AlertDialogContent>
                           </AlertDialogOverlay>
                         </AlertDialog>
-
-
                       </div>
                       <div className="max-[768px]:flex max-[768px]:items-center">
                         <button

@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import babyswim from "../../image/babyswim.png";
-import following from "../../image/following.png";
-import smallfollowing from "@/image/smallfollowing.png";
+import following from "../../image/unfollow-btn.png";
+import smallfollowing from "@/image/following-btn.png";
 // import smallfollowing from "../../image/small-following.png";
-import categorypic from "../../image/categorypic.png";
-import calendar from "../../image/calendar.png";
-import dollar from "../../image/dollar.png";
+import categorypic from "../../image/icon-manu.png";
+import calendar from "../../image/icon-calendar.png";
+import dollar from "../../image/icon-dollar.png";
 import Warning from "../Warning";
 import { createClient } from "@supabase/supabase-js";
 import logoMockup from "../../image/logo-mockup.png";
@@ -315,6 +315,7 @@ const Findthatjob = () => {
                 return (
                   <div
                     key={index}
+
                     className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] max-[900px]:w-full w-[420px] h-[210px] py-[16px] px-[20px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)] max-[700px]:h-auto"
                   >
                     <div className="flex max-[700px]:flex-col items-center gap-4">
@@ -333,7 +334,12 @@ const Findthatjob = () => {
 
                       <div className="flex flex-col w-[250px]">
                         <div className="flex gap-1 items-center">
-                          <Image alt="picture" src={categorypic} />
+                          <Image
+                            alt="picture"
+                            width={11.25}
+                            height={12.5}
+                            src={categorypic}
+                          />
                           <p id="caption">{item.job_category}</p>
                         </div>
                         <h6 id="heading6">{item.job_title}</h6>
@@ -346,6 +352,8 @@ const Findthatjob = () => {
                           <div className="flex gap-1 items-center">
                             <Image
                               alt="picture"
+                              width={12.5}
+                              height={12.5}
                               src={calendar}
                               className="h-[12.5px] w-[12.5px]"
                             />
@@ -354,7 +362,12 @@ const Findthatjob = () => {
                             </p>
                           </div>
                           <div className="flex gap-1 items-center">
-                            <Image alt="picture" src={dollar} />
+                            <Image
+                              alt="picture"
+                              width={12.5}
+                              height={12.5}
+                              src={dollar}
+                            />
                             <p className="max-[700px]:text-[8px] max-[700px]:leading-[10px] text-[12px] leading-[16px] font-normal">{`${numeral(
                               item.salary_min_range
                             ).format("0a")} - ${numeral(

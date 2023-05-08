@@ -30,13 +30,12 @@ function Applications() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-
   const router = useRouter();
   function getFormattedDate(date) {
-    const differenceInDays = moment().diff(moment(date), 'days');
-  
+    const differenceInDays = moment().diff(moment(date), "days");
+
     if (differenceInDays > 7) {
-      const formattedDate = moment(date).format('DD/MM/YYYY');
+      const formattedDate = moment(date).format("DD/MM/YYYY");
       return formattedDate;
     } else {
       return moment(date).fromNow();
@@ -44,7 +43,7 @@ function Applications() {
   }
 
   const AllJob = async () => {
-    const userEmail = String(localStorage.getItem('email'));
+    const userEmail = String(localStorage.getItem("email"));
     try {
       const result = await supabase
         .from("professional_apply_jobs")
@@ -52,7 +51,9 @@ function Applications() {
         .limit(20)
         .order("created_at", { ascending: true });
 
-      const filteredResult = result.data.filter((item) => item.professional?.email === userEmail);
+      const filteredResult = result.data.filter(
+        (item) => item.professional?.email === userEmail
+      );
 
       // Remove duplicates based on job_title
       const uniqueJobTitles = new Set();
@@ -69,8 +70,12 @@ function Applications() {
         pro_created_at: getFormattedDate(job.created_at),
         created_at: getFormattedDate(job.jobs_postings.created_at),
         company_name: job.jobs_postings.recruiters.company_name,
-        salary_min_range: numeral(job.jobs_postings.salary_min_range).format("0a"),
-        salary_max_range: numeral(job.jobs_postings.salary_max_range).format("0a"),
+        salary_min_range: numeral(job.jobs_postings.salary_min_range).format(
+          "0a"
+        ),
+        salary_max_range: numeral(job.jobs_postings.salary_max_range).format(
+          "0a"
+        ),
         job_title: job.jobs_postings.job_title,
         job_category: job.jobs_postings.job_category,
         job_type: job.jobs_postings.job_type,
@@ -82,7 +87,7 @@ function Applications() {
       setJob(formattedJobs);
     } catch (error) {
       console.error(error);
-    }finally {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -100,16 +105,11 @@ function Applications() {
     setSelectedOption(event.target.value);
   };
   if (isLoading) {
-    return (
-      <div className="bg-[#F5F5F6] h-screen"></div>
-    );
+    return <div className="bg-[#F5F5F6] h-screen"></div>;
   }
   if (!isAuthenticated) {
-  return (
-    <Warning />
-  );
-}
-
+    return <Warning />;
+  }
 
   return (
     <>
@@ -118,7 +118,6 @@ function Applications() {
           <h4 className="max-[700px]:text-center mb-[24px]" id="heading4">
             Your applications
           </h4>
-
 
           <div className="flex flex-col">
             <h6
@@ -226,7 +225,8 @@ function Applications() {
                           </p>
                         </div>
                         <div className="flex flex-col items-center max-[700px]:mr-[15px]">
-                          {item.recruiter_status === 1 || item.recruiter_status === null ? (
+                          {item.recruiter_status === 1 ||
+                          item.recruiter_status === null ? (
                             <div className="flex flex-col items-center">
                               <Image
                                 src={waiting}
@@ -249,7 +249,14 @@ function Applications() {
                                 alt="Review in progress"
                                 className=""
                               />
-                              <p className="text-center text-[#F48FB1]" id="caption">Review in<br />progress</p>
+                              <p
+                                className="text-center text-[#F48FB1]"
+                                id="caption"
+                              >
+                                Review in
+                                <br />
+                                progress
+                              </p>
                             </div>
                           ) : (
                             <div className="flex flex-col items-center">
@@ -258,7 +265,14 @@ function Applications() {
                                 alt="Review finished"
                                 className=""
                               />
-                              <p className="text-center text-[#F48FB1]" id="caption">Review<br />finished</p>
+                              <p
+                                className="text-center text-[#F48FB1]"
+                                id="caption"
+                              >
+                                Review
+                                <br />
+                                finished
+                              </p>
                             </div>
                           )}
                         </div>
