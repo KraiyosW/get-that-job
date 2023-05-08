@@ -315,7 +315,8 @@ const Findthatjob = () => {
                 return (
                   <div
                     key={index}
-                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] max-[900px]:w-full w-[420px] h-[210px] p-[16px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)] max-[700px]:h-auto"
+
+                    className="bg-white flex felx-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] max-[900px]:w-full w-[420px] h-[210px] py-[16px] px-[20px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)] max-[700px]:h-auto"
                   >
                     <div className="flex max-[700px]:flex-col items-center gap-4">
                       <div>
@@ -331,7 +332,7 @@ const Findthatjob = () => {
                         />
                       </div>
 
-                      <div className="flex flex-col">
+                      <div className="flex flex-col w-[250px]">
                         <div className="flex gap-1 items-center">
                           <Image
                             alt="picture"
