@@ -134,7 +134,7 @@ function Applications() {
                 >
                   <div className="flex flex-col" id="box-job-all">
                     <div
-                      className="max-[700px]:text-center flex flex-row flex-wrap max-[700px]:justify-between items-center w-[100%]"
+                      className="max-[700px]:text-center flex flex-row flex-wrap max-[700px]:justify-between items-center w-full"
                       id="job-head-row"
                     >
                       <div className="min-[701px]:flex min-[701px]:flex-row max-[919px]:w-[100%] min-[920px]:w-[40%]">
@@ -213,7 +213,7 @@ function Applications() {
                         </div>
                       </div>
                       <div className="flex flex-row items-center max-[700px]:mt-[8px]">
-                        <div className="flex flex-col items-center max-[700px]:mr-[15px] mr-[4px]">
+                        <div className="flex flex-col items-center max-[700px]:mr-[15px] mr-[4px] w-[100px]">
                           <Image src={letter} alt="Sent Time" className="" />
                           <p
                             className="text-center text-[#616161]"
@@ -224,7 +224,7 @@ function Applications() {
                             {item.pro_created_at}
                           </p>
                         </div>
-                        <div className="flex flex-col items-center max-[700px]:mr-[15px]">
+                        <div className="flex flex-col items-center max-[700px]:mr-[15px] w-[100px]">
                           {item.recruiter_status === 1 ||
                           item.recruiter_status === null ? (
                             <div className="flex flex-col items-center">
@@ -278,9 +278,9 @@ function Applications() {
                         </div>
                         <button
                           onClick={() => toggleExpanded(item.job_post_id)}
-                          className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px] mt-[30px]"
+                          className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none"
                         >
-                          <span className="ml-1">
+                          <span className="">
                             {isExpanded === item.job_post_id ? (
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
