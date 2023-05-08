@@ -352,7 +352,7 @@ function ShowCandidates() {
                       <div className="flex flex-row items-center">
 
                         <button
-                          className="button_pink_tertiary flex flex-row  active:opacity-[80%]"
+                          className="button_pink_tertiary max-[900px]:mt-[10px] flex flex-row  active:opacity-[80%]"
                           onClick={() =>
                             handleEdit(post[0].jobs_postings.job_post_id)
                           }
@@ -368,7 +368,7 @@ function ShowCandidates() {
                           onClick={() =>
                             toggleExpanded(post[0].jobs_postings.job_post_id)
                           }
-                          className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px] mt-[30px]"
+                          className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px]"
                         >
                           <span className="ml-1">
                             {isExpanded === post[0].jobs_postings.job_post_id ? (
@@ -532,7 +532,7 @@ function ShowCandidates() {
                               </div>
 
                               {item.recruiter_status === 1 || item.recruiter_status === null ? (
-                                <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px] max-[900px]:mb-[10px] ">
+                                <div className="max-[700px]:flex-row max-[700px]:justify-start flex flex-col items-center justify-center w-[150px]">
                                   <Image
                                     src={waiting}
                                     alt="Waiting for review"
@@ -576,7 +576,7 @@ function ShowCandidates() {
                                 </div>
                               )}
                             </div>
-                            <div className="flex flex-row items-center ml-[50px]">
+                            <div className="max-[1896px]:ml-0 max-[1896px]:w-full max-[1896px]:justify-center max-[768px]:mt-[10px] max-[1896px]:mt-[20px] flex flex-row items-center ml-[50px]">
 
                               <AlertDialog
                                 isOpen={isStatusOneDialogOpen}
@@ -674,7 +674,7 @@ function ShowCandidates() {
                                 onClick={() =>
                                   toggleExpanded(item.professional_apply_job_id)
                                 }
-                                className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px] mt-[30px]"
+                                className="text-pink-tertiary hover:text-pink-secondary transition-all duration-150 focus:outline-none ml-[22px]"
                               >
                                 <span className="ml-1">
                                   {isExpanded === item.professional_apply_job_id ? (
