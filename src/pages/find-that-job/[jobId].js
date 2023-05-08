@@ -133,10 +133,10 @@ function JobDetails() {
           {/* Header Section */}
           <main className="bg-[#F5F5F6] h-screen">
             <div className="max-[700px]:ml-0 ml-[240px] max-[700px]:py-[16px] py-[32px] max-[700px]:px-[64px] px-[128px]">
-              <div className="flex flex-col flex-wrap">
+              <div className="max-[1030px]:w-full flex flex-col flex-wrap ">
                 <div className="box-0 flex items-center mb-[18px]">
                   <button
-                    className="flex flex-row items-center"
+                    className="flex flex-row items-center max-[830px]:w-full"
                     onClick={handleGoBack}
                   >
                     <Image
@@ -147,7 +147,7 @@ function JobDetails() {
                     <p id="body2">BACK</p>
                   </button>
                 </div>
-                <div className="box-1 flex flex-row flex-wrap justify-between">
+                <div className="max-[1030px]:justify-center box-1 flex flex-row flex-wrap justify-between">
                   <div className="logo flex flex-row">
                     <div className="image">
                       <Image
@@ -192,8 +192,8 @@ function JobDetails() {
                         {post.professional_follow_jobs[0] === undefined
                           ? "Follow"
                           : post.professional_follow_jobs[0].follow_status
-                          ? "Following"
-                          : "Follow"}
+                            ? "Following"
+                            : "Follow"}
                       </button>
                     </div>
                   </div>
@@ -211,7 +211,7 @@ function JobDetails() {
                     </button>
                   </div>
                 </div>
-                <div className="box-2 text-center">
+                <div className="box-2 text-center max-[830px]:flex max-[830px]:flex-wrap max-[830px]:w-full">
                   {/* Middle Section */}
                   <div className="">
                     <h3 className="mb-[10px]" id="heading3">
@@ -243,7 +243,7 @@ function JobDetails() {
 
                   {/* Card Section */}
                   <div className="title-header flex flex-col mb-[4px]">
-                    <div className="card-section flex flex-row justify-center">
+                    <div className="card-section flex flex-row flex-wrap justify-center">
                       <div className="category flex flex-col items-center bg-white border-[1px] border-pink-tertiary rounded-[8px] px-[32px] pt-[8px] pb-[16px] mx-[16px] drop-shadow-xl mb-[50px]">
                         <p className="text-[#616161]" id="body1">
                           Category
@@ -358,9 +358,9 @@ function JobDetails() {
                       </ul>
                       {/* <p className="mb-[16px]">{post.optional_requirement}</p> */}
                     </div>
-                    <div className="btn flex justify-center">
+                    <div className="btn max-[1030px]:mt-[10px] flex justify-center">
                       <button
-                        className="apply-button active:opacity-[80%] bg-pink-primary rounded-[16px] text-white w-[173px] h-[56px] py-[16px] pr-[24px] text-right font-medium relative"
+                        className=" apply-button active:opacity-[80%] bg-pink-primary rounded-[16px] text-white w-[173px] h-[56px] py-[16px] pr-[24px] text-right font-medium relative"
                         onClick={handleApply}
                       >
                         <Image
