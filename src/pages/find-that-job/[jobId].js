@@ -352,7 +352,7 @@ function JobDetails() {
                         Optional Requirements
                       </h5>
                       <ul>
-                        {requirement.map((item, index) => (
+                        {optRequirement.map((item, index) => (
                           <li key={index}>- {item}</li>
                         ))}
                       </ul>
