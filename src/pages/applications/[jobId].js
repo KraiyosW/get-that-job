@@ -377,29 +377,25 @@ function JobApply() {
                           className="flex flex-row items-center"
                           onClick={handleFollowClick}
                         >
-                          {post.professional_follow_jobs[0] === undefined && (
+                          {post.professional_follow_jobs[0] === undefined ? (
                             <Image
                               alt="picture"
                               src={following}
                               className="w-[25px] h-[25px] border-[#F48FB1] mr-2"
                             />
+                          ) : post.professional_follow_jobs[0].follow_status ? (
+                            <Image
+                              alt="picture"
+                              src={smallfollowing}
+                              className="w-[40px] h-[40px] border-[#F48FB1] mr-2"
+                            />
+                          ) : (
+                            <Image
+                              alt="followIcon"
+                              src={following}
+                              className="w-[25px] h-[25px] border-[#F48FB1] mr-2"
+                            />
                           )}
-                          {post.professional_follow_jobs[0].follow_status ===
-                            true && (
-                              <Image
-                                alt="picture"
-                                src={smallfollowing}
-                                className="w-[40px] h-[40px] border-[#F48FB1] mr-2"
-                              />
-                            )}
-                          {post.professional_follow_jobs[0] !== undefined &&
-                            !post.professional_follow_jobs[0].follow_status && (
-                              <Image
-                                alt="followIcon"
-                                src={following}
-                                className="w-[25px] h-[25px] border-[#F48FB1] mr-2"
-                              />
-                            )}
                           {post.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : post.professional_follow_jobs[0].follow_status
