@@ -48,8 +48,7 @@ function Applications() {
       const result = await supabase
         .from("professional_apply_jobs")
         .select(`*, professional (*), jobs_postings (*, recruiters (*))`)
-        .limit(20)
-        .order("created_at", { ascending: true });
+        .order("created_at", { ascending: false });
 
       const filteredResult = result.data.filter(
         (item) => item.professional?.email === userEmail
@@ -226,7 +225,7 @@ function Applications() {
                         </div>
                         <div className="flex flex-col items-center max-[700px]:mr-[15px] w-[100px]">
                           {item.recruiter_status === 1 ||
-                          item.recruiter_status === null ? (
+                            item.recruiter_status === null ? (
                             <div className="flex flex-col items-center">
                               <Image
                                 src={waiting}
