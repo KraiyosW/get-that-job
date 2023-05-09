@@ -354,7 +354,7 @@ function JobApply() {
                       <p id="body2">BACK</p>
                     </button>
                   </div>
-                  <div className="box-1 flex flex-row flex-wrap justify-between">
+                  <div className="box-1 max-[1260px]:w-full max-[1260px]:justify-center flex flex-row flex-wrap justify-between ">
                     <div className="logo flex flex-row">
                       <div className="image">
                         <Image
@@ -399,8 +399,8 @@ function JobApply() {
                           {post.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : post.professional_follow_jobs[0].follow_status
-                            ? "Following"
-                            : "Follow"}
+                              ? "Following"
+                              : "Follow"}
                         </button>
                       </div>
                     </div>
@@ -421,7 +421,7 @@ function JobApply() {
                       </Button>
                     </div>
                   </div>
-                  <div className="box-2 text-center">
+                  <div className="box-2 text-center max-[1260px]:w-full max-[1260px]:flex max-[1260px]:flex-col max-[1260px]:flex-wrap">
                     {/* Middle Section */}
                     <div className="">
                       <h3 className="mb-[10px]" id="heading3">
@@ -453,7 +453,7 @@ function JobApply() {
 
                     {/* Card Section */}
                     <div className="title-header flex flex-col mb-[4px]">
-                      <div className="card-section flex flex-row justify-center">
+                      <div className="card-section max-[1260px]:w-full max-[1260px]:flex max-[1260px]:flex-wrap flex flex-row justify-center">
                         <div className="category flex flex-col items-center bg-white border-[1px] border-pink-tertiary rounded-[8px] px-[32px] pt-[8px] pb-[16px] mx-[16px] drop-shadow-xl mb-[50px]">
                           <p className="text-[#616161]" id="body1">
                             Category
@@ -608,7 +608,7 @@ function JobApply() {
                             </p>
                             <div className="relative ">
                               <textarea
-                                className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[760px] h-[256px] "
+                                className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] w-full max-w-[760px] h-[256px] "
                                 name="experience"
                                 placeholder="Worked 6 years in a bitcoin farm until I decided to change my life...."
                                 style={{ resize: "none" }}
@@ -630,7 +630,7 @@ function JobApply() {
                             </p>
                             <div className="relative ">
                               <textarea
-                                className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px] max-[767px]:w-[240px] w-[760px] h-[76px]"
+                                className="relative border-solid border border-[#F48FB1] rounded-[8px] gap-[8px] p-[8px]  w-full max-w-[760px] h-[76px]"
                                 name="birthdate"
                                 placeholder="Mention things about The Company Name SA that excite you. Why would you be a good candidate?"
                                 style={{ resize: "none" }}
