@@ -1,26 +1,57 @@
-import React from 'react'
-import signup from '../image/signup.svg'
-import login from '../image/login.svg'
-import GTJ from '../image/gtj.svg'
-import Image from 'next/image'
-
+import React from "react";
+import signup from "../image/signup.svg";
+import login from "../image/login.svg";
+import GTJ from "../image/gtj.svg";
+import Image from "next/image";
+import Link from "next/link";
+import {useAuth} from '@/contexts/authentication.js'
 
 const Navigatebar = () => {
+  const {logoutAuth} = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logoutAuth();
+      router.push("/");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+
   return (
-    <div className="pl-[150px] w-screen h-[64px] flex flex-row flex-wrap justify-between shadow-md">
-      <Image alt="signup-icon" src={GTJ} className=''/>
-      <div className="nav-button flex flex-row flex-wrap">
-      <div className="flex flex-row border-[1px] rounded-[16px] border-solid border-[#F48FB1] w-[150px] my-[8px] h-[45px] justify-center gap-[7px] mr-[15px]">
-        <Image alt="signup-icon" src={signup} />
-        <button>SIGN UP</button>
-      </div>
-      <div className="flex flex-row border-[1px] rounded-[16px] border-solid border-[#F48FB1] w-[120px] my-[8px] mr-[200px] h-[45px] justify-center gap-[7px]">
-        <Image alt="login-icon" src={login} />
-        <button>LOGIN</button>
-      </div>
+    <div className="w-full flex flex-row flex-wrap justify-between shadow-md relative z-10 max-[514px]:mt-5 max-[514px]:justify-center">
+      <Link href="/" onClick={()=>{handleLogout()}}>
+        <Image
+          alt="signup-icon"
+          src={GTJ}
+          className="max-[514px]:ml-2 max-[767px]:ml-[2.5rem] max-[767px]:mb-[20px] max-[1060px]:ml-[5rem] mt-[0.6rem] min-[1061px]:ml-[10rem]"
+        />
+      </Link>
+      <div className="nav-button flex flex-row flex-wrap max-[514px]:mr-0 max-[514px]:justify-center max-[767px]:mr-[2.5rem] max-[1060px]:mr-[5rem] min-[1061px]:mr-[10rem]">
+        <Link href="/register">
+          <div className="group flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[150px] my-[8px] h-[45px] justify-center gap-[7px] mr-2 min-[767px]:mr-[15px] hover:text-white hover:bg-pink-primary duration-[0.5s] active:opacity-[50%]">
+            <Image
+              alt="signup-icon"
+              src={signup}
+              className="group-hover:brightness-[250%] duration-[0.5s]"
+            />
+            <button>SIGN UP</button>
+          </div>
+        </Link>
+        <Link href="/login">
+          <div className="group flex flex-row border-[1px] rounded-[16px] border-solid border-pink-primary w-[150px] my-[8px] h-[45px] justify-center gap-[7px] mr-2 min-[767px]:mr-[15px] hover:text-white hover:bg-pink-primary duration-[0.5s] active:opacity-[50%]">
+            <Image
+              alt="login-icon"
+              src={login}
+              className="group-hover:brightness-[250%] duration-[0.5s]"
+            />
+            <button>LOGIN</button>
+          </div>
+        </Link>
       </div>
     </div>
   );
-}
+};
 
-export default Navigatebar
+export default Navigatebar;

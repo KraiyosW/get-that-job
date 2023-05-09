@@ -7,10 +7,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        mont: ["Montserrat", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
-      },
       colors: {
         //Row 1 Figma Frame 1
         "black-primary": "#1E1E1E",
