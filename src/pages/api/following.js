@@ -12,7 +12,7 @@ export default async function followingHandle(req, res) {
   }
 
   const { professional_id, job_post_id } = req.body;
-  const now = new Date().toLocaleString();
+  const now = new Date().toISOString();
 
   req.body.followed_at = now;
 
