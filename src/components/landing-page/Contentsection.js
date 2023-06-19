@@ -12,7 +12,7 @@ const Contentsection = () => {
           </h3>
           <br />
           <h5 className=" text-white-primary" id="heading5">
-            Our Machine learning algorithm is so good that it's even illegal in
+            Our Machine learning algorithm is so good that it is even illegal in
             some countries. Join us to use our barelly legal algorithm that is
             actually a group of interns that work on our basement.
           </h5>
@@ -20,7 +20,7 @@ const Contentsection = () => {
           <h5 className=" text-white-primary" id="heading5">
             We have a job for you, no matter your background or previous
             experience. Is sending random memes through chat your only skill?
-            That's ok, we got you, our Rock Star Meme Curator role is here for
+            That is ok, we got you, our Rock Star Meme Curator role is here for
             you.
           </h5>
         </div>

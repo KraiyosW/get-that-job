@@ -42,56 +42,56 @@ function Applications() {
     }
   }
 
-  const AllJob = async () => {
-    const userEmail = String(localStorage.getItem("email"));
-    try {
-      const result = await supabase
-        .from("professional_apply_jobs")
-        .select(`*, professional (*), jobs_postings (*, recruiters (*))`)
-        .order("created_at", { ascending: false });
-
-      const filteredResult = result.data.filter(
-        (item) => item.professional?.email === userEmail
-      );
-
-      // Remove duplicates based on job_title
-      const uniqueJobTitles = new Set();
-      const uniqueFilteredResult = filteredResult.filter((item) => {
-        if (!uniqueJobTitles.has(item.jobs_postings.job_title)) {
-          uniqueJobTitles.add(item.jobs_postings.job_title);
-          return true;
-        }
-        return false;
-      });
-
-      const formattedJobs = uniqueFilteredResult.map((job) => ({
-        ...job,
-        pro_created_at: getFormattedDate(job.created_at),
-        created_at: getFormattedDate(job.jobs_postings.created_at),
-        company_name: job.jobs_postings.recruiters.company_name,
-        salary_min_range: numeral(job.jobs_postings.salary_min_range).format(
-          "0a"
-        ),
-        salary_max_range: numeral(job.jobs_postings.salary_max_range).format(
-          "0a"
-        ),
-        job_title: job.jobs_postings.job_title,
-        job_category: job.jobs_postings.job_category,
-        job_type: job.jobs_postings.job_type,
-        job_description: job.jobs_postings.job_description,
-        requirement: job.jobs_postings.requirement,
-        optional_requirement: job.jobs_postings.optional_requirement,
-        company_logo: job.jobs_postings.recruiters.logo,
-      }));
-      setJob(formattedJobs);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const AllJob = async () => {
+      const userEmail = String(localStorage.getItem("email"));
+      try {
+        const result = await supabase
+          .from("professional_apply_jobs")
+          .select(`*, professional (*), jobs_postings (*, recruiters (*))`)
+          .order("created_at", { ascending: false });
+
+        const filteredResult = result.data.filter(
+          (item) => item.professional?.email === userEmail
+        );
+
+        // Remove duplicates based on job_title
+        const uniqueJobTitles = new Set();
+        const uniqueFilteredResult = filteredResult.filter((item) => {
+          if (!uniqueJobTitles.has(item.jobs_postings.job_title)) {
+            uniqueJobTitles.add(item.jobs_postings.job_title);
+            return true;
+          }
+          return false;
+        });
+
+        const formattedJobs = uniqueFilteredResult.map((job) => ({
+          ...job,
+          pro_created_at: getFormattedDate(job.created_at),
+          created_at: getFormattedDate(job.jobs_postings.created_at),
+          company_name: job.jobs_postings.recruiters.company_name,
+          salary_min_range: numeral(job.jobs_postings.salary_min_range).format(
+            "0a"
+          ),
+          salary_max_range: numeral(job.jobs_postings.salary_max_range).format(
+            "0a"
+          ),
+          job_title: job.jobs_postings.job_title,
+          job_category: job.jobs_postings.job_category,
+          job_type: job.jobs_postings.job_type,
+          job_description: job.jobs_postings.job_description,
+          requirement: job.jobs_postings.requirement,
+          optional_requirement: job.jobs_postings.optional_requirement,
+          company_logo: job.jobs_postings.recruiters.logo,
+        }));
+        setJob(formattedJobs);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     const token = localStorage.getItem("sb:token");
     setIsAuthenticated(!!token);
     AllJob();
@@ -225,7 +225,7 @@ function Applications() {
                         </div>
                         <div className="flex flex-col items-center max-[700px]:mr-[15px] w-[100px]">
                           {item.recruiter_status === 1 ||
-                            item.recruiter_status === null ? (
+                          item.recruiter_status === null ? (
                             <div className="flex flex-col items-center">
                               <Image
                                 src={waiting}

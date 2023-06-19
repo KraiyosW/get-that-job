@@ -50,6 +50,7 @@ const SideBarRecruiter = () => {
       >
         <Image
           src={GTJ}
+          alt="get that job logo"
           className="mb-4 max-[700px]:pl-[8px] max-[700px]:pt-[16px] pl-[16px] pt-[32px] w-[160px] cursor-pointer max-[700px]:hidden"
         />
       </Link>

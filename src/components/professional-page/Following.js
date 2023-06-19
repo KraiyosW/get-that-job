@@ -45,19 +45,6 @@ const Following = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getJobs = async () => {
-    try {
-      const result = await axios.get(
-        `http://localhost:3000/api/followingtab?profid=${profId}`
-      );
-      setJob(result.data.job.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const [formData, setFormData] = useState({
     job_category: "",
     job_type: "",
@@ -105,12 +92,38 @@ const Following = () => {
   }
 
   useEffect(() => {
+    const profId = localStorage.getItem("professional_id");
+    const getJobs = async () => {
+      try {
+        const result = await axios.get(
+          `http://localhost:3000/api/followingtab?profid=${profId}`
+        );
+        setJob(result.data.job.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
     setIsAuthenticated(!!token);
     getJobs();
   }, [isAuthenticated]);
 
   useEffect(() => {
+    const profId = localStorage.getItem("professional_id");
+    const getJobs = async () => {
+      try {
+        const result = await axios.get(
+          `http://localhost:3000/api/followingtab?profid=${profId}`
+        );
+        setJob(result.data.job.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     getJobs();
   }, [followStatus]);
 

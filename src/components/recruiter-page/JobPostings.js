@@ -67,77 +67,76 @@ function JobPostings() {
     localStorage.setItem("myState", myState);
   }, [myState]);
 
-  const AllJob = async () => {
-    console.log(userEmail);
-    try {
-      const { data: jobPostingsData, error } = await supabase.rpc(
-        "get_jobs_post_page",
-        { user_email: userEmail }
-      );
-
-      if (error) {
-        console.error("Error fetching data:", error);
-        return;
-      }
-
-      if (!jobPostingsData || jobPostingsData.length === 0) {
-        console.warn("No job postings found for the given email");
-        setJob([]);
-        return;
-      }
-
-      console.log(jobPostingsData);
-      const formattedJobs = jobPostingsData.map((job) => ({
-        ...job,
-      }));
-      setJob(formattedJobs);
-
-      const jobPostingsIds = jobPostingsData.map((id) => id.job_post_id);
-      const apply = await supabase
-        .from("professional_apply_jobs")
-        .select(`*, professional (*), jobs_postings (*)`)
-        .in("job_post_id", jobPostingsIds);
-
-      console.log(apply);
-
-      const seperateApply = apply.data.reduce((acc, curr) => {
-        const jobPostId = curr.job_post_id;
-        if (acc[jobPostId]) {
-          acc[jobPostId].push(curr);
-        } else {
-          acc[jobPostId] = [curr];
-        }
-        return acc;
-      }, {});
-
-      setApply(seperateApply.data); /// ใช้ apply state นับ จำนวนคนสมัคร
-
-      const statusRe = apply.data.reduce((acc, curr) => {
-        const { recruiter_status, job_post_id } = curr;
-        if (!acc[recruiter_status]) {
-          acc[recruiter_status] = { data: [curr], job_post_id };
-        } else {
-          acc[recruiter_status].data.push(curr);
-        }
-        return acc;
-      }, {});
-
-      setStatusRecruiter(statusRe); // ตรวจ recruiter Status ของแต่ละ job_post_id
-      console.log(apply.data);
-      console.log(apply.data.jobs_postings);
-      console.log(statusRecruiter);
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
     const token = localStorage.getItem("sb:token");
+    const AllJob = async () => {
+      console.log(userEmail);
+      try {
+        const { data: jobPostingsData, error } = await supabase.rpc(
+          "get_jobs_post_page",
+          { user_email: userEmail }
+        );
+
+        if (error) {
+          console.error("Error fetching data:", error);
+          return;
+        }
+
+        if (!jobPostingsData || jobPostingsData.length === 0) {
+          console.warn("No job postings found for the given email");
+          setJob([]);
+          return;
+        }
+
+        console.log(jobPostingsData);
+        const formattedJobs = jobPostingsData.map((job) => ({
+          ...job,
+        }));
+        setJob(formattedJobs);
+
+        const jobPostingsIds = jobPostingsData.map((id) => id.job_post_id);
+        const apply = await supabase
+          .from("professional_apply_jobs")
+          .select(`*, professional (*), jobs_postings (*)`)
+          .in("job_post_id", jobPostingsIds);
+
+        console.log(apply);
+
+        const seperateApply = apply.data.reduce((acc, curr) => {
+          const jobPostId = curr.job_post_id;
+          if (acc[jobPostId]) {
+            acc[jobPostId].push(curr);
+          } else {
+            acc[jobPostId] = [curr];
+          }
+          return acc;
+        }, {});
+
+        setApply(seperateApply.data); /// ใช้ apply state นับ จำนวนคนสมัคร
+
+        const statusRe = apply.data.reduce((acc, curr) => {
+          const { recruiter_status, job_post_id } = curr;
+          if (!acc[recruiter_status]) {
+            acc[recruiter_status] = { data: [curr], job_post_id };
+          } else {
+            acc[recruiter_status].data.push(curr);
+          }
+          return acc;
+        }, {});
+
+        setStatusRecruiter(statusRe); // ตรวจ recruiter Status ของแต่ละ job_post_id
+        console.log(apply.data);
+        console.log(apply.data.jobs_postings);
+        console.log(statusRecruiter);
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     setIsAuthenticated(!!token);
     AllJob();
-  }, [jobStatus, isAuthenticated, userEmail, apply]);
+  }, [jobStatus, isAuthenticated, userEmail, apply, statusRecruiter]);
 
   if (isLoading) {
     return <div className="bg-[#F5F5F6] h-screen"></div>;

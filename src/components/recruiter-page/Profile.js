@@ -5,7 +5,7 @@ import Image from "next/image";
 import LogoMockup from "../../image/logo-mockup.png";
 import { useAuth } from "@/contexts/authentication";
 import { useRouter } from "next/router";
-import { useToast, Box, Button } from '@chakra-ui/react'
+import { useToast, Box, Button } from "@chakra-ui/react";
 const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseURL, supabaseAnonKey);
@@ -13,13 +13,13 @@ const supabase = createClient(supabaseURL, supabaseAnonKey);
 function Profile() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [myState,setMyState] = useState("")
+  const [myState, setMyState] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { recruiterState } = useAuth();
   const userEmail = String(myState);
   const [data, setData] = useState({});
   const router = useRouter();
-  const toast = useToast()
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     email: null,
@@ -55,7 +55,7 @@ function Profile() {
         throw uploadError;
       }
       toast({
-        position: 'top',
+        position: "top",
         render: () => (
           <Box
             className="bg-pink-primary flex flex-col justify-center text-center"
@@ -66,7 +66,6 @@ function Profile() {
           >
             <div>Profile updated .</div>
             <div>Profile has been successfully updated .</div>
-
           </Box>
         ),
         duration: 3000,
@@ -77,7 +76,7 @@ function Profile() {
     } catch (error) {
       console.error(error);
       toast({
-        position: 'top',
+        position: "top",
         render: () => (
           <Box
             className="bg-pink-primary flex flex-col justify-center text-center"
@@ -88,7 +87,6 @@ function Profile() {
           >
             <div>Profile updated .</div>
             <div>Profile has been successfully updated .</div>
-
           </Box>
         ),
         duration: 3000,
@@ -174,13 +172,13 @@ function Profile() {
   };
   useEffect(() => {
     const storedState = localStorage.getItem("email");
-    const token = localStorage.getItem("sb:token"); 
-    setIsAuthenticated(!!token); 
+    const token = localStorage.getItem("sb:token");
+    setIsAuthenticated(!!token);
     if (storedState) {
       setMyState(storedState);
     }
     fetchData();
-  }, [isAuthenticated,myState]);
+  }, [isAuthenticated, myState]);
 
   useEffect(() => {
     localStorage.setItem("myState", myState);
@@ -199,7 +197,13 @@ function Profile() {
           >
             <div className="flex items-center max-[700px]:mt-[-4px] border-shadow w-[75px] h-[75px] rounded-[8px] drop-shadow-lg mr-[11px]">
               {imagePreview ? (
-                <img src={imagePreview} alt="Selected file preview" />
+                <Image
+                  src={imagePreview}
+                  alt="Selected file preview"
+                  width={0}
+                  height={0}
+                  style={{ width: "auto", height: "auto" }}
+                />
               ) : (
                 <Image
                   src={

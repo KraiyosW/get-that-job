@@ -4,10 +4,10 @@ import login from "../image/login.svg";
 import GTJ from "../image/gtj.svg";
 import Image from "next/image";
 import Link from "next/link";
-import {useAuth} from '@/contexts/authentication.js'
+import { useAuth } from "@/contexts/authentication.js";
 
 const Navigatebar = () => {
-  const {logoutAuth} = useAuth();
+  const { logoutAuth } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -18,10 +18,14 @@ const Navigatebar = () => {
     }
   };
 
-
   return (
     <div className="w-full flex flex-row flex-wrap justify-between shadow-md relative z-10 max-[514px]:mt-5 max-[514px]:justify-center">
-      <Link href="/" onClick={()=>{handleLogout()}}>
+      <Link
+        href="/"
+        onClick={() => {
+          handleLogout();
+        }}
+      >
         <Image
           alt="signup-icon"
           src={GTJ}
