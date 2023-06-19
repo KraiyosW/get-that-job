@@ -3,8 +3,7 @@ import { useRecruiterPost } from "@/hooks/recruiterPost.js";
 import { useRouter } from "next/router";
 import Warning from "../Warning";
 import { useAuth } from "@/contexts/authentication";
-import { useToast, Box } from '@chakra-ui/react'
-
+import { useToast, Box } from "@chakra-ui/react";
 
 function CreateNewJob() {
   const [myState, setMyState] = useState("");
@@ -12,7 +11,7 @@ function CreateNewJob() {
   // ใช้ custom hook จาก useRecruiterPost และ useAuth
   const { createPost, isLoading, isError } = useRecruiterPost();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const {recruiterState} = useAuth();
+  const { recruiterState } = useAuth();
   const userEmail = localStorage.getItem("email");
   const router = useRouter();
   const toast = useToast();
@@ -29,7 +28,6 @@ function CreateNewJob() {
   useEffect(() => {
     localStorage.setItem("email", myState);
   }, [myState]);
-
 
   // สร้าง state สำหรับเก็บข้อมูลจากฟอร์ม
   const [formData, setFormData] = useState({
@@ -68,17 +66,15 @@ function CreateNewJob() {
     setSelectedJobType(event.target.value);
   };
 
-  if(!isAuthenticated){
-    return (<Warning/>)
+  if (!isAuthenticated) {
+    return <Warning />;
   }
-
-
 
   // ฟังก์ชั่นสำหรับการ submit form
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const authToken = JSON.stringify(localStorage.getItem('sb:token'));
+      const authToken = JSON.stringify(localStorage.getItem("sb:token"));
       const response = await createPost(formData, authToken);
       toast({
         position: "top",
@@ -97,12 +93,12 @@ function CreateNewJob() {
         duration: 3000,
         isClosable: true,
       });
-      router.push('/job-postings')
+      router.push("/job-postings");
 
       console.log(response);
 
-      setSelectedJobType("")
-      setSelectedOption("")
+      setSelectedJobType("");
+      setSelectedOption("");
       setFormData({
         job_title: "",
         job_category: "",
@@ -137,7 +133,7 @@ function CreateNewJob() {
   };
 
   if (!isAuthenticated) {
-    return (<Warning />)
+    return <Warning />;
   }
 
   return (
@@ -168,13 +164,17 @@ function CreateNewJob() {
               id="category"
               name="job_category"
               value={selectedOption}
-              onChange={(event) => { handleSelectOption(event) }}
+              onChange={(event) => {
+                handleSelectOption(event);
+              }}
             >
-              <option value="" disabled>Select or create a category</option>
-              <option value="Software-Developer" >Software Developer</option>
-              <option value="Sales" >Sales</option>
-              <option value="Graphic-Designer" >Graphic Designer</option>
-              <option value="Digital-Marketing" >Digital Marketing</option>
+              <option value="" disabled>
+                Select or create a category
+              </option>
+              <option value="Software-Developer">Software Developer</option>
+              <option value="Sales">Sales</option>
+              <option value="Graphic-Designer">Graphic Designer</option>
+              <option value="Digital-Marketing">Digital Marketing</option>
             </select>
             <div className="mt-[8px] mb-[4px]" id="overline">
               TYPE
@@ -184,14 +184,15 @@ function CreateNewJob() {
               id="type"
               name="job_type"
               value={selectedJobType}
-              onChange={(event) => { handleSelectJobType(event) }}
-
+              onChange={(event) => {
+                handleSelectJobType(event);
+              }}
             >
               <option value="" disabled selected>
                 Select a type
               </option>
-              <option value="Full-Time" >Full Time</option>
-              <option value="Part-Time" >Part Time</option>
+              <option value="Full-Time">Full Time</option>
+              <option value="Part-Time">Part Time</option>
             </select>
             <div className="mt-[8px] mb-[4px]" id="overline">
               SALARY RANGE
