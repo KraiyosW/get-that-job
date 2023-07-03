@@ -12,9 +12,9 @@ export default async function followingHandle(req, res) {
   }
 
   const { professional_id, job_post_id } = req.body;
-  const now = new Date().toISOString();
+  // const now = new Date().toLocaleString();
 
-  req.body.followed_at = now;
+  // req.body.followed_at = now;
 
   const { data: allFollowingData, error: allFollowingError } = await supabase
     .from("professional_follow_jobs")
@@ -63,7 +63,7 @@ export default async function followingHandle(req, res) {
       .from("professional_follow_jobs")
       .update({
         follow_status: req.body.follow_status,
-        followed_at: now,
+        // followed_at: now,
       })
       .eq("professional_id", req.body.professional_id)
       .eq("job_post_id", req.body.job_post_id);

@@ -23,7 +23,6 @@ function ProfessionalProfile() {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-
   const userEmail = String(myState);
 
   const toast = useToast();
@@ -39,46 +38,9 @@ function ProfessionalProfile() {
     education: "",
   });
 
-  // function handleFileInputChange(event) {
-  //   const file = event.target.files[0];
-  //   setSelectedFile(file);
-
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(file);
-
-  //   reader.onloadend = () => {
-  //     setImagePreview(reader.result);
-  //   };
-  // }
-
   function handleFileUpload(event) {
     setFile(event.target.files[0]);
   }
-
-  // const handleUpdateProfile = async (event) => {
-  //   event.preventDefault();
-
-  //   const fileInput = document.getElementById("fileInput");
-  //   const file = fileInput.files[0];
-
-
-  //   if (!file) {
-  //     alert("Please select a file to upload.");
-  //     return;
-  //   }
-
-  //   const { data, error } = await supabase.storage
-  //     .from("profiles/professional")
-  //     .upload(`user-${Date.now()}`, file);
-
-  //   if (error) {
-  //     alert("Error uploading file: ", error.message);
-  //   } else {
-  //     alert("File uploaded successfully!");
-  //   }
-  // };
-
-
 
   const handleChange = (event) => {
     setFormData({
@@ -218,7 +180,6 @@ function ProfessionalProfile() {
       console.log(error);
     } finally {
       setIsLoading(false);
-
     }
   };
 
@@ -236,14 +197,12 @@ function ProfessionalProfile() {
     localStorage.setItem("myState", myState);
   }, [myState]);
 
-
   if (isLoading) {
     return <div className="bg-[#F5F5F6] h-screen"></div>;
   }
   if (!isAuthenticated) {
     return <Warning />;
   }
-
 
   return (
     <>
@@ -256,9 +215,7 @@ function ProfessionalProfile() {
           <form
             className="flex flex-col max-[700px]:items-center"
             id="file-form"
-
           >
-
             <div className="mb-[4px] mt-[8px]" id="overline">
               EMAIL
             </div>
@@ -399,7 +356,6 @@ function ProfessionalProfile() {
             >
               SAVE CHANGES
             </Button>
-
           </form>
         </div>
       </main>

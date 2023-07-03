@@ -58,6 +58,7 @@ const SidebarProfessional = () => {
       >
         <Image
           src={GTJ}
+          alt="get that job logo"
           className="mb-4 max-[700px]:pl-[8px] max-[700px]:pt-[16px] pl-[16px] pt-[32px] w-[160px] cursor-pointer max-[700px]:hidden"
         />
       </Link>
@@ -68,7 +69,11 @@ const SidebarProfessional = () => {
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px]  ${router.pathname.startsWith('/find-that-job') ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px]  ${
+                router.pathname.startsWith("/find-that-job")
+                  ? "bg-white-secondary"
+                  : "bg-white-tertiary"
+              }`}
               id="sidebar-menu"
             >
               <Image
@@ -80,7 +85,6 @@ const SidebarProfessional = () => {
                 Find that job
               </div>
             </div>
-
           </Link>
 
           <Link
@@ -88,7 +92,11 @@ const SidebarProfessional = () => {
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px] ${router.pathname.startsWith('/applications') ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px] ${
+                router.pathname.startsWith("/applications")
+                  ? "bg-white-secondary"
+                  : "bg-white-tertiary"
+              }`}
               id="sidebar-menu"
             >
               <Image
@@ -100,14 +108,17 @@ const SidebarProfessional = () => {
                 Your applications
               </div>
             </div>
-
           </Link>
           <Link
             href="/following"
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[7px] py-[17px] ${router.pathname.startsWith('/following') ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[7px] py-[17px] ${
+                router.pathname.startsWith("/following")
+                  ? "bg-white-secondary"
+                  : "bg-white-tertiary"
+              }`}
               id="sidebar-menu"
             >
               <Image
@@ -119,14 +130,17 @@ const SidebarProfessional = () => {
                 Following
               </div>
             </div>
-
           </Link>
           <Link
             href="/professional-profile"
             className="max-[700px]:flex max-[700px]:justify-center"
           >
             <div
-              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px] ${router.pathname === '/professional-profile' ? 'bg-white-secondary' : 'bg-white-tertiary'}`}
+              className={`hover:bg-white-secondary active:bg-white-secondary max-[700px]:p-[6px] p-[12px] flex flex-row flex-warp gap-[10px] py-[17px] ${
+                router.pathname === "/professional-profile"
+                  ? "bg-white-secondary"
+                  : "bg-white-tertiary"
+              }`}
               id="sidebar-menu"
             >
               <Image
@@ -138,7 +152,6 @@ const SidebarProfessional = () => {
                 Profile
               </div>
             </div>
-
           </Link>
 
           <div

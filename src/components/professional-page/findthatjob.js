@@ -30,20 +30,6 @@ const Findthatjob = () => {
   const [isDescendingClicked, setIsDescendingClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getJobs = async () => {
-    try {
-      const result = await axios.get(
-        `http://localhost:3000/api/findthatjob?profid=${profId}`
-      );
-      setJob(result.data.job.data);
-      console.log(result.data.job.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleSortAscending = () => {
     if (!isAscendingClicked) {
       // First click, enable ascending sort and set the clicked state
@@ -103,6 +89,21 @@ const Findthatjob = () => {
   }
 
   useEffect(() => {
+    const profId = localStorage.getItem("professional_id");
+    const getJobs = async () => {
+      try {
+        const result = await axios.get(
+          `http://localhost:3000/api/findthatjob?profid=${profId}`
+        );
+        setJob(result.data.job.data);
+        console.log(result.data.job.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     const token = localStorage.getItem("sb:token"); // ใช้ localStorage ในการเก็บ token
     setIsAuthenticated(!!token);
     getJobs();
@@ -116,7 +117,6 @@ const Findthatjob = () => {
     return <Warning />;
   }
   const profId = localStorage.getItem("professional_id");
-
   const handleFollowClick = async (id, status) => {
     console.log(id);
     console.log(status);
@@ -282,15 +282,17 @@ const Findthatjob = () => {
                   </p>
                   <div className="flex flex-row items-center max-[900px]:justify-center max-[700px]:justify-center">
                     <button
-                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] max-[900px]:mr-[10px] max-[700px]:mr-[10px] ${sortAscending ? "bg-[#F48FB1] text-white" : "bg-white"
-                        }`}
+                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] mr-[15px] h-[36px] max-[900px]:mr-[10px] max-[700px]:mr-[10px] ${
+                        sortAscending ? "bg-[#F48FB1] text-white" : "bg-white"
+                      }`}
                       onClick={handleSortAscending}
                     >
                       Low to High
                     </button>
                     <button
-                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${sortDescending ? "bg-[#F48FB1] text-white" : "bg-white"
-                        }`}
+                      className={`border-solid border border-[#F48FB1] rounded-[8px] px-[4px] h-[36px] ${
+                        sortDescending ? "bg-[#F48FB1] text-white" : "bg-white"
+                      }`}
                       onClick={handleSortDescending}
                     >
                       High to Low
@@ -313,7 +315,6 @@ const Findthatjob = () => {
                 return (
                   <div
                     key={index}
-
                     className="bg-white flex flex-row flex-wrap justify-center gap-[10px] border-[1px] border-[#E1E2E1] rounded-[8px] max-[900px]:w-full w-[420px] h-[210px] py-[16px] px-[20px] mr-[15px] shadow-[0px_0px_8px_rgba(0,0,0,0.2)] max-[900px]:h-auto"
                   >
                     <div className="flex max-[900px]:flex-col items-center gap-4 flex-wrap max-[435px]:">
@@ -414,8 +415,8 @@ const Findthatjob = () => {
                           {item.professional_follow_jobs[0] === undefined
                             ? "Follow"
                             : item.professional_follow_jobs[0].follow_status
-                              ? "Following"
-                              : "Follow"}
+                            ? "Following"
+                            : "Follow"}
                           {/* {followStatus[item.job_post_id]
                             ? "Following"
                             : "Follow"} */}
