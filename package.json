@@ -19,6 +19,7 @@
     "@prisma/client": "^4.12.0",
     "@supabase/auth-helpers-nextjs": "^0.6.1",
     "@supabase/supabase-js": "^2.18.0",
+    "and": "^0.0.3",
     "axios": "^1.3.6",
     "axios-interceptors": "^0.0.4",
     "bcryptjs": "^2.4.3",
