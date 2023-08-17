@@ -93,7 +93,7 @@ const Findthatjob = () => {
     const getJobs = async () => {
       try {
         const result = await axios.get(
-          `http://localhost:3000/api/findthatjob?profid=${profId}`
+          `/api/findthatjob?profid=${profId}`
         );
         setJob(result.data.job.data);
         console.log(result.data.job.data);

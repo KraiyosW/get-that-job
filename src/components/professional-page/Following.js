@@ -96,7 +96,7 @@ const Following = () => {
     const getJobs = async () => {
       try {
         const result = await axios.get(
-          `http://localhost:3000/api/followingtab?profid=${profId}`
+          `/api/followingtab?profid=${profId}`
         );
         setJob(result.data.job.data);
       } catch (error) {
@@ -115,7 +115,7 @@ const Following = () => {
     const getJobs = async () => {
       try {
         const result = await axios.get(
-          `http://localhost:3000/api/followingtab?profid=${profId}`
+          `/api/followingtab?profid=${profId}`
         );
         setJob(result.data.job.data);
       } catch (error) {
